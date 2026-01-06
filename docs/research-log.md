@@ -1,16 +1,18 @@
-### Completed (Hour 1 of Pre-Day 1)
-- [x] GitHub repo structure created
-- [x] GitHub Models API setup complete
-  - Generated personal access token (classic, no scopes needed)
-  - Saved as GITHUB_TOKEN environment variable
-  - Successfully tested API with gpt-4o-mini
-  - Endpoint: https://models.github.ai/inference/chat/completions
+### Completed (Hour 2 of Pre-Day 1)
+- [x] Cloned forked secretagent repository
+- [x] Added upstream remote (wcohen/secretagent)
+- [x] Downloaded BIG-Bench-Hard dataset
+- [x] Created symlinks in research repo for easy access
+  - `./data/BBH` → BIG-Bench-Hard dataset
+  - `./secretagent` → secretagent codebase
 
-### Notes
-- GitHub Models API works with basic GitHub token (no special scopes required)
-- Free tier includes: gpt-4o-mini, gpt-4o, claude-3.5-sonnet, llama-3.1, and more
-- Rate limited but sufficient for prototyping
+### Key Files Identified
+- secretagent.py: Core decorator and LLM integration
+- llm_util.py: LLM service abstraction
+- prompts/program_trace_prompt.txt: PTP prompt template
+- bbh/sports_understanding.json: Target task for replication
 
 ### Next Steps
-- Clone secretagent repository
-- Download BBH dataset
+- Day 1: Read PTP paper and understand secretagent codebase
+- Configure secretagent to work with GitHub Models API
+- Implement sports_understanding with ptools
