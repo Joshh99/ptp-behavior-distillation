@@ -48,3 +48,17 @@
 - Contribute bug fix back to secretagent repo
 - Run pyramid_game.py to see multiple ptools composed together
 - Implement BBH sports_understanding task
+
+### Experiment 1 Complete: Observed Multi-Ptool Composition (pyramid_game)
+
+**Date**: 2026-01-09
+
+**What I did**: Ran `pyramid_game.walk()` and briefly played the interactive game
+
+**Key observations**:
+- Saw `describe_new_room()` and `opposite_direction()` ptools in action
+- Observed LLM-powered command normalization (user input → game commands)
+- Noted how ptools compose: room descriptions built incrementally via multiple LLM calls
+- Confirmed `echo_call=True` provides execution trace visibility
+
+**Next**: Implement Experiment 2 (sports_understanding with recorder)
