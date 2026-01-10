@@ -62,3 +62,24 @@
 - Confirmed `echo_call=True` provides execution trace visibility
 
 **Next**: Implement Experiment 2 (sports_understanding with recorder)
+
+### Experiment 2 Complete: Trace Recording (Sports Understanding)
+
+**Date**: 2026-01-10
+
+**What I implemented**:
+- Three composed ptools: `analyze_sentence()`, `sport_for()`, `consistent_sports()`
+- Orchestrator function: `sports_understanding()` 
+- Trace recording with `sec.recorder()`
+
+**Bug discovered and fixed**:
+- **Tuple parsing bug**: `tuple(string)` was converting strings character-by-character
+- **Solution**: Added complex type detection in `parse_llm_output()` to use `ast.literal_eval()` for tuples/lists/dicts
+
+**Key observations**:
+- Orchestrator functions (non-ptools) compose ptools together
+- Each ptool call is independent and cacheable
+- `sec.recorder()` captures complete execution trace like PTP paper Figure 1
+- Multi-step reasoning becomes observable and debuggable
+
+**Next**: Experiment 4 - LLM provider comparison
