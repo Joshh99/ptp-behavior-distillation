@@ -83,3 +83,17 @@
 - Multi-step reasoning becomes observable and debuggable
 
 **Next**: Experiment 4 - LLM provider comparison
+
+### PR Submitted: Type Parsing Improvements
+
+**Date**: 2026-01-19
+
+**What I contributed**:
+- Submitted PR to wwcohen/secretagent fixing boolean and tuple parsing bugs
+- Created comprehensive test suite covering all type parsing scenarios
+- Both bugs discovered through hands-on experimentation during Experiment 2 and 3
+
+**Impact**:
+- Makes @subagent decorator more robust for production use
+- Enables complex return types (tuple, list, dict) to work correctly
+- Demonstrates research contribution back to open source tools
