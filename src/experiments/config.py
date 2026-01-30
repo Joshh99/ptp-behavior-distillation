@@ -19,6 +19,9 @@ import os
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 from enum import Enum
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 # =============================================================================
@@ -26,7 +29,7 @@ from enum import Enum
 # =============================================================================
 
 # Together.ai API (primary provider)
-TOGETHER_API_KEY = "tgp_v1_ltHhNSf3rT-bfZKM6wJpoDIZxEK9KfByeRuuHNnu2GA"
+TOGETHER_API_KEY = os.getenv("TOGETHER_API_KEY")
 os.environ.setdefault('TOGETHER_API_KEY', TOGETHER_API_KEY)
 
 

@@ -8,9 +8,9 @@ Target reliability: 95%+
 Target cost: Minimal (1 LLM call per query)
 
 Architecture:
-    1. LLM extracts: airline, class, route, weights, membership
-    2. Python calculates: fee based on deterministic rules
-    3. LLM interprets: natural language explanation (optional)
+    1. LLM extracts: customer_class, routine, direction, bag_list
+    2. Python calculates: fee based on RuleArena's deterministic rules
+    3. Return total cost (ticket + baggage fees)
 
 This demonstrates Prof. Cohen's key insight:
     "Python does maximum heavy lifting before handing to LLMs"
@@ -19,298 +19,189 @@ This demonstrates Prof. Cohen's key insight:
 import sys
 import os
 import time
+import json
+import re
+from datetime import datetime
 from typing import Dict, Any, List, Optional, Tuple
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 
 # Add src to path for imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from dataset.rule_arena_loader import (
-    RuleArenaDataset,
-    RuleArenaInstance,
-    BaggageRule,
-    TaskCategory,
-    load_baggage_rules,
-)
+from dataset.rulearena_loader import RuleArenaLoader
 from experiments.config import (
     get_experiment_config,
     get_model_config,
     ExperimentLevel,
     RESULTS_DIR,
+    MODELS,
     call_llm,
     DEFAULT_MODEL,
 )
 
-import json
-import re
+
+# =============================================================================
+# COST TRACKING
+# =============================================================================
+
+@dataclass
+class CostTracker:
+    """Track API costs for experiment runs."""
+    total_input_tokens: int = 0
+    total_output_tokens: int = 0
+    total_calls: int = 0
+    model: str = DEFAULT_MODEL
+    
+    def add_call(self, input_tokens: int, output_tokens: int):
+        """Record an API call."""
+        self.total_input_tokens += input_tokens
+        self.total_output_tokens += output_tokens
+        self.total_calls += 1
+    
+    @property
+    def total_cost_usd(self) -> float:
+        """Calculate total cost in USD."""
+        if self.model not in MODELS:
+            return 0.0
+        config = MODELS[self.model]
+        input_cost = (self.total_input_tokens / 1_000_000) * config.cost_per_m_input
+        output_cost = (self.total_output_tokens / 1_000_000) * config.cost_per_m_output
+        return input_cost + output_cost
+    
+    def to_dict(self) -> Dict:
+        return {
+            "total_input_tokens": self.total_input_tokens,
+            "total_output_tokens": self.total_output_tokens,
+            "total_calls": self.total_calls,
+            "model": self.model,
+            "total_cost_usd": self.total_cost_usd,
+        }
 
 
 # =============================================================================
 # PTOOLS - LLM-powered parameter extraction (Together.ai)
 # =============================================================================
 
+# Extraction prompt tailored for RuleArena airline baggage format
 EXTRACTION_PROMPT = """You are an expert at extracting structured information from airline baggage queries.
 
-Given a passenger query and context, extract the following parameters as a JSON object:
-- airline: string (e.g., "united", "delta", "american") 
-- travel_class: string ("economy", "business", or "first")
-- route_type: string ("domestic" or "international")
-- num_bags: integer
-- bag_weights_kg: list of floats
-- membership_status: string or null
-- special_items: list of strings (e.g., ["golf_clubs", "skis"])
+Given a passenger scenario, extract the following parameters as a JSON object:
+- customer_class: string (one of: "Basic Economy", "Main Cabin", "Main Plus", "Premium Economy", "Business", "First")
+- routine: string (destination region, e.g., "U.S.", "Canada", "Mexico", "Europe", "China", etc.)
+- direction: integer (0 = departing from U.S. to destination, 1 = returning to U.S. from destination)
+- base_price: integer (ticket price in USD)
+- bag_list: array of objects, each with:
+  - id: integer (bag number starting from 1)
+  - name: string ("backpack" or "luggage box")
+  - size: array of 3 integers [length, width, height] in inches
+  - weight: integer in lbs
 
-Query: {query}
+IMPORTANT:
+- The first item in bag_list is typically a carry-on (small backpack)
+- Parse ALL items listed in the query
+- Look for phrases like "flying from X to Y" to determine direction
+- "from [international city] to [US city]" means direction=1 (arriving to US)
+- "from [US city] to [international city]" means direction=0 (departing from US)
+- US cities include: Orlando, Philadelphia, Charlotte, Phoenix, Las Vegas, Atlanta, etc.
 
-Passenger Context:
-{passenger_info}
+Query:
+{query}
 
-Respond with ONLY a valid JSON object, no other text. Example:
-{{"airline": "united", "travel_class": "economy", "route_type": "domestic", "num_bags": 1, "bag_weights_kg": [20.0], "membership_status": null, "special_items": []}}
+Respond with ONLY a valid JSON object, no other text.
 """
 
 
-def extract_baggage_params(query: str, passenger_info: str, model: str = DEFAULT_MODEL) -> dict:
+def extract_rulearena_params(query: str, model: str = DEFAULT_MODEL) -> Tuple[Dict, int, int]:
     """
-    Extract baggage-related parameters from a passenger query using Together.ai.
+    Extract RuleArena-specific parameters from a passenger query.
     
-    This is the L1 "PTool" pattern: LLM extracts, Python calculates.
+    Returns:
+        Tuple of (params_dict, input_tokens, output_tokens)
     """
-    prompt = EXTRACTION_PROMPT.format(query=query, passenger_info=passenger_info)
+    prompt = EXTRACTION_PROMPT.format(query=query)
+    
+    # Estimate input tokens (rough: ~4 chars per token)
+    input_tokens = len(prompt) // 4
     
     try:
-        response = call_llm(prompt, model=model, max_tokens=256)
+        response = call_llm(prompt, model=model, max_tokens=512)
+        output_tokens = len(response) // 4
         
         # Parse JSON from response
-        # Try to find JSON in the response (handle markdown code blocks)
-        json_match = re.search(r'\{[^{}]*\}', response, re.DOTALL)
+        # Handle markdown code blocks
+        json_text = response.strip()
+        if "```json" in json_text:
+            json_text = json_text.split("```json")[1].split("```")[0]
+        elif "```" in json_text:
+            json_text = json_text.split("```")[1].split("```")[0]
+        
+        # Find JSON object
+        json_match = re.search(r'\{[\s\S]*\}', json_text)
         if json_match:
             params = json.loads(json_match.group())
         else:
-            params = json.loads(response.strip())
+            params = json.loads(json_text)
         
-        # Ensure all required fields exist with defaults
+        # Validate and set defaults
         defaults = {
-            "airline": "united",
-            "travel_class": "economy",
-            "route_type": "domestic", 
-            "num_bags": 1,
-            "bag_weights_kg": [20.0],
-            "membership_status": None,
-            "special_items": [],
+            "customer_class": "Main Cabin",
+            "routine": "U.S.",
+            "direction": 0,
+            "base_price": 0,
+            "bag_list": [],
         }
         
         for key, default_value in defaults.items():
             if key not in params or params[key] is None:
                 params[key] = default_value
         
-        return params
+        return params, input_tokens, output_tokens
         
     except Exception as e:
-        print(f"  Warning: LLM extraction failed ({e}), using defaults")
+        print(f"  Warning: LLM extraction failed ({e})")
         return {
-            "airline": "united",
-            "travel_class": "economy", 
-            "route_type": "domestic",
-            "num_bags": 1,
-            "bag_weights_kg": [20.0],
-            "membership_status": None,
-            "special_items": [],
-        }
+            "customer_class": "Main Cabin",
+            "routine": "U.S.",
+            "direction": 0,
+            "base_price": 0,
+            "bag_list": [],
+        }, input_tokens, 0
 
 
 # =============================================================================
-# PYTHON RULE ENGINE - Deterministic fee calculation
+# PYTHON RULE ENGINE - Using RuleArena's fee calculation
 # =============================================================================
 
-@dataclass
-class FeeCalculation:
-    """Result of baggage fee calculation."""
-    total_fee: float
-    breakdown: Dict[str, float]
-    explanation: str
-    applicable_rules: List[str]
-    warnings: List[str]
-
-
-class BaggageRuleEngine:
+class RuleArenaFeeCalculator:
     """
-    Pure Python rule engine for baggage fee calculation.
+    Fee calculator using RuleArena's exact logic.
     
-    This is the "distilled" knowledge - deterministic, fast, testable.
-    No LLM calls needed once parameters are extracted.
+    This wraps the loader's calculation methods for use in L1 pipeline.
     """
     
-    def __init__(self, rules: List[BaggageRule] = None):
-        self.rules = rules or load_baggage_rules()
-        self._build_rule_index()
+    def __init__(self, loader: RuleArenaLoader):
+        self.loader = loader
     
-    def _build_rule_index(self):
-        """Index rules for fast lookup."""
-        self.rule_index = {}
-        for rule in self.rules:
-            key = (
-                rule.conditions.get("airline", "").lower(),
-                rule.conditions.get("class", "").lower(),
-                rule.conditions.get("route", "").lower(),
-            )
-            if key not in self.rule_index:
-                self.rule_index[key] = []
-            self.rule_index[key].append(rule)
-    
-    def find_applicable_rule(
-        self, 
-        airline: str, 
-        travel_class: str, 
-        route_type: str
-    ) -> Optional[BaggageRule]:
-        """Find the most specific rule for given parameters."""
-        # Try exact match first
-        key = (airline.lower(), travel_class.lower(), route_type.lower())
-        if key in self.rule_index:
-            return self.rule_index[key][0]
-        
-        # Try partial matches
-        for rule in self.rules:
-            conditions = rule.conditions
-            if (conditions.get("airline", "").lower() == airline.lower() and
-                conditions.get("class", "").lower() == travel_class.lower() and
-                conditions.get("route", "").lower() == route_type.lower()):
-                return rule
-        
-        return None
-    
-    def calculate_fee(
+    def calculate_total_cost(
         self,
-        airline: str,
-        travel_class: str,
-        route_type: str,
-        num_bags: int,
-        bag_weights_kg: List[float],
-        membership_status: Optional[str] = None,
-        special_items: List[str] = None,
-    ) -> FeeCalculation:
+        base_price: int,
+        direction: int,
+        routine: str,
+        customer_class: str,
+        bag_list: List[Dict[str, Any]],
+    ) -> int:
         """
-        Calculate baggage fees using deterministic rules.
+        Calculate total cost using RuleArena's fee logic.
         
-        This is the core L1 logic - pure Python, no LLM.
+        This is the same calculation as the loader's _compute_answer method.
         """
-        total_fee = 0.0
-        breakdown = {}
-        warnings = []
-        applicable_rules = []
-        
-        # Find applicable rule
-        rule = self.find_applicable_rule(airline, travel_class, route_type)
-        
-        if rule is None:
-            # Default to generic economy domestic if no specific rule
-            warnings.append(f"No specific rule found for {airline}/{travel_class}/{route_type}. Using defaults.")
-            base_fees = {"first_bag": 35, "second_bag": 45}
-            max_weight = 23
-            free_bags = 0
-        else:
-            applicable_rules.append(rule.rule_id)
-            base_fees = rule.fees
-            max_weight = rule.thresholds.get("max_weight_kg", 23)
-            free_bags = rule.thresholds.get("max_pieces", 0)
-            
-            # Check for membership exceptions
-            if membership_status:
-                for exception in rule.exceptions:
-                    if any(status in exception.lower() for status in [membership_status.lower(), "premier", "medallion", "gold"]):
-                        free_bags += 1
-                        breakdown["membership_benefit"] = f"+1 free bag ({membership_status})"
-        
-        # Calculate fees for each bag
-        for i, weight in enumerate(bag_weights_kg):
-            bag_num = i + 1
-            bag_fee = 0.0
-            
-            # Check if this bag is free
-            if bag_num <= free_bags:
-                breakdown[f"bag_{bag_num}"] = 0.0
-            else:
-                # Get base fee for this bag position
-                if bag_num == 1:
-                    bag_fee = base_fees.get("first_bag", 35)
-                elif bag_num == 2:
-                    bag_fee = base_fees.get("second_bag", 45)
-                else:
-                    bag_fee = base_fees.get("third_bag", 150)
-                
-                breakdown[f"bag_{bag_num}_base"] = bag_fee
-            
-            # Check overweight
-            if weight > max_weight:
-                if weight <= 32:
-                    overweight_fee = base_fees.get("overweight_23_32kg", 100)
-                    breakdown[f"bag_{bag_num}_overweight"] = overweight_fee
-                    bag_fee += overweight_fee
-                elif weight <= 45:
-                    overweight_fee = base_fees.get("overweight_32_45kg", 200)
-                    breakdown[f"bag_{bag_num}_overweight"] = overweight_fee
-                    bag_fee += overweight_fee
-                else:
-                    warnings.append(f"Bag {bag_num} ({weight}kg) exceeds 45kg limit - may not be accepted")
-                    overweight_fee = 400  # Penalty or rejection
-                    breakdown[f"bag_{bag_num}_overweight"] = overweight_fee
-                    bag_fee += overweight_fee
-            
-            total_fee += bag_fee
-        
-        # Handle special items
-        special_items = special_items or []
-        for item in special_items:
-            if item.lower() in ["golf_clubs", "skis", "ski_equipment"]:
-                # Sports equipment usually counts as one bag
-                if f"bag_1_base" not in breakdown:
-                    breakdown[f"{item}_fee"] = 35
-                    total_fee += 35
-        
-        # Generate explanation
-        explanation = self._generate_explanation(
-            airline, travel_class, route_type, 
-            num_bags, bag_weights_kg, 
-            total_fee, breakdown, warnings
+        return self.loader._compute_answer(
+            base_price=base_price,
+            direction=direction,
+            routine=routine,
+            customer_class=customer_class,
+            bag_list=bag_list,
         )
-        
-        return FeeCalculation(
-            total_fee=total_fee,
-            breakdown=breakdown,
-            explanation=explanation,
-            applicable_rules=applicable_rules,
-            warnings=warnings,
-        )
-    
-    def _generate_explanation(
-        self,
-        airline: str,
-        travel_class: str,
-        route_type: str,
-        num_bags: int,
-        bag_weights_kg: List[float],
-        total_fee: float,
-        breakdown: Dict[str, float],
-        warnings: List[str],
-    ) -> str:
-        """Generate human-readable explanation of fee calculation."""
-        lines = [f"{airline.title()} {travel_class.title()} {route_type.title()} - {num_bags} bag(s)"]
-        
-        for key, value in breakdown.items():
-            if isinstance(value, (int, float)):
-                lines.append(f"  {key.replace('_', ' ').title()}: ${value:.0f}")
-            else:
-                lines.append(f"  {key.replace('_', ' ').title()}: {value}")
-        
-        lines.append(f"  TOTAL: ${total_fee:.0f}")
-        
-        if warnings:
-            lines.append("  Warnings:")
-            for warning in warnings:
-                lines.append(f"    - {warning}")
-        
-        return "\n".join(lines)
 
 
 # =============================================================================
@@ -319,179 +210,280 @@ class BaggageRuleEngine:
 
 def baggage_allowance_l1(
     query: str,
-    passenger_context: Dict[str, Any],
-    rule_engine: BaggageRuleEngine = None,
+    loader: RuleArenaLoader,
+    model: str = DEFAULT_MODEL,
     verbose: bool = True,
-) -> Dict[str, Any]:
+) -> Tuple[Dict[str, Any], int, int]:
     """
     L1 PTool pattern for baggage allowance queries.
     
     Architecture:
         1. Extract parameters (1 LLM call via PTool)
-        2. Calculate fees (Pure Python - deterministic)
-        3. Return structured result
+        2. Calculate fees (Pure Python - deterministic, using RuleArena logic)
+        3. Return total cost
     
     Args:
-        query: Natural language query from passenger
-        passenger_context: Additional context (from dataset)
-        rule_engine: Optional pre-initialized rule engine
+        query: Natural language query from RuleArena problem
+        loader: RuleArenaLoader instance for fee calculation
+        model: Model to use for extraction
         verbose: Print progress
     
     Returns:
-        Dict with answer, explanation, extracted_params, fee_breakdown
+        Tuple of (result_dict, input_tokens, output_tokens)
     """
-    if rule_engine is None:
-        rule_engine = BaggageRuleEngine()
+    calculator = RuleArenaFeeCalculator(loader)
     
     if verbose:
-        print(f"\n[L1 PTool] Processing: {query[:60]}...")
+        print(f"\n[L1 PTool] Processing: {query[:80]}...")
     
     # Step 1: Extract parameters (LLM call)
-    passenger_info = "\n".join([f"{k}: {v}" for k, v in passenger_context.items()])
-    
     start_time = time.time()
+    params, input_tokens, output_tokens = extract_rulearena_params(query, model=model)
+    extraction_time = time.time() - start_time
+    
+    if verbose:
+        print(f"  1. Extracted in {extraction_time:.2f}s:")
+        print(f"     Class: {params.get('customer_class')}, Route: {params.get('routine')}")
+        print(f"     Direction: {params.get('direction')}, Bags: {len(params.get('bag_list', []))}")
+    
+    # Step 2: Calculate total cost (Pure Python - no LLM)
+    calc_start = time.time()
     try:
-        params = extract_baggage_params(query, passenger_info)
-        extraction_time = time.time() - start_time
-        if verbose:
-            print(f"  1. Extracted params in {extraction_time:.2f}s: {params}")
+        total_cost = calculator.calculate_total_cost(
+            base_price=params.get("base_price", 0),
+            direction=params.get("direction", 0),
+            routine=params.get("routine", "U.S."),
+            customer_class=params.get("customer_class", "Main Cabin"),
+            bag_list=params.get("bag_list", []),
+        )
     except Exception as e:
         if verbose:
-            print(f"  1. Extraction failed: {e}")
-        # Fallback to context-based extraction
-        params = {
-            "airline": passenger_context.get("airline", "united"),
-            "travel_class": passenger_context.get("class", "economy"),
-            "route_type": passenger_context.get("route", "domestic"),
-            "num_bags": passenger_context.get("num_bags", 1),
-            "bag_weights_kg": passenger_context.get("bag_weights_kg", [20.0]),
-            "membership_status": passenger_context.get("membership_status"),
-            "special_items": passenger_context.get("items", []),
-        }
-        extraction_time = 0
+            print(f"  Warning: Fee calculation failed ({e}), returning base price")
+        total_cost = params.get("base_price", 0)
     
-    # Step 2: Calculate fees (Pure Python - no LLM)
-    calc_start = time.time()
-    result = rule_engine.calculate_fee(
-        airline=params.get("airline", "united"),
-        travel_class=params.get("travel_class", "economy"),
-        route_type=params.get("route_type", "domestic"),
-        num_bags=params.get("num_bags", 1),
-        bag_weights_kg=params.get("bag_weights_kg", [20.0]),
-        membership_status=params.get("membership_status"),
-        special_items=params.get("special_items", []),
-    )
     calc_time = time.time() - calc_start
     
     if verbose:
-        print(f"  2. Calculated fee in {calc_time:.4f}s: ${result.total_fee:.0f}")
-        print(f"  3. Explanation: {result.explanation}")
+        print(f"  2. Calculated total: ${total_cost} in {calc_time:.4f}s")
     
-    return {
-        "answer": result.total_fee,
-        "explanation": result.explanation,
+    result = {
+        "answer": total_cost,
         "extracted_params": params,
-        "fee_breakdown": result.breakdown,
-        "applicable_rules": result.applicable_rules,
-        "warnings": result.warnings,
         "metrics": {
             "extraction_time": extraction_time,
             "calculation_time": calc_time,
             "total_time": extraction_time + calc_time,
             "llm_calls": 1,
+            "input_tokens": input_tokens,
+            "output_tokens": output_tokens,
         }
     }
+    
+    return result, input_tokens, output_tokens
 
 
 # =============================================================================
-# EVALUATION
+# EVALUATION WITH RULEARENA
 # =============================================================================
 
-def evaluate_l1_on_dataset(
-    dataset: RuleArenaDataset = None,
-    num_samples: int = None,
+def evaluate_l1_on_rulearena(
+    loader: RuleArenaLoader,
+    complexity_level: int = 0,
+    max_problems: Optional[int] = None,
+    model: str = DEFAULT_MODEL,
     verbose: bool = True,
 ) -> Dict[str, Any]:
     """
     Evaluate L1 PTool approach on RuleArena dataset.
     
-    Returns metrics: accuracy, avg_time, total_cost
+    Args:
+        loader: RuleArenaLoader instance
+        complexity_level: 0=easy (5 bags), 1=medium (8 bags), 2=hard (11 bags)
+        max_problems: Maximum problems to evaluate (None = all)
+        model: Model to use for extraction
+        verbose: Print progress
+    
+    Returns:
+        Dict with metrics: accuracy, cost, latency, detailed results
     """
-    if dataset is None:
-        dataset = RuleArenaDataset()
+    # Load problems
+    problems = loader.load_airline_problems(
+        complexity_level=complexity_level,
+        max_problems=max_problems,
+    )
     
-    instances = dataset.load("test")
-    if num_samples:
-        instances = instances[:num_samples]
+    if not problems:
+        print("No problems loaded!")
+        return {"error": "No problems loaded"}
     
-    rule_engine = BaggageRuleEngine()
-    
+    # Initialize tracking
+    cost_tracker = CostTracker(model=model)
     results = []
     correct = 0
-    total_time = 0
+    total_time = 0.0
     
     print("=" * 80)
-    print(f"L1 PTool Evaluation - {len(instances)} instances")
+    print(f"L1 PTool Evaluation - RuleArena Complexity {complexity_level}")
+    print(f"Model: {model}")
+    print(f"Problems: {len(problems)}")
     print("=" * 80)
     
-    for i, instance in enumerate(instances):
-        print(f"\n[{i+1}/{len(instances)}] {instance.query[:50]}...")
+    for i, problem in enumerate(problems):
+        query = problem["query"]
+        expected = problem["ground_truth"]
         
-        result = baggage_allowance_l1(
-            query=instance.query,
-            passenger_context=instance.passenger_context,
-            rule_engine=rule_engine,
+        if verbose:
+            print(f"\n[{i+1}/{len(problems)}]")
+        
+        # Run L1 pipeline
+        result, input_tokens, output_tokens = baggage_allowance_l1(
+            query=query,
+            loader=loader,
+            model=model,
             verbose=verbose,
         )
         
+        # Track costs
+        cost_tracker.add_call(input_tokens, output_tokens)
+        
         # Check correctness
         predicted = result["answer"]
-        expected = instance.ground_truth_answer
-        
-        # Handle different answer types
-        if isinstance(expected, (int, float)) and isinstance(predicted, (int, float)):
-            is_correct = abs(predicted - expected) < 0.01
-        else:
-            is_correct = str(predicted).lower() == str(expected).lower()
+        is_correct = predicted == expected
         
         if is_correct:
             correct += 1
-            status = "✓"
+            status = "CORRECT"
         else:
-            status = "✗"
+            status = "WRONG"
         
-        print(f"  Result: {predicted} | Expected: {expected} | {status}")
+        if verbose:
+            print(f"  Result: ${predicted} | Expected: ${expected} | {status}")
         
         total_time += result["metrics"]["total_time"]
         
         results.append({
-            "instance_id": instance.instance_id,
-            "query": instance.query,
+            "problem_id": problem["id"],
             "predicted": predicted,
             "expected": expected,
             "correct": is_correct,
+            "extracted_params": result["extracted_params"],
             "time": result["metrics"]["total_time"],
+            "input_tokens": input_tokens,
+            "output_tokens": output_tokens,
         })
     
-    accuracy = correct / len(instances) if instances else 0
-    avg_time = total_time / len(instances) if instances else 0
+    # Calculate summary metrics
+    accuracy = correct / len(problems) if problems else 0
+    avg_time = total_time / len(problems) if problems else 0
+    avg_cost = cost_tracker.total_cost_usd / len(problems) if problems else 0
     
     print("\n" + "=" * 80)
     print("RESULTS SUMMARY")
     print("=" * 80)
-    print(f"Accuracy: {accuracy*100:.1f}% ({correct}/{len(instances)})")
-    print(f"Avg Time: {avg_time:.2f}s per query")
-    print(f"Total Time: {total_time:.2f}s")
-    print(f"LLM Calls: {len(instances)} (1 per query)")
+    print(f"Accuracy:        {accuracy*100:.1f}% ({correct}/{len(problems)})")
+    print(f"Avg Time:        {avg_time:.2f}s per problem")
+    print(f"Total Time:      {total_time:.2f}s")
+    print(f"Total Cost:      ${cost_tracker.total_cost_usd:.6f}")
+    print(f"Avg Cost:        ${avg_cost:.6f} per problem")
+    print(f"LLM Calls:       {cost_tracker.total_calls}")
+    print(f"Total Tokens:    {cost_tracker.total_input_tokens + cost_tracker.total_output_tokens}")
     
     return {
         "accuracy": accuracy,
         "correct": correct,
-        "total": len(instances),
+        "total": len(problems),
         "avg_time": avg_time,
         "total_time": total_time,
+        "cost": cost_tracker.to_dict(),
+        "avg_cost_per_problem": avg_cost,
+        "model": model,
+        "complexity_level": complexity_level,
         "results": results,
     }
+
+
+# =============================================================================
+# BASELINE RUN
+# =============================================================================
+
+def run_l1_baseline_rulearena(
+    num_problems: int = 30,
+    complexity_level: int = 0,
+    model: str = DEFAULT_MODEL,
+    save_results: bool = True,
+) -> Dict[str, Any]:
+    """
+    Run L1 baseline evaluation on RuleArena.
+    
+    Args:
+        num_problems: Number of problems to evaluate
+        complexity_level: 0=easy, 1=medium, 2=hard
+        model: Model to use
+        save_results: Whether to save results to JSON file
+    
+    Returns:
+        Evaluation results dictionary
+    """
+    print("=" * 80)
+    print("L1 RuleArena Baseline")
+    print("=" * 80)
+    print(f"Problems: {num_problems}")
+    print(f"Complexity: {complexity_level}")
+    print(f"Model: {model}")
+    print()
+    
+    # Initialize loader
+    try:
+        loader = RuleArenaLoader("external/RuleArena")
+        print("RuleArenaLoader initialized successfully")
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        return {"error": str(e)}
+    
+    # Run evaluation
+    results = evaluate_l1_on_rulearena(
+        loader=loader,
+        complexity_level=complexity_level,
+        max_problems=num_problems,
+        model=model,
+        verbose=True,
+    )
+    
+    # Add metadata
+    results["metadata"] = {
+        "experiment": "l1_rulearena_baseline",
+        "timestamp": datetime.now().isoformat(),
+        "rulearena_path": "external/RuleArena",
+    }
+    
+    # Save results
+    if save_results:
+        os.makedirs(RESULTS_DIR, exist_ok=True)
+        output_path = os.path.join(RESULTS_DIR, "l1_rulearena_baseline.json")
+        
+        # Make results JSON serializable
+        results_to_save = {k: v for k, v in results.items() if k != "results"}
+        results_to_save["sample_results"] = results["results"][:5]  # Save first 5 detailed results
+        results_to_save["num_detailed_results"] = len(results["results"])
+        
+        with open(output_path, "w") as f:
+            json.dump(results_to_save, f, indent=2)
+        
+        print(f"\nResults saved to: {output_path}")
+    
+    # Print summary table
+    print("\n" + "=" * 80)
+    print("FINAL RESULTS TABLE")
+    print("=" * 80)
+    print(f"| Metric                | Value                    |")
+    print(f"|----------------------|--------------------------|")
+    print(f"| Accuracy             | {results['accuracy']*100:.1f}%                    |")
+    print(f"| Avg Cost/Problem     | ${results['avg_cost_per_problem']:.6f}           |")
+    print(f"| Total Time           | {results['total_time']:.2f}s                   |")
+    print(f"| Total Cost           | ${results['cost']['total_cost_usd']:.6f}           |")
+    print(f"| Model                | {model}              |")
+    
+    return results
 
 
 # =============================================================================
@@ -500,21 +492,36 @@ def evaluate_l1_on_dataset(
 
 if __name__ == "__main__":
     print("=" * 80)
-    print("L1 Baggage Allowance - PTool Pattern")
+    print("L1 Baggage Allowance - PTool Pattern with RuleArena")
     print("=" * 80)
     print("\nThis demonstrates the 'SecretAgent sweet spot':")
-    print("  LLM extracts parameters → Python calculates deterministically")
+    print("  LLM extracts parameters -> Python calculates deterministically")
     print()
     
-    # Load dataset
-    dataset = RuleArenaDataset()
-    
-    # Run on debug subset
-    print("\n--- Running on 3 sample instances ---\n")
-    results = evaluate_l1_on_dataset(
-        dataset=dataset,
-        num_samples=3,
-        verbose=True,
+    # First, test on 5 problems
+    print("\n--- Test Run: 5 problems ---\n")
+    test_results = run_l1_baseline_rulearena(
+        num_problems=5,
+        complexity_level=0,
+        model=DEFAULT_MODEL,
+        save_results=False,
     )
     
-    print(f"\nFinal Accuracy: {results['accuracy']*100:.1f}%")
+    if "error" not in test_results:
+        print(f"\nTest accuracy: {test_results['accuracy']*100:.1f}%")
+        
+        # If test looks reasonable, run the full 30
+        print("\n" + "=" * 80)
+        print("--- Full Baseline: 30 problems ---")
+        print("=" * 80 + "\n")
+        
+        full_results = run_l1_baseline_rulearena(
+            num_problems=30,
+            complexity_level=0,
+            model=DEFAULT_MODEL,
+            save_results=True,
+        )
+        
+        print(f"\nFinal Accuracy: {full_results['accuracy']*100:.1f}%")
+    else:
+        print(f"\nTest failed: {test_results['error']}")

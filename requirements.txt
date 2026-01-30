@@ -1,0 +1,5 @@
+python-dotenv
+tqdm
+together
+pandas
+numpy

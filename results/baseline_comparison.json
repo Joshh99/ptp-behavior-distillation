@@ -1,0 +1,89 @@
+{
+  "metadata": {
+    "timestamp": "2026-01-30T20:08:32.846451",
+    "config": {
+      "num_problems": 20,
+      "complexity_level": 2,
+      "model": "qwen-72b",
+      "max_steps": 10
+    }
+  },
+  "l1_ptool": {
+    "name": "L1 (PTool)",
+    "accuracy": 0.0,
+    "correct": 0,
+    "total": 20,
+    "avg_llm_calls": 1.0,
+    "total_llm_calls": 20,
+    "cost_per_problem": 0.000413072,
+    "total_cost": 0.00826144,
+    "total_time": 79.77307152748108,
+    "avg_time": 3.988653576374054,
+    "success_rate": 1.0,
+    "failed_count": 0,
+    "error_breakdown": {
+      "extraction_error": 0,
+      "calculation_error": 0,
+      "other_error": 0
+    },
+    "raw_results": [
+      {
+        "problem_id": 0,
+        "predicted": 0,
+        "expected": 3445,
+        "correct": false,
+        "time": 5.988440752029419,
+        "input_tokens": 467,
+        "output_tokens": 0,
+        "error": null
+      },
+      {
+        "problem_id": 1,
+        "predicted": 0,
+        "expected": 3762,
+        "correct": false,
+        "time": 3.6730172634124756,
+        "input_tokens": 469,
+        "output_tokens": 0,
+        "error": null
+      },
+      {
+        "problem_id": 2,
+        "predicted": 0,
+        "expected": 3332,
+        "correct": false,
+        "time": 4.434773206710815,
+        "input_tokens": 470,
+        "output_tokens": 0,
+        "error": null
+      },
+      {
+        "problem_id": 3,
+        "predicted": 0,
+        "expected": 3103,
+        "correct": false,
+        "time": 3.542635917663574,
+        "input_tokens": 470,
+        "output_tokens": 0,
+        "error": null
+      },
+      {
+        "problem_id": 4,
+        "predicted": 0,
+        "expected": 5735,
+        "correct": false,
+        "time": 3.8100593090057373,
+        "input_tokens": 470,
+        "output_tokens": 0,
+        "error": null
+      }
+    ],
+    "raw_results_truncated": true
+  },
+  "l3_react": null,
+  "comparison": {
+    "accuracy_diff": null,
+    "cost_ratio": null,
+    "time_ratio": null
+  }
+}

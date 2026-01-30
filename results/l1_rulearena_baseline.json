@@ -1,0 +1,360 @@
+{
+  "accuracy": 0.8,
+  "correct": 24,
+  "total": 30,
+  "avg_time": 2.1951943159103395,
+  "total_time": 65.85582947731018,
+  "cost": {
+    "total_input_tokens": 12039,
+    "total_output_tokens": 4679,
+    "total_calls": 30,
+    "model": "qwen-72b",
+    "total_cost_usd": 0.01471184
+  },
+  "avg_cost_per_problem": 0.0004903946666666666,
+  "model": "qwen-72b",
+  "complexity_level": 0,
+  "metadata": {
+    "experiment": "l1_rulearena_baseline",
+    "timestamp": "2026-01-30T19:54:18.542296",
+    "rulearena_path": "external/RuleArena"
+  },
+  "sample_results": [
+    {
+      "problem_id": 0,
+      "predicted": 1245,
+      "expected": 1245,
+      "correct": true,
+      "extracted_params": {
+        "customer_class": "Main Cabin",
+        "routine": "U.S.",
+        "direction": 0,
+        "base_price": 180,
+        "bag_list": [
+          {
+            "id": 1,
+            "name": "backpack",
+            "size": [
+              22,
+              13,
+              6
+            ],
+            "weight": 10
+          },
+          {
+            "id": 2,
+            "name": "luggage box",
+            "size": [
+              44,
+              22,
+              20
+            ],
+            "weight": 69
+          },
+          {
+            "id": 3,
+            "name": "luggage box",
+            "size": [
+              34,
+              18,
+              12
+            ],
+            "weight": 51
+          },
+          {
+            "id": 4,
+            "name": "backpack",
+            "size": [
+              38,
+              22,
+              16
+            ],
+            "weight": 84
+          },
+          {
+            "id": 5,
+            "name": "backpack",
+            "size": [
+              38,
+              14,
+              11
+            ],
+            "weight": 90
+          }
+        ]
+      },
+      "time": 2.487426519393921,
+      "input_tokens": 401,
+      "output_tokens": 156
+    },
+    {
+      "problem_id": 1,
+      "predicted": 1166,
+      "expected": 1166,
+      "correct": true,
+      "extracted_params": {
+        "customer_class": "Business",
+        "routine": "U.S.",
+        "direction": 0,
+        "base_price": 186,
+        "bag_list": [
+          {
+            "id": 1,
+            "name": "backpack",
+            "size": [
+              18,
+              13,
+              6
+            ],
+            "weight": 8
+          },
+          {
+            "id": 2,
+            "name": "luggage box",
+            "size": [
+              41,
+              20,
+              16
+            ],
+            "weight": 95
+          },
+          {
+            "id": 3,
+            "name": "backpack",
+            "size": [
+              38,
+              24,
+              18
+            ],
+            "weight": 74
+          },
+          {
+            "id": 4,
+            "name": "backpack",
+            "size": [
+              37,
+              16,
+              10
+            ],
+            "weight": 54
+          },
+          {
+            "id": 5,
+            "name": "backpack",
+            "size": [
+              43,
+              25,
+              20
+            ],
+            "weight": 52
+          }
+        ]
+      },
+      "time": 2.085371971130371,
+      "input_tokens": 399,
+      "output_tokens": 155
+    },
+    {
+      "problem_id": 2,
+      "predicted": 949,
+      "expected": 949,
+      "correct": true,
+      "extracted_params": {
+        "customer_class": "First",
+        "routine": "U.S.",
+        "direction": 0,
+        "base_price": 139,
+        "bag_list": [
+          {
+            "id": 1,
+            "name": "backpack",
+            "size": [
+              20,
+              11,
+              8
+            ],
+            "weight": 6
+          },
+          {
+            "id": 2,
+            "name": "backpack",
+            "size": [
+              35,
+              15,
+              14
+            ],
+            "weight": 51
+          },
+          {
+            "id": 3,
+            "name": "luggage box",
+            "size": [
+              35,
+              22,
+              10
+            ],
+            "weight": 52
+          },
+          {
+            "id": 4,
+            "name": "backpack",
+            "size": [
+              41,
+              19,
+              18
+            ],
+            "weight": 86
+          },
+          {
+            "id": 5,
+            "name": "backpack",
+            "size": [
+              38,
+              14,
+              11
+            ],
+            "weight": 69
+          }
+        ]
+      },
+      "time": 2.3905580043792725,
+      "input_tokens": 401,
+      "output_tokens": 154
+    },
+    {
+      "problem_id": 3,
+      "predicted": 1518,
+      "expected": 1513,
+      "correct": false,
+      "extracted_params": {
+        "customer_class": "Main Cabin",
+        "routine": "U.S.",
+        "direction": 1,
+        "base_price": 283,
+        "bag_list": [
+          {
+            "id": 1,
+            "name": "backpack",
+            "size": [
+              18,
+              12,
+              7
+            ],
+            "weight": 7
+          },
+          {
+            "id": 2,
+            "name": "luggage box",
+            "size": [
+              47,
+              31,
+              23
+            ],
+            "weight": 52
+          },
+          {
+            "id": 3,
+            "name": "luggage box",
+            "size": [
+              35,
+              16,
+              13
+            ],
+            "weight": 98
+          },
+          {
+            "id": 4,
+            "name": "luggage box",
+            "size": [
+              40,
+              29,
+              16
+            ],
+            "weight": 91
+          },
+          {
+            "id": 5,
+            "name": "luggage box",
+            "size": [
+              35,
+              16,
+              14
+            ],
+            "weight": 86
+          }
+        ]
+      },
+      "time": 2.398801326751709,
+      "input_tokens": 403,
+      "output_tokens": 157
+    },
+    {
+      "problem_id": 4,
+      "predicted": 1434,
+      "expected": 1434,
+      "correct": true,
+      "extracted_params": {
+        "customer_class": "Main Plus",
+        "routine": "Colombia",
+        "direction": 0,
+        "base_price": 284,
+        "bag_list": [
+          {
+            "id": 1,
+            "name": "backpack",
+            "size": [
+              19,
+              11,
+              8
+            ],
+            "weight": 7
+          },
+          {
+            "id": 2,
+            "name": "backpack",
+            "size": [
+              39,
+              12,
+              15
+            ],
+            "weight": 85
+          },
+          {
+            "id": 3,
+            "name": "luggage box",
+            "size": [
+              54,
+              33,
+              27
+            ],
+            "weight": 65
+          },
+          {
+            "id": 4,
+            "name": "luggage box",
+            "size": [
+              41,
+              31,
+              17
+            ],
+            "weight": 100
+          },
+          {
+            "id": 5,
+            "name": "luggage box",
+            "size": [
+              42,
+              29,
+              18
+            ],
+            "weight": 94
+          }
+        ]
+      },
+      "time": 2.0361521244049072,
+      "input_tokens": 401,
+      "output_tokens": 158
+    }
+  ],
+  "num_detailed_results": 30
+}
