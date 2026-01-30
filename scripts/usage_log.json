@@ -1,0 +1,33 @@
+{
+  "total_cost": 0.00012538,
+  "calls": [
+    {
+      "timestamp": "2026-01-21T11:59:28.603268",
+      "model": "Qwen-2.5-72B",
+      "prompt_tokens": 36,
+      "completion_tokens": 8,
+      "cost_usd": 3.872e-05
+    },
+    {
+      "timestamp": "2026-01-21T11:53:39.752461",
+      "model": "Qwen-2.5-72B",
+      "prompt_tokens": 36,
+      "completion_tokens": 8,
+      "cost_usd": 3.872e-05
+    },
+    {
+      "timestamp": "2026-01-21T11:37:36.984980",
+      "model": "Llama-3.1-8B",
+      "prompt_tokens": 42,
+      "completion_tokens": 9,
+      "cost_usd": 3.06e-06
+    },
+    {
+      "timestamp": "2026-01-21T11:48:52.015585",
+      "model": "Llama-3.1-70B",
+      "prompt_tokens": 42,
+      "completion_tokens": 9,
+      "cost_usd": 4.488e-05
+    }
+  ]
+}

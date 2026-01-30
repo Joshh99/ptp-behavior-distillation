@@ -38,3 +38,16 @@ python sports_understanding.py
 ```
 
 See `docs/research-log.md` for detailed progress notes.
+
+## Setup
+
+This project uses symlinks to external repositories:
+```bash
+# Clone secretagent (for experimentation)
+git clone https://github.com/Joshh99/secretagent.git secretagent
+
+# Clone BBH dataset
+git clone https://github.com/suzgunmirac/BIG-Bench-Hard.git data/BBH
+```
+
+**Note**: The `secretagent/` directory is a separate fork maintained for upstream contributions. Local experiments use a symlinked copy.

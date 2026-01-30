@@ -1,0 +1,41 @@
+{
+  "training_sentences": [
+    "Santi Cazorla played soccer and scored a touchdown",
+    "The player kicked a goal and played soccer",
+    "Basketball player scored a basket and played basketball",
+    "Michael Jordan played basketball and scored a touchdown",
+    "The athlete made a basket and played soccer",
+    "Tennis player hit an ace and played tennis",
+    "Hockey player scored a goal and played hockey"
+  ],
+  "num_traces": 7,
+  "num_patterns": 1,
+  "most_common_pattern": "ERROR",
+  "pattern_frequency": 7,
+  "generated_code": "def distilled_sports_understanding(sentence: str) -> bool:\n    \"\"\"\n    Auto-generated L0 workflow from behavior distillation.\n    Based on 7 traces from L3 agent.\n    Pattern: ERROR\n    \n    This is a FIXED workflow with 98% target reliability.\n    \"\"\"\n",
+  "validation": {
+    "success": true,
+    "success_rate": 1.0,
+    "avg_calls": 0.0,
+    "results": [
+      {
+        "sentence": "Ronaldo played soccer and kicked a goal",
+        "result": null,
+        "calls": 0,
+        "success": true
+      },
+      {
+        "sentence": "The quarterback threw a touchdown and played football",
+        "result": null,
+        "calls": 0,
+        "success": true
+      },
+      {
+        "sentence": "LeBron James played basketball and scored a basket",
+        "result": null,
+        "calls": 0,
+        "success": true
+      }
+    ]
+  }
+}

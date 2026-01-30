@@ -1,0 +1,228 @@
+{
+  "L0": {
+    "level": "L0",
+    "correct": 5,
+    "total": 5,
+    "total_calls": 20,
+    "total_time": 70.67381644248962,
+    "cases": [
+      {
+        "sentence": "Santi Cazorla played soccer and scored a touchdown",
+        "expected": false,
+        "result": false,
+        "correct": true,
+        "num_calls": 4,
+        "time": 7.7666802406311035,
+        "description": "Inconsistent: soccer vs football"
+      },
+      {
+        "sentence": "The player kicked a goal and played soccer",
+        "expected": true,
+        "result": true,
+        "correct": true,
+        "num_calls": 4,
+        "time": 6.858155250549316,
+        "description": "Consistent: both soccer"
+      },
+      {
+        "sentence": "Basketball player scored a basket and played basketball",
+        "expected": true,
+        "result": true,
+        "correct": true,
+        "num_calls": 4,
+        "time": 7.203790187835693,
+        "description": "Consistent: both basketball"
+      },
+      {
+        "sentence": "Michael Jordan played basketball and scored a touchdown",
+        "expected": false,
+        "result": false,
+        "correct": true,
+        "num_calls": 4,
+        "time": 40.74689030647278,
+        "description": "Inconsistent: basketball vs football"
+      },
+      {
+        "sentence": "The athlete made a basket and played soccer",
+        "expected": false,
+        "result": false,
+        "correct": true,
+        "num_calls": 4,
+        "time": 8.098300457000732,
+        "description": "Inconsistent: basketball vs soccer"
+      }
+    ],
+    "accuracy": 1.0,
+    "avg_calls": 4.0,
+    "avg_time": 14.134763288497926
+  },
+  "L1": {
+    "level": "L1",
+    "correct": 5,
+    "total": 5,
+    "total_calls": 25,
+    "total_time": 82.53041768074036,
+    "cases": [
+      {
+        "sentence": "Santi Cazorla played soccer and scored a touchdown",
+        "expected": false,
+        "result": false,
+        "correct": true,
+        "num_calls": 5,
+        "time": 10.657025814056396,
+        "description": "Inconsistent: soccer vs football"
+      },
+      {
+        "sentence": "The player kicked a goal and played soccer",
+        "expected": true,
+        "result": true,
+        "correct": true,
+        "num_calls": 5,
+        "time": 9.759186267852783,
+        "description": "Consistent: both soccer"
+      },
+      {
+        "sentence": "Basketball player scored a basket and played basketball",
+        "expected": true,
+        "result": true,
+        "correct": true,
+        "num_calls": 5,
+        "time": 40.479048013687134,
+        "description": "Consistent: both basketball"
+      },
+      {
+        "sentence": "Michael Jordan played basketball and scored a touchdown",
+        "expected": false,
+        "result": false,
+        "correct": true,
+        "num_calls": 5,
+        "time": 10.937214612960815,
+        "description": "Inconsistent: basketball vs football"
+      },
+      {
+        "sentence": "The athlete made a basket and played soccer",
+        "expected": false,
+        "result": false,
+        "correct": true,
+        "num_calls": 5,
+        "time": 10.697942972183228,
+        "description": "Inconsistent: basketball vs soccer"
+      }
+    ],
+    "accuracy": 1.0,
+    "avg_calls": 5.0,
+    "avg_time": 16.506083536148072
+  },
+  "L2": {
+    "level": "L2",
+    "correct": 5,
+    "total": 5,
+    "total_calls": 33,
+    "total_time": 155.27066564559937,
+    "cases": [
+      {
+        "sentence": "Santi Cazorla played soccer and scored a touchdown",
+        "expected": false,
+        "result": false,
+        "correct": true,
+        "num_calls": 5,
+        "time": 37.48587131500244,
+        "description": "Inconsistent: soccer vs football"
+      },
+      {
+        "sentence": "The player kicked a goal and played soccer",
+        "expected": true,
+        "result": true,
+        "correct": true,
+        "num_calls": 5,
+        "time": 9.02856707572937,
+        "description": "Consistent: both soccer"
+      },
+      {
+        "sentence": "Basketball player scored a basket and played basketball",
+        "expected": true,
+        "result": true,
+        "correct": true,
+        "num_calls": 5,
+        "time": 9.270892143249512,
+        "description": "Consistent: both basketball"
+      },
+      {
+        "sentence": "Michael Jordan played basketball and scored a touchdown",
+        "expected": false,
+        "result": false,
+        "correct": true,
+        "num_calls": 9,
+        "time": 52.966963052749634,
+        "description": "Inconsistent: basketball vs football"
+      },
+      {
+        "sentence": "The athlete made a basket and played soccer",
+        "expected": false,
+        "result": false,
+        "correct": true,
+        "num_calls": 9,
+        "time": 46.51837205886841,
+        "description": "Inconsistent: basketball vs soccer"
+      }
+    ],
+    "accuracy": 1.0,
+    "avg_calls": 6.6,
+    "avg_time": 31.054133129119872
+  },
+  "L3": {
+    "level": "L3",
+    "correct": 3,
+    "total": 5,
+    "total_calls": 12,
+    "total_time": 21.625916719436646,
+    "cases": [
+      {
+        "sentence": "Santi Cazorla played soccer and scored a touchdown",
+        "expected": false,
+        "result": false,
+        "correct": true,
+        "num_calls": 4,
+        "time": 7.680988073348999,
+        "description": "Inconsistent: soccer vs football"
+      },
+      {
+        "sentence": "The player kicked a goal and played soccer",
+        "expected": true,
+        "result": true,
+        "correct": true,
+        "num_calls": 4,
+        "time": 6.897701740264893,
+        "description": "Consistent: both soccer"
+      },
+      {
+        "sentence": "Basketball player scored a basket and played basketball",
+        "expected": true,
+        "result": true,
+        "correct": true,
+        "num_calls": 4,
+        "time": 7.047226905822754,
+        "description": "Consistent: both basketball"
+      },
+      {
+        "sentence": "Michael Jordan played basketball and scored a touchdown",
+        "expected": false,
+        "result": null,
+        "correct": false,
+        "error": "Too many requests. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service).",
+        "description": "Inconsistent: basketball vs football"
+      },
+      {
+        "sentence": "The athlete made a basket and played soccer",
+        "expected": false,
+        "result": null,
+        "correct": false,
+        "error": "Too many requests. For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service).",
+        "description": "Inconsistent: basketball vs soccer"
+      }
+    ],
+    "accuracy": 0.6,
+    "avg_calls": 2.4,
+    "avg_time": 4.325183343887329
+  }
+}
