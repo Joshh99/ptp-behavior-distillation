@@ -1,24 +1,24 @@
 {
   "metadata": {
-    "timestamp": "2026-01-30T20:08:32.846451",
+    "timestamp": "2026-01-30T20:17:15.213554",
     "config": {
-      "num_problems": 20,
-      "complexity_level": 2,
+      "num_problems": 30,
+      "complexity_level": 0,
       "model": "qwen-72b",
       "max_steps": 10
     }
   },
   "l1_ptool": {
     "name": "L1 (PTool)",
-    "accuracy": 0.0,
-    "correct": 0,
-    "total": 20,
+    "accuracy": 0.8,
+    "correct": 24,
+    "total": 30,
     "avg_llm_calls": 1.0,
-    "total_llm_calls": 20,
-    "cost_per_problem": 0.000413072,
-    "total_cost": 0.00826144,
-    "total_time": 79.77307152748108,
-    "avg_time": 3.988653576374054,
+    "total_llm_calls": 30,
+    "cost_per_problem": 0.0004903946666666666,
+    "total_cost": 0.01471184,
+    "total_time": 67.84090185165405,
+    "avg_time": 2.261363395055135,
     "success_rate": 1.0,
     "failed_count": 0,
     "error_breakdown": {
@@ -29,61 +29,148 @@
     "raw_results": [
       {
         "problem_id": 0,
-        "predicted": 0,
-        "expected": 3445,
-        "correct": false,
-        "time": 5.988440752029419,
-        "input_tokens": 467,
-        "output_tokens": 0,
+        "predicted": 1245,
+        "expected": 1245,
+        "correct": true,
+        "time": 4.34723973274231,
+        "input_tokens": 401,
+        "output_tokens": 156,
         "error": null
       },
       {
         "problem_id": 1,
-        "predicted": 0,
-        "expected": 3762,
-        "correct": false,
-        "time": 3.6730172634124756,
-        "input_tokens": 469,
-        "output_tokens": 0,
+        "predicted": 1166,
+        "expected": 1166,
+        "correct": true,
+        "time": 2.5619311332702637,
+        "input_tokens": 399,
+        "output_tokens": 155,
         "error": null
       },
       {
         "problem_id": 2,
-        "predicted": 0,
-        "expected": 3332,
-        "correct": false,
-        "time": 4.434773206710815,
-        "input_tokens": 470,
-        "output_tokens": 0,
+        "predicted": 949,
+        "expected": 949,
+        "correct": true,
+        "time": 2.055828809738159,
+        "input_tokens": 401,
+        "output_tokens": 154,
         "error": null
       },
       {
         "problem_id": 3,
-        "predicted": 0,
-        "expected": 3103,
+        "predicted": 1518,
+        "expected": 1513,
         "correct": false,
-        "time": 3.542635917663574,
-        "input_tokens": 470,
-        "output_tokens": 0,
+        "time": 2.1656687259674072,
+        "input_tokens": 403,
+        "output_tokens": 157,
         "error": null
       },
       {
         "problem_id": 4,
-        "predicted": 0,
-        "expected": 5735,
-        "correct": false,
-        "time": 3.8100593090057373,
-        "input_tokens": 470,
-        "output_tokens": 0,
+        "predicted": 1434,
+        "expected": 1434,
+        "correct": true,
+        "time": 2.2220470905303955,
+        "input_tokens": 401,
+        "output_tokens": 158,
         "error": null
       }
     ],
     "raw_results_truncated": true
   },
-  "l3_react": null,
+  "l3_react": {
+    "name": "L3 (ReAct)",
+    "accuracy": 0.0,
+    "correct": 0,
+    "total": 30,
+    "avg_llm_calls": 1.0,
+    "total_llm_calls": 30,
+    "cost_per_problem": 0.0007953733333333334,
+    "total_cost": 0.023861200000000003,
+    "total_time": 231.6712465286255,
+    "avg_time": 7.722374884287516,
+    "success_rate": 1.0,
+    "failed_count": 0,
+    "error_breakdown": {
+      "max_steps_exceeded": 0,
+      "timeout": 0,
+      "extraction_error": 0,
+      "other_error": 0
+    },
+    "raw_results": [
+      {
+        "problem_id": 0,
+        "predicted": 888,
+        "expected": 1245,
+        "correct": false,
+        "failed": false,
+        "failure_reason": null,
+        "llm_calls": 1,
+        "time": 6.386478900909424,
+        "input_tokens": 367,
+        "output_tokens": 484,
+        "error": null
+      },
+      {
+        "problem_id": 1,
+        "predicted": 225,
+        "expected": 1166,
+        "correct": false,
+        "failed": false,
+        "failure_reason": null,
+        "llm_calls": 1,
+        "time": 11.122913837432861,
+        "input_tokens": 364,
+        "output_tokens": 631,
+        "error": null
+      },
+      {
+        "problem_id": 2,
+        "predicted": 859,
+        "expected": 949,
+        "correct": false,
+        "failed": false,
+        "failure_reason": null,
+        "llm_calls": 1,
+        "time": 10.012490034103394,
+        "input_tokens": 366,
+        "output_tokens": 538,
+        "error": null
+      },
+      {
+        "problem_id": 3,
+        "predicted": 1653,
+        "expected": 1513,
+        "correct": false,
+        "failed": false,
+        "failure_reason": null,
+        "llm_calls": 1,
+        "time": 8.33004879951477,
+        "input_tokens": 368,
+        "output_tokens": 500,
+        "error": null
+      },
+      {
+        "problem_id": 4,
+        "predicted": 1464,
+        "expected": 1434,
+        "correct": false,
+        "failed": false,
+        "failure_reason": null,
+        "llm_calls": 1,
+        "time": 9.475538492202759,
+        "input_tokens": 367,
+        "output_tokens": 541,
+        "error": null
+      }
+    ],
+    "raw_results_truncated": true
+  },
   "comparison": {
-    "accuracy_diff": null,
-    "cost_ratio": null,
-    "time_ratio": null
+    "accuracy_diff": 0.8,
+    "cost_ratio": 1.6219045340351719,
+    "time_ratio": 3.414919911224279
   }
 }

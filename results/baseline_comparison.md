@@ -1,19 +1,19 @@
 # RuleArena Baseline Comparison
 
-**Generated:** 2026-01-30 20:08:32
+**Generated:** 2026-01-30 20:17:15
 
 ## Results Summary
 
 | Metric | L1 (PTool) | L3 (ReAct) |
 |--------|------------|------------|
-| **Accuracy** | 0.0% | N/A |
-| **Avg LLM Calls** | 1.0 | N/A |
-| **Cost per Problem** | $0.000413 | N/A |
-| **Total Cost** | $0.008261 | N/A |
-| **Total Time** | 79.8s | N/A |
-| **Avg Time/Problem** | 3.99s | N/A |
-| **Success Rate** | 100.0% | N/A |
-| **Correct/Total** | 0/20 | N/A |
+| **Accuracy** | 80.0% | 0.0% |
+| **Avg LLM Calls** | 1.0 | 1.0 |
+| **Cost per Problem** | $0.000490 | $0.000795 |
+| **Total Cost** | $0.014712 | $0.023861 |
+| **Total Time** | 67.8s | 231.7s |
+| **Avg Time/Problem** | 2.26s | 7.72s |
+| **Success Rate** | 100.0% | 100.0% |
+| **Correct/Total** | 24/30 | 0/30 |
 
 ## Error Breakdown
 
@@ -21,8 +21,16 @@
 
 - No errors
 
+### L3 (ReAct) Errors
+
+- No errors
+
 ## Key Insights
 
+- **Cost Efficiency:** L3 costs 1.6x more per problem than L1
+- **Accuracy:** L1 is 80.0pp more accurate than L3
+- **Speed:** L3 takes 3.4x longer per problem than L1
+- **LLM Calls:** L1 uses 1 call/problem, L3 uses 1.0 calls/problem
 
 ---
 
