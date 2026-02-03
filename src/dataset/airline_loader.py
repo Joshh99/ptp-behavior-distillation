@@ -146,7 +146,10 @@ class AirlineLoader:
         try:
             # Import vendored reference implementation
             # This should be in src/dataset/rulearena_reference.py
-            from . import rulearena_reference
+            try:
+                from . import rulearena_reference  # When imported as module
+            except ImportError:
+                import rulearena_reference  # When run as script
             
             self._compute_answer_fn = rulearena_reference.compute_answer
             self._fee_tables = rulearena_reference.load_checking_fee(str(self.repo_path))

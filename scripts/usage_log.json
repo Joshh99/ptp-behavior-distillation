@@ -1,6 +1,1602 @@
 {
-  "total_cost": 0.10634930000000004,
+  "total_cost": 0.41716828000000017,
   "calls": [
+    {
+      "timestamp": "2026-02-02T23:55:02.589416",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 699,
+      "completion_tokens": 229,
+      "cost_usd": 0.003248
+    },
+    {
+      "timestamp": "2026-02-02T23:54:46.150114",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 699,
+      "completion_tokens": 226,
+      "cost_usd": 0.0032375
+    },
+    {
+      "timestamp": "2026-02-02T23:54:31.969908",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 699,
+      "completion_tokens": 228,
+      "cost_usd": 0.0032445
+    },
+    {
+      "timestamp": "2026-02-02T23:54:14.369142",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 698,
+      "completion_tokens": 226,
+      "cost_usd": 0.0032340000000000003
+    },
+    {
+      "timestamp": "2026-02-02T23:53:58.130540",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 696,
+      "completion_tokens": 225,
+      "cost_usd": 0.0032235
+    },
+    {
+      "timestamp": "2026-02-02T23:53:41.751255",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 560,
+      "completion_tokens": 314,
+      "cost_usd": 0.003059
+    },
+    {
+      "timestamp": "2026-02-02T23:53:25.448172",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 560,
+      "completion_tokens": 228,
+      "cost_usd": 0.002758
+    },
+    {
+      "timestamp": "2026-02-02T23:53:09.328959",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 561,
+      "completion_tokens": 313,
+      "cost_usd": 0.003059
+    },
+    {
+      "timestamp": "2026-02-02T23:52:49.987210",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 559,
+      "completion_tokens": 311,
+      "cost_usd": 0.003045
+    },
+    {
+      "timestamp": "2026-02-02T23:52:32.266786",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 557,
+      "completion_tokens": 310,
+      "cost_usd": 0.0030345
+    },
+    {
+      "timestamp": "2026-02-02T23:52:13.927289",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 664,
+      "completion_tokens": 173,
+      "cost_usd": 0.0029295000000000002
+    },
+    {
+      "timestamp": "2026-02-02T23:52:02.718709",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 664,
+      "completion_tokens": 174,
+      "cost_usd": 0.002933
+    },
+    {
+      "timestamp": "2026-02-02T23:51:49.652493",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 663,
+      "completion_tokens": 172,
+      "cost_usd": 0.0029224999999999998
+    },
+    {
+      "timestamp": "2026-02-02T23:51:36.786960",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 664,
+      "completion_tokens": 174,
+      "cost_usd": 0.002933
+    },
+    {
+      "timestamp": "2026-02-02T23:51:22.729215",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 662,
+      "completion_tokens": 171,
+      "cost_usd": 0.0029155
+    },
+    {
+      "timestamp": "2026-02-02T23:51:06.207062",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 526,
+      "completion_tokens": 235,
+      "cost_usd": 0.0026635
+    },
+    {
+      "timestamp": "2026-02-02T23:50:43.011854",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 525,
+      "completion_tokens": 236,
+      "cost_usd": 0.0026635
+    },
+    {
+      "timestamp": "2026-02-02T23:50:27.806883",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 525,
+      "completion_tokens": 234,
+      "cost_usd": 0.0026565
+    },
+    {
+      "timestamp": "2026-02-02T23:50:12.999227",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 525,
+      "completion_tokens": 236,
+      "cost_usd": 0.0026635
+    },
+    {
+      "timestamp": "2026-02-02T23:49:54.710675",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 524,
+      "completion_tokens": 233,
+      "cost_usd": 0.0026495
+    },
+    {
+      "timestamp": "2026-02-02T23:49:38.521021",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 630,
+      "completion_tokens": 120,
+      "cost_usd": 0.0026249999999999997
+    },
+    {
+      "timestamp": "2026-02-02T23:49:28.869777",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 632,
+      "completion_tokens": 120,
+      "cost_usd": 0.002632
+    },
+    {
+      "timestamp": "2026-02-02T23:49:18.636828",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 630,
+      "completion_tokens": 116,
+      "cost_usd": 0.002611
+    },
+    {
+      "timestamp": "2026-02-02T23:49:10.111846",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 628,
+      "completion_tokens": 117,
+      "cost_usd": 0.0026075
+    },
+    {
+      "timestamp": "2026-02-02T23:49:02.249134",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 630,
+      "completion_tokens": 119,
+      "cost_usd": 0.0026215
+    },
+    {
+      "timestamp": "2026-02-02T23:48:49.647061",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 492,
+      "completion_tokens": 160,
+      "cost_usd": 0.002282
+    },
+    {
+      "timestamp": "2026-02-02T23:48:40.656912",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 493,
+      "completion_tokens": 160,
+      "cost_usd": 0.0022854999999999998
+    },
+    {
+      "timestamp": "2026-02-02T23:48:28.048328",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 491,
+      "completion_tokens": 156,
+      "cost_usd": 0.0022645
+    },
+    {
+      "timestamp": "2026-02-02T23:48:17.665922",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 490,
+      "completion_tokens": 157,
+      "cost_usd": 0.0022645
+    },
+    {
+      "timestamp": "2026-02-02T23:48:07.536466",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 492,
+      "completion_tokens": 158,
+      "cost_usd": 0.002275
+    },
+    {
+      "timestamp": "2026-02-02T23:47:54.681762",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 699,
+      "completion_tokens": 229,
+      "cost_usd": 0.00081664
+    },
+    {
+      "timestamp": "2026-02-02T23:47:52.586386",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 699,
+      "completion_tokens": 226,
+      "cost_usd": 0.0008139999999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:47:50.498040",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 699,
+      "completion_tokens": 228,
+      "cost_usd": 0.0008157599999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:47:48.001154",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 698,
+      "completion_tokens": 226,
+      "cost_usd": 0.0008131200000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:47:46.168583",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 696,
+      "completion_tokens": 225,
+      "cost_usd": 0.0008104799999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:47:42.307407",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 560,
+      "completion_tokens": 229,
+      "cost_usd": 0.00069432
+    },
+    {
+      "timestamp": "2026-02-02T23:47:40.108286",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 560,
+      "completion_tokens": 226,
+      "cost_usd": 0.00069168
+    },
+    {
+      "timestamp": "2026-02-02T23:47:38.288770",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 561,
+      "completion_tokens": 228,
+      "cost_usd": 0.00069432
+    },
+    {
+      "timestamp": "2026-02-02T23:47:36.457587",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 559,
+      "completion_tokens": 226,
+      "cost_usd": 0.0006908000000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:47:34.513747",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 557,
+      "completion_tokens": 307,
+      "cost_usd": 0.00076032
+    },
+    {
+      "timestamp": "2026-02-02T23:47:29.880436",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 664,
+      "completion_tokens": 173,
+      "cost_usd": 0.00073656
+    },
+    {
+      "timestamp": "2026-02-02T23:47:26.866116",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 664,
+      "completion_tokens": 174,
+      "cost_usd": 0.00073744
+    },
+    {
+      "timestamp": "2026-02-02T23:47:25.089282",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 663,
+      "completion_tokens": 172,
+      "cost_usd": 0.0007348
+    },
+    {
+      "timestamp": "2026-02-02T23:47:23.437007",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 664,
+      "completion_tokens": 174,
+      "cost_usd": 0.00073744
+    },
+    {
+      "timestamp": "2026-02-02T23:47:21.748868",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 662,
+      "completion_tokens": 171,
+      "cost_usd": 0.0007330400000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:47:18.118625",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 526,
+      "completion_tokens": 233,
+      "cost_usd": 0.00066792
+    },
+    {
+      "timestamp": "2026-02-02T23:47:15.467087",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 525,
+      "completion_tokens": 234,
+      "cost_usd": 0.00066792
+    },
+    {
+      "timestamp": "2026-02-02T23:47:13.298429",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 525,
+      "completion_tokens": 232,
+      "cost_usd": 0.00066616
+    },
+    {
+      "timestamp": "2026-02-02T23:47:11.419139",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 525,
+      "completion_tokens": 234,
+      "cost_usd": 0.00066792
+    },
+    {
+      "timestamp": "2026-02-02T23:47:09.317561",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 524,
+      "completion_tokens": 231,
+      "cost_usd": 0.0006644
+    },
+    {
+      "timestamp": "2026-02-02T23:47:05.059183",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 630,
+      "completion_tokens": 121,
+      "cost_usd": 0.00066088
+    },
+    {
+      "timestamp": "2026-02-02T23:47:03.036550",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 632,
+      "completion_tokens": 120,
+      "cost_usd": 0.00066176
+    },
+    {
+      "timestamp": "2026-02-02T23:47:01.238749",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 630,
+      "completion_tokens": 116,
+      "cost_usd": 0.0006564800000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:46:59.268090",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 628,
+      "completion_tokens": 117,
+      "cost_usd": 0.0006556
+    },
+    {
+      "timestamp": "2026-02-02T23:46:57.987944",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 630,
+      "completion_tokens": 119,
+      "cost_usd": 0.00065912
+    },
+    {
+      "timestamp": "2026-02-02T23:46:54.060593",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 492,
+      "completion_tokens": 159,
+      "cost_usd": 0.00057288
+    },
+    {
+      "timestamp": "2026-02-02T23:46:52.366610",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 493,
+      "completion_tokens": 157,
+      "cost_usd": 0.0005719999999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:46:47.276376",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 491,
+      "completion_tokens": 154,
+      "cost_usd": 0.0005676
+    },
+    {
+      "timestamp": "2026-02-02T23:46:45.657757",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 490,
+      "completion_tokens": 155,
+      "cost_usd": 0.0005675999999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:46:43.356971",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 492,
+      "completion_tokens": 156,
+      "cost_usd": 0.0005702400000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:46:39.178075",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 699,
+      "completion_tokens": 229,
+      "cost_usd": 0.00081664
+    },
+    {
+      "timestamp": "2026-02-02T23:46:35.888939",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 699,
+      "completion_tokens": 226,
+      "cost_usd": 0.0008139999999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:46:32.451316",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 699,
+      "completion_tokens": 228,
+      "cost_usd": 0.0008157599999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:46:28.918224",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 698,
+      "completion_tokens": 226,
+      "cost_usd": 0.0008131200000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:46:25.626859",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 696,
+      "completion_tokens": 225,
+      "cost_usd": 0.0008104799999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:46:20.354284",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 560,
+      "completion_tokens": 235,
+      "cost_usd": 0.0006995999999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:46:17.158865",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 560,
+      "completion_tokens": 232,
+      "cost_usd": 0.0006969599999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:46:13.677865",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 561,
+      "completion_tokens": 234,
+      "cost_usd": 0.0006996000000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:46:10.420912",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 559,
+      "completion_tokens": 232,
+      "cost_usd": 0.0006960800000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:46:07.157720",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 557,
+      "completion_tokens": 230,
+      "cost_usd": 0.00069256
+    },
+    {
+      "timestamp": "2026-02-02T23:46:01.846986",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 664,
+      "completion_tokens": 173,
+      "cost_usd": 0.00073656
+    },
+    {
+      "timestamp": "2026-02-02T23:45:59.047762",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 664,
+      "completion_tokens": 174,
+      "cost_usd": 0.00073744
+    },
+    {
+      "timestamp": "2026-02-02T23:45:56.289437",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 663,
+      "completion_tokens": 172,
+      "cost_usd": 0.0007348
+    },
+    {
+      "timestamp": "2026-02-02T23:45:53.598421",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 664,
+      "completion_tokens": 174,
+      "cost_usd": 0.00073744
+    },
+    {
+      "timestamp": "2026-02-02T23:45:50.809063",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 662,
+      "completion_tokens": 171,
+      "cost_usd": 0.0007330400000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:45:46.149156",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 526,
+      "completion_tokens": 233,
+      "cost_usd": 0.00066792
+    },
+    {
+      "timestamp": "2026-02-02T23:45:43.077454",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 525,
+      "completion_tokens": 234,
+      "cost_usd": 0.00066792
+    },
+    {
+      "timestamp": "2026-02-02T23:45:40.127373",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 525,
+      "completion_tokens": 232,
+      "cost_usd": 0.00066616
+    },
+    {
+      "timestamp": "2026-02-02T23:45:35.782661",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 525,
+      "completion_tokens": 234,
+      "cost_usd": 0.00066792
+    },
+    {
+      "timestamp": "2026-02-02T23:45:32.458497",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 524,
+      "completion_tokens": 231,
+      "cost_usd": 0.0006644
+    },
+    {
+      "timestamp": "2026-02-02T23:45:27.250009",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 630,
+      "completion_tokens": 120,
+      "cost_usd": 0.00066
+    },
+    {
+      "timestamp": "2026-02-02T23:45:25.156192",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 632,
+      "completion_tokens": 120,
+      "cost_usd": 0.00066176
+    },
+    {
+      "timestamp": "2026-02-02T23:45:22.942493",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 630,
+      "completion_tokens": 116,
+      "cost_usd": 0.0006564800000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:45:20.926990",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 628,
+      "completion_tokens": 117,
+      "cost_usd": 0.0006556
+    },
+    {
+      "timestamp": "2026-02-02T23:45:18.886186",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 630,
+      "completion_tokens": 119,
+      "cost_usd": 0.00065912
+    },
+    {
+      "timestamp": "2026-02-02T23:45:14.945680",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 492,
+      "completion_tokens": 158,
+      "cost_usd": 0.000572
+    },
+    {
+      "timestamp": "2026-02-02T23:45:12.686080",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 493,
+      "completion_tokens": 157,
+      "cost_usd": 0.0005719999999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:45:09.177827",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 491,
+      "completion_tokens": 154,
+      "cost_usd": 0.0005676
+    },
+    {
+      "timestamp": "2026-02-02T23:45:06.777446",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 490,
+      "completion_tokens": 155,
+      "cost_usd": 0.0005675999999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:45:04.500835",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 492,
+      "completion_tokens": 156,
+      "cost_usd": 0.0005702400000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:34:56.183280",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 696,
+      "completion_tokens": 225,
+      "cost_usd": 0.0032235
+    },
+    {
+      "timestamp": "2026-02-02T23:34:39.956345",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 557,
+      "completion_tokens": 310,
+      "cost_usd": 0.0030345
+    },
+    {
+      "timestamp": "2026-02-02T23:34:21.276628",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 662,
+      "completion_tokens": 171,
+      "cost_usd": 0.0029155
+    },
+    {
+      "timestamp": "2026-02-02T23:34:08.463377",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 524,
+      "completion_tokens": 233,
+      "cost_usd": 0.0026495
+    },
+    {
+      "timestamp": "2026-02-02T23:33:53.930851",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 630,
+      "completion_tokens": 119,
+      "cost_usd": 0.0026215
+    },
+    {
+      "timestamp": "2026-02-02T23:33:44.228875",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 492,
+      "completion_tokens": 158,
+      "cost_usd": 0.002275
+    },
+    {
+      "timestamp": "2026-02-02T23:33:33.104446",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 696,
+      "completion_tokens": 225,
+      "cost_usd": 0.0008104799999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:33:28.625211",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 557,
+      "completion_tokens": 307,
+      "cost_usd": 0.00076032
+    },
+    {
+      "timestamp": "2026-02-02T23:33:23.889320",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 662,
+      "completion_tokens": 171,
+      "cost_usd": 0.0007330400000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:33:19.342734",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 524,
+      "completion_tokens": 231,
+      "cost_usd": 0.0006644
+    },
+    {
+      "timestamp": "2026-02-02T23:33:15.791907",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 630,
+      "completion_tokens": 119,
+      "cost_usd": 0.00065912
+    },
+    {
+      "timestamp": "2026-02-02T23:33:12.044591",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 492,
+      "completion_tokens": 156,
+      "cost_usd": 0.0005702400000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:33:08.502315",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 696,
+      "completion_tokens": 225,
+      "cost_usd": 0.0008104799999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:33:02.445411",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 557,
+      "completion_tokens": 230,
+      "cost_usd": 0.00069256
+    },
+    {
+      "timestamp": "2026-02-02T23:32:56.871695",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 662,
+      "completion_tokens": 171,
+      "cost_usd": 0.0007330400000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:32:51.726118",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 524,
+      "completion_tokens": 231,
+      "cost_usd": 0.0006644
+    },
+    {
+      "timestamp": "2026-02-02T23:32:45.646698",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 630,
+      "completion_tokens": 119,
+      "cost_usd": 0.00065912
+    },
+    {
+      "timestamp": "2026-02-02T23:32:40.894832",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 492,
+      "completion_tokens": 156,
+      "cost_usd": 0.0005702400000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:17:29.531032",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 699,
+      "completion_tokens": 229,
+      "cost_usd": 0.003248
+    },
+    {
+      "timestamp": "2026-02-02T23:17:14.896797",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 699,
+      "completion_tokens": 226,
+      "cost_usd": 0.0032375
+    },
+    {
+      "timestamp": "2026-02-02T23:16:55.986435",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 699,
+      "completion_tokens": 228,
+      "cost_usd": 0.0032445
+    },
+    {
+      "timestamp": "2026-02-02T23:16:40.061045",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 698,
+      "completion_tokens": 226,
+      "cost_usd": 0.0032340000000000003
+    },
+    {
+      "timestamp": "2026-02-02T23:16:24.828235",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 696,
+      "completion_tokens": 225,
+      "cost_usd": 0.0032235
+    },
+    {
+      "timestamp": "2026-02-02T23:16:07.219337",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 560,
+      "completion_tokens": 314,
+      "cost_usd": 0.003059
+    },
+    {
+      "timestamp": "2026-02-02T23:15:39.661929",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 560,
+      "completion_tokens": 228,
+      "cost_usd": 0.002758
+    },
+    {
+      "timestamp": "2026-02-02T23:15:21.676734",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 561,
+      "completion_tokens": 313,
+      "cost_usd": 0.003059
+    },
+    {
+      "timestamp": "2026-02-02T23:15:02.871314",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 559,
+      "completion_tokens": 311,
+      "cost_usd": 0.003045
+    },
+    {
+      "timestamp": "2026-02-02T23:14:45.078592",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 557,
+      "completion_tokens": 310,
+      "cost_usd": 0.0030345
+    },
+    {
+      "timestamp": "2026-02-02T23:14:21.925730",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 664,
+      "completion_tokens": 173,
+      "cost_usd": 0.0029295000000000002
+    },
+    {
+      "timestamp": "2026-02-02T23:14:09.201787",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 664,
+      "completion_tokens": 174,
+      "cost_usd": 0.002933
+    },
+    {
+      "timestamp": "2026-02-02T23:13:55.977552",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 663,
+      "completion_tokens": 172,
+      "cost_usd": 0.0029224999999999998
+    },
+    {
+      "timestamp": "2026-02-02T23:13:44.649384",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 664,
+      "completion_tokens": 174,
+      "cost_usd": 0.002933
+    },
+    {
+      "timestamp": "2026-02-02T23:13:33.328317",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 662,
+      "completion_tokens": 171,
+      "cost_usd": 0.0029155
+    },
+    {
+      "timestamp": "2026-02-02T23:13:20.467726",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 526,
+      "completion_tokens": 235,
+      "cost_usd": 0.0026635
+    },
+    {
+      "timestamp": "2026-02-02T23:13:05.928648",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 525,
+      "completion_tokens": 236,
+      "cost_usd": 0.0026635
+    },
+    {
+      "timestamp": "2026-02-02T23:12:52.098329",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 525,
+      "completion_tokens": 234,
+      "cost_usd": 0.0026565
+    },
+    {
+      "timestamp": "2026-02-02T23:12:37.476156",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 525,
+      "completion_tokens": 236,
+      "cost_usd": 0.0026635
+    },
+    {
+      "timestamp": "2026-02-02T23:12:21.996163",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 524,
+      "completion_tokens": 233,
+      "cost_usd": 0.0026495
+    },
+    {
+      "timestamp": "2026-02-02T23:12:00.566011",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 630,
+      "completion_tokens": 120,
+      "cost_usd": 0.0026249999999999997
+    },
+    {
+      "timestamp": "2026-02-02T23:11:52.485397",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 632,
+      "completion_tokens": 120,
+      "cost_usd": 0.002632
+    },
+    {
+      "timestamp": "2026-02-02T23:11:42.406285",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 630,
+      "completion_tokens": 116,
+      "cost_usd": 0.002611
+    },
+    {
+      "timestamp": "2026-02-02T23:11:34.588123",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 628,
+      "completion_tokens": 117,
+      "cost_usd": 0.0026075
+    },
+    {
+      "timestamp": "2026-02-02T23:11:26.297484",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 630,
+      "completion_tokens": 119,
+      "cost_usd": 0.0026215
+    },
+    {
+      "timestamp": "2026-02-02T23:11:13.984600",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 492,
+      "completion_tokens": 160,
+      "cost_usd": 0.002282
+    },
+    {
+      "timestamp": "2026-02-02T23:11:04.935687",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 493,
+      "completion_tokens": 160,
+      "cost_usd": 0.0022854999999999998
+    },
+    {
+      "timestamp": "2026-02-02T23:10:54.545436",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 491,
+      "completion_tokens": 156,
+      "cost_usd": 0.0022645
+    },
+    {
+      "timestamp": "2026-02-02T23:10:44.686312",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 490,
+      "completion_tokens": 157,
+      "cost_usd": 0.0022645
+    },
+    {
+      "timestamp": "2026-02-02T23:10:35.229341",
+      "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+      "prompt_tokens": 492,
+      "completion_tokens": 158,
+      "cost_usd": 0.002275
+    },
+    {
+      "timestamp": "2026-02-02T23:10:22.265306",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 699,
+      "completion_tokens": 229,
+      "cost_usd": 0.00081664
+    },
+    {
+      "timestamp": "2026-02-02T23:10:19.345230",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 699,
+      "completion_tokens": 226,
+      "cost_usd": 0.0008139999999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:10:17.675121",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 699,
+      "completion_tokens": 228,
+      "cost_usd": 0.0008157599999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:10:15.875749",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 698,
+      "completion_tokens": 226,
+      "cost_usd": 0.0008131200000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:10:14.028675",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 696,
+      "completion_tokens": 225,
+      "cost_usd": 0.0008104799999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:10:09.727525",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 560,
+      "completion_tokens": 229,
+      "cost_usd": 0.00069432
+    },
+    {
+      "timestamp": "2026-02-02T23:10:07.777372",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 560,
+      "completion_tokens": 309,
+      "cost_usd": 0.00076472
+    },
+    {
+      "timestamp": "2026-02-02T23:10:05.427391",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 561,
+      "completion_tokens": 228,
+      "cost_usd": 0.00069432
+    },
+    {
+      "timestamp": "2026-02-02T23:10:03.438376",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 559,
+      "completion_tokens": 226,
+      "cost_usd": 0.0006908000000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:10:00.847360",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 557,
+      "completion_tokens": 307,
+      "cost_usd": 0.00076032
+    },
+    {
+      "timestamp": "2026-02-02T23:09:56.237002",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 664,
+      "completion_tokens": 173,
+      "cost_usd": 0.00073656
+    },
+    {
+      "timestamp": "2026-02-02T23:09:54.317707",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 664,
+      "completion_tokens": 174,
+      "cost_usd": 0.00073744
+    },
+    {
+      "timestamp": "2026-02-02T23:09:52.547441",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 663,
+      "completion_tokens": 172,
+      "cost_usd": 0.0007348
+    },
+    {
+      "timestamp": "2026-02-02T23:09:50.675796",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 664,
+      "completion_tokens": 174,
+      "cost_usd": 0.00073744
+    },
+    {
+      "timestamp": "2026-02-02T23:09:48.196497",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 662,
+      "completion_tokens": 171,
+      "cost_usd": 0.0007330400000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:09:43.985166",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 526,
+      "completion_tokens": 233,
+      "cost_usd": 0.00066792
+    },
+    {
+      "timestamp": "2026-02-02T23:09:42.276370",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 525,
+      "completion_tokens": 234,
+      "cost_usd": 0.00066792
+    },
+    {
+      "timestamp": "2026-02-02T23:09:39.773788",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 525,
+      "completion_tokens": 232,
+      "cost_usd": 0.00066616
+    },
+    {
+      "timestamp": "2026-02-02T23:09:37.886051",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 525,
+      "completion_tokens": 234,
+      "cost_usd": 0.00066792
+    },
+    {
+      "timestamp": "2026-02-02T23:09:36.344469",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 524,
+      "completion_tokens": 231,
+      "cost_usd": 0.0006644
+    },
+    {
+      "timestamp": "2026-02-02T23:09:32.436943",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 630,
+      "completion_tokens": 121,
+      "cost_usd": 0.00066088
+    },
+    {
+      "timestamp": "2026-02-02T23:09:31.174872",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 632,
+      "completion_tokens": 120,
+      "cost_usd": 0.00066176
+    },
+    {
+      "timestamp": "2026-02-02T23:09:29.814604",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 630,
+      "completion_tokens": 116,
+      "cost_usd": 0.0006564800000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:09:28.364934",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 628,
+      "completion_tokens": 117,
+      "cost_usd": 0.0006556
+    },
+    {
+      "timestamp": "2026-02-02T23:09:27.035661",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 630,
+      "completion_tokens": 119,
+      "cost_usd": 0.00065912
+    },
+    {
+      "timestamp": "2026-02-02T23:09:23.795361",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 492,
+      "completion_tokens": 159,
+      "cost_usd": 0.00057288
+    },
+    {
+      "timestamp": "2026-02-02T23:09:22.466095",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 493,
+      "completion_tokens": 157,
+      "cost_usd": 0.0005719999999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:09:20.635103",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 491,
+      "completion_tokens": 154,
+      "cost_usd": 0.0005676
+    },
+    {
+      "timestamp": "2026-02-02T23:09:18.995124",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 490,
+      "completion_tokens": 155,
+      "cost_usd": 0.0005675999999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:09:17.203805",
+      "model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "prompt_tokens": 492,
+      "completion_tokens": 156,
+      "cost_usd": 0.0005702400000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:09:13.334859",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 699,
+      "completion_tokens": 0,
+      "cost_usd": 0.001398
+    },
+    {
+      "timestamp": "2026-02-02T23:09:12.195301",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 699,
+      "completion_tokens": 0,
+      "cost_usd": 0.001398
+    },
+    {
+      "timestamp": "2026-02-02T23:09:11.083441",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 699,
+      "completion_tokens": 0,
+      "cost_usd": 0.001398
+    },
+    {
+      "timestamp": "2026-02-02T23:09:10.585473",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 698,
+      "completion_tokens": 0,
+      "cost_usd": 0.001396
+    },
+    {
+      "timestamp": "2026-02-02T23:09:10.055057",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 696,
+      "completion_tokens": 0,
+      "cost_usd": 0.001392
+    },
+    {
+      "timestamp": "2026-02-02T23:09:06.974645",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 560,
+      "completion_tokens": 0,
+      "cost_usd": 0.00112
+    },
+    {
+      "timestamp": "2026-02-02T23:09:05.844238",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 560,
+      "completion_tokens": 0,
+      "cost_usd": 0.00112
+    },
+    {
+      "timestamp": "2026-02-02T23:09:05.285080",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 561,
+      "completion_tokens": 0,
+      "cost_usd": 0.001122
+    },
+    {
+      "timestamp": "2026-02-02T23:09:04.774651",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 559,
+      "completion_tokens": 0,
+      "cost_usd": 0.001118
+    },
+    {
+      "timestamp": "2026-02-02T23:09:03.464921",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 557,
+      "completion_tokens": 0,
+      "cost_usd": 0.001114
+    },
+    {
+      "timestamp": "2026-02-02T23:09:00.454092",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 664,
+      "completion_tokens": 0,
+      "cost_usd": 0.001328
+    },
+    {
+      "timestamp": "2026-02-02T23:08:59.237591",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 664,
+      "completion_tokens": 0,
+      "cost_usd": 0.001328
+    },
+    {
+      "timestamp": "2026-02-02T23:08:58.094604",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 663,
+      "completion_tokens": 0,
+      "cost_usd": 0.001326
+    },
+    {
+      "timestamp": "2026-02-02T23:08:56.635585",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 664,
+      "completion_tokens": 0,
+      "cost_usd": 0.001328
+    },
+    {
+      "timestamp": "2026-02-02T23:08:54.294801",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 662,
+      "completion_tokens": 0,
+      "cost_usd": 0.001324
+    },
+    {
+      "timestamp": "2026-02-02T23:08:51.196039",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 526,
+      "completion_tokens": 0,
+      "cost_usd": 0.001052
+    },
+    {
+      "timestamp": "2026-02-02T23:08:50.148008",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 525,
+      "completion_tokens": 0,
+      "cost_usd": 0.00105
+    },
+    {
+      "timestamp": "2026-02-02T23:08:49.055350",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 525,
+      "completion_tokens": 0,
+      "cost_usd": 0.00105
+    },
+    {
+      "timestamp": "2026-02-02T23:08:47.974701",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 525,
+      "completion_tokens": 0,
+      "cost_usd": 0.00105
+    },
+    {
+      "timestamp": "2026-02-02T23:08:47.446441",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 524,
+      "completion_tokens": 0,
+      "cost_usd": 0.001048
+    },
+    {
+      "timestamp": "2026-02-02T23:08:44.295648",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 630,
+      "completion_tokens": 0,
+      "cost_usd": 0.00126
+    },
+    {
+      "timestamp": "2026-02-02T23:08:43.105719",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 632,
+      "completion_tokens": 0,
+      "cost_usd": 0.001264
+    },
+    {
+      "timestamp": "2026-02-02T23:08:42.004312",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 630,
+      "completion_tokens": 0,
+      "cost_usd": 0.00126
+    },
+    {
+      "timestamp": "2026-02-02T23:08:41.465752",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 628,
+      "completion_tokens": 0,
+      "cost_usd": 0.001256
+    },
+    {
+      "timestamp": "2026-02-02T23:08:40.287608",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 630,
+      "completion_tokens": 0,
+      "cost_usd": 0.00126
+    },
+    {
+      "timestamp": "2026-02-02T23:08:37.095292",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 492,
+      "completion_tokens": 0,
+      "cost_usd": 0.000984
+    },
+    {
+      "timestamp": "2026-02-02T23:08:36.007065",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 493,
+      "completion_tokens": 0,
+      "cost_usd": 0.000986
+    },
+    {
+      "timestamp": "2026-02-02T23:08:34.825625",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 491,
+      "completion_tokens": 0,
+      "cost_usd": 0.000982
+    },
+    {
+      "timestamp": "2026-02-02T23:08:33.705017",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 490,
+      "completion_tokens": 0,
+      "cost_usd": 0.00098
+    },
+    {
+      "timestamp": "2026-02-02T23:08:32.632224",
+      "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "prompt_tokens": 492,
+      "completion_tokens": 0,
+      "cost_usd": 0.000984
+    },
+    {
+      "timestamp": "2026-02-02T23:08:29.406274",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 699,
+      "completion_tokens": 229,
+      "cost_usd": 0.00081664
+    },
+    {
+      "timestamp": "2026-02-02T23:08:24.965077",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 699,
+      "completion_tokens": 226,
+      "cost_usd": 0.0008139999999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:08:19.166256",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 699,
+      "completion_tokens": 228,
+      "cost_usd": 0.0008157599999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:08:14.906632",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 698,
+      "completion_tokens": 226,
+      "cost_usd": 0.0008131200000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:08:11.693656",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 696,
+      "completion_tokens": 225,
+      "cost_usd": 0.0008104799999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:07:58.674396",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 560,
+      "completion_tokens": 235,
+      "cost_usd": 0.0006995999999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:07:51.043985",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 560,
+      "completion_tokens": 232,
+      "cost_usd": 0.0006969599999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:07:39.427890",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 561,
+      "completion_tokens": 234,
+      "cost_usd": 0.0006996000000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:07:36.189193",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 559,
+      "completion_tokens": 232,
+      "cost_usd": 0.0006960800000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:07:24.284618",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 557,
+      "completion_tokens": 230,
+      "cost_usd": 0.00069256
+    },
+    {
+      "timestamp": "2026-02-02T23:07:18.864127",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 664,
+      "completion_tokens": 173,
+      "cost_usd": 0.00073656
+    },
+    {
+      "timestamp": "2026-02-02T23:07:13.026442",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 664,
+      "completion_tokens": 174,
+      "cost_usd": 0.00073744
+    },
+    {
+      "timestamp": "2026-02-02T23:07:10.165612",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 663,
+      "completion_tokens": 172,
+      "cost_usd": 0.0007348
+    },
+    {
+      "timestamp": "2026-02-02T23:07:05.124135",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 664,
+      "completion_tokens": 174,
+      "cost_usd": 0.00073744
+    },
+    {
+      "timestamp": "2026-02-02T23:07:01.825089",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 662,
+      "completion_tokens": 171,
+      "cost_usd": 0.0007330400000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:06:54.764927",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 526,
+      "completion_tokens": 233,
+      "cost_usd": 0.00066792
+    },
+    {
+      "timestamp": "2026-02-02T23:06:51.893725",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 525,
+      "completion_tokens": 234,
+      "cost_usd": 0.00066792
+    },
+    {
+      "timestamp": "2026-02-02T23:06:48.276148",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 525,
+      "completion_tokens": 232,
+      "cost_usd": 0.00066616
+    },
+    {
+      "timestamp": "2026-02-02T23:06:43.264097",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 525,
+      "completion_tokens": 234,
+      "cost_usd": 0.00066792
+    },
+    {
+      "timestamp": "2026-02-02T23:06:40.196037",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 524,
+      "completion_tokens": 231,
+      "cost_usd": 0.0006644
+    },
+    {
+      "timestamp": "2026-02-02T23:06:33.004094",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 630,
+      "completion_tokens": 120,
+      "cost_usd": 0.00066
+    },
+    {
+      "timestamp": "2026-02-02T23:06:30.810280",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 632,
+      "completion_tokens": 120,
+      "cost_usd": 0.00066176
+    },
+    {
+      "timestamp": "2026-02-02T23:06:28.625353",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 630,
+      "completion_tokens": 116,
+      "cost_usd": 0.0006564800000000001
+    },
+    {
+      "timestamp": "2026-02-02T23:06:26.436357",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 628,
+      "completion_tokens": 117,
+      "cost_usd": 0.0006556
+    },
+    {
+      "timestamp": "2026-02-02T23:06:24.337977",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 630,
+      "completion_tokens": 119,
+      "cost_usd": 0.00065912
+    },
+    {
+      "timestamp": "2026-02-02T23:06:17.745723",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 492,
+      "completion_tokens": 158,
+      "cost_usd": 0.000572
+    },
+    {
+      "timestamp": "2026-02-02T23:06:11.249625",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 493,
+      "completion_tokens": 157,
+      "cost_usd": 0.0005719999999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:06:07.014060",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 491,
+      "completion_tokens": 154,
+      "cost_usd": 0.0005676
+    },
+    {
+      "timestamp": "2026-02-02T23:05:59.736957",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 490,
+      "completion_tokens": 155,
+      "cost_usd": 0.0005675999999999999
+    },
+    {
+      "timestamp": "2026-02-02T23:05:57.158274",
+      "model": "Qwen/Qwen2.5-72B-Instruct-Turbo",
+      "prompt_tokens": 492,
+      "completion_tokens": 156,
+      "cost_usd": 0.0005702400000000001
+    },
     {
       "timestamp": "2026-01-30T20:17:15.197418",
       "model": "qwen-72b",

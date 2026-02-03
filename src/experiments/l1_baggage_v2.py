@@ -15,6 +15,7 @@ from typing import Dict, Any, Tuple, Optional, List
 from datetime import datetime
 import json
 import os
+import re
 
 # Add project root to path for imports
 import sys
@@ -26,11 +27,54 @@ if str(project_root) not in sys.path:
 # Import new loader
 from src.dataset.airline_loader import AirlineLoader
 
+# Import config for LLM calls
+from src.experiments.config import call_llm, DEFAULT_MODEL
+
+
 # ==============================================================================
-# EXTRACTION PTOOL (UNCHANGED)
+# EXTRACTION PTOOL (IMPLEMENTED)
 # ==============================================================================
 
-def extract_rulearena_params(query: str, model: str = "gpt-4o-mini") -> Tuple[Dict[str, Any], int, int]:
+# Extraction prompt with routing logic
+EXTRACTION_PROMPT = """You are an expert at extracting structured information from airline baggage queries.
+
+Given a passenger scenario, extract the following parameters as a JSON object:
+
+FIELDS:
+- base_price: integer (ticket price in USD)
+- customer_class: string (one of: "Basic Economy", "Main Cabin", "Main Plus", "Premium Economy", "Business", "First")
+- routine: string (destination region - see ROUTING RULES below)
+- direction: integer (0 or 1 - see ROUTING RULES below)
+- bag_list: array of objects, each with:
+  - id: integer (bag number starting from 1)
+  - name: string ("backpack" or "luggage box")
+  - size: array of 3 integers [length, width, height] in inches
+  - weight: integer in lbs
+
+ROUTING RULES:
+1. Identify Origin and Destination cities
+2. Determine if flight is:
+   - Domestic (US -> US): routine="U.S.", direction=0
+   - Outbound (US -> World): routine=<destination_region>, direction=0
+   - Inbound (World -> US): routine=<origin_region>, direction=1
+
+Valid regions: "U.S.", "Puerto Rico", "Canada", "Mexico", "Cuba", "Haiti", "Panama", "Colombia", "Ecuador", "Peru", "South America", "Israel", "Qatar", "Europe", "India", "China", "Japan", "South Korea", "Hong Kong", "Australia", "New Zealand"
+
+US cities include: Orlando, Philadelphia, Charlotte, Phoenix, Las Vegas, Atlanta, Boston, New York, Los Angeles, San Francisco, Miami, etc.
+
+EXAMPLES:
+- "Orlando to Tokyo" -> routine="Japan", direction=0 (US->World)
+- "Paris to Atlanta" -> routine="Europe", direction=1 (World->US)
+- "Phoenix to Charlotte" -> routine="U.S.", direction=0 (US->US)
+
+Query:
+{query}
+
+Respond with ONLY a valid JSON object, no other text.
+"""
+
+
+def extract_rulearena_params(query: str, model: str = DEFAULT_MODEL) -> Tuple[Dict[str, Any], int, int]:
     """
     Extract structured parameters from natural language query using PTP.
     
@@ -39,22 +83,60 @@ def extract_rulearena_params(query: str, model: str = "gpt-4o-mini") -> Tuple[Di
     Returns:
         Tuple of (params_dict, input_tokens, output_tokens)
     """
-    # TODO: Implement your actual extraction logic here
-    # This is a placeholder - replace with your secretagent PTP code
+    prompt = EXTRACTION_PROMPT.format(query=query)
     
-    # Mock response for testing
-    params = {
-        "base_price": 180,
-        "customer_class": "Main Cabin",
-        "routine": "U.S.",
-        "direction": 0,
-        "bag_list": [
-            {"id": 1, "name": "backpack", "size": [22, 13, 6], "weight": 10},
-            {"id": 2, "name": "luggage box", "size": [44, 22, 20], "weight": 69},
-        ]
-    }
+    # Estimate input tokens (rough: ~4 chars per token)
+    input_tokens = len(prompt) // 4
     
-    return params, 100, 50  # Mock token counts
+    try:
+        response = call_llm(prompt, model=model, max_tokens=512)
+        output_tokens = len(response) // 4
+        
+        # Parse JSON from response
+        json_text = response.strip()
+        
+        # Handle markdown code blocks
+        if "```json" in json_text:
+            json_text = json_text.split("```json")[1].split("```")[0]
+        elif "```" in json_text:
+            json_text = json_text.split("```")[1].split("```")[0]
+        
+        # Find JSON object
+        json_match = re.search(r'\{[\s\S]*\}', json_text)
+        if json_match:
+            params = json.loads(json_match.group())
+        else:
+            params = json.loads(json_text)
+        
+        # Post-processing: Sort bag dimensions (L >= W >= H) for consistency
+        for bag in params.get("bag_list", []):
+            if "size" in bag and len(bag["size"]) == 3:
+                bag["size"] = sorted(bag["size"], reverse=True)
+        
+        # Validate required fields
+        defaults = {
+            "base_price": 0,
+            "customer_class": "Main Cabin",
+            "routine": "U.S.",
+            "direction": 0,
+            "bag_list": [],
+        }
+        
+        for key, default_value in defaults.items():
+            if key not in params or params[key] is None:
+                params[key] = default_value
+        
+        return params, input_tokens, output_tokens
+        
+    except Exception as e:
+        print(f"  Warning: LLM extraction failed ({e})")
+        return {
+            "base_price": 0,
+            "customer_class": "Main Cabin",
+            "routine": "U.S.",
+            "direction": 0,
+            "bag_list": [],
+        }, input_tokens, 0
 
 
 # ==============================================================================
@@ -63,7 +145,8 @@ def extract_rulearena_params(query: str, model: str = "gpt-4o-mini") -> Tuple[Di
 
 def baggage_allowance_l1(
     query: str,
-    model: str = "gpt-4o-mini",
+    loader: AirlineLoader,
+    model: str = DEFAULT_MODEL,
     verbose: bool = True,
 ) -> Tuple[Dict[str, Any], int, int]:
     """
@@ -71,13 +154,14 @@ def baggage_allowance_l1(
     
     Architecture:
         1. Extract parameters (1 LLM call via PTool)
-        2. Use extracted params as answer
+        2. Calculate fees (Pure Python using loader's reference implementation)
     
     NOTE: Ground truth is computed separately by the loader using RuleArena's
           reference implementation. Your job is to extract params correctly.
     
     Args:
         query: Natural language query from RuleArena problem
+        loader: AirlineLoader instance for fee calculation
         model: Model to use for extraction
         verbose: Print progress
     
@@ -97,10 +181,36 @@ def baggage_allowance_l1(
         print(f"     Class: {params.get('customer_class')}, Route: {params.get('routine')}")
         print(f"     Direction: {params.get('direction')}, Bags: {len(params.get('bag_list', []))}")
     
+    # Step 2: Calculate fees using loader's reference implementation
+    calc_start = time.time()
+    try:
+        result_tuple = loader._compute_answer_fn(
+            base_price=params['base_price'],
+            direction=params['direction'],
+            routine=params['routine'],
+            customer_class=params['customer_class'],
+            bag_list=params['bag_list'],
+            check_base_tables=loader._fee_tables,
+        )
+        # Unpack tuple (cost, details)
+        total_cost = int(result_tuple[0]) if isinstance(result_tuple, tuple) else int(result_tuple)
+        calc_time = time.time() - calc_start
+        
+        if verbose:
+            print(f"  2. Calculated fees in {calc_time:.3f}s: ${total_cost}")
+    
+    except Exception as e:
+        print(f"  Error in fee calculation: {e}")
+        total_cost = params['base_price']  # Fallback to just base price
+        calc_time = time.time() - calc_start
+    
     result = {
+        "answer": total_cost,
         "extracted_params": params,
         "metrics": {
             "extraction_time": extraction_time,
+            "calculation_time": calc_time,
+            "total_time": extraction_time + calc_time,
             "llm_calls": 1,
             "input_tokens": input_tokens,
             "output_tokens": output_tokens,
@@ -118,7 +228,7 @@ def evaluate_l1_on_airline(
     loader: AirlineLoader,
     complexity_level: int = 0,
     max_problems: Optional[int] = None,
-    model: str = "gpt-4o-mini",
+    model: str = DEFAULT_MODEL,
     verbose: bool = True,
 ) -> Dict[str, Any]:
     """
@@ -167,6 +277,7 @@ def evaluate_l1_on_airline(
         # Run L1 pipeline
         result, input_tokens, output_tokens = baggage_allowance_l1(
             query=query,
+            loader=loader,
             model=model,
             verbose=verbose,
         )
@@ -175,10 +286,8 @@ def evaluate_l1_on_airline(
         total_input_tokens += input_tokens
         total_output_tokens += output_tokens
         
-        # Compute predicted answer from extracted params
-        # TODO: Implement proper fee calculation from params
-        # For now, use a placeholder
-        predicted = 0  # Replace with actual calculation
+        # Get predicted answer
+        predicted = result["answer"]
         
         # Check correctness
         is_correct = predicted == expected
@@ -200,13 +309,21 @@ def evaluate_l1_on_airline(
             "predicted": predicted,
             "correct": is_correct,
             "extraction_time": result["metrics"]["extraction_time"],
+            "calculation_time": result["metrics"]["calculation_time"],
+            "total_time": result["metrics"]["total_time"],
         })
         
-        total_time += result["metrics"]["extraction_time"]
+        total_time += result["metrics"]["total_time"]
     
     # Calculate metrics
     accuracy = correct / len(problems)
     avg_time = total_time / len(problems)
+    
+    # Estimate cost (rough estimate based on token counts)
+    # Using Together.ai pricing for Qwen2.5-72B: $0.88/$0.88 per M tokens
+    total_tokens = total_input_tokens + total_output_tokens
+    estimated_cost = (total_tokens / 1_000_000) * 0.88
+    avg_cost = estimated_cost / len(problems)
     
     # Print summary
     print("\n" + "=" * 80)
@@ -215,7 +332,9 @@ def evaluate_l1_on_airline(
     print(f"Accuracy:        {correct}/{len(problems)} ({accuracy*100:.1f}%)")
     print(f"Avg Time:        {avg_time:.2f}s per problem")
     print(f"Total Time:      {total_time:.2f}s")
-    print(f"Total Tokens:    {total_input_tokens + total_output_tokens}")
+    print(f"Total Tokens:    {total_tokens}")
+    print(f"Estimated Cost:  ${estimated_cost:.6f}")
+    print(f"Avg Cost:        ${avg_cost:.6f} per problem")
     
     return {
         "accuracy": accuracy,
@@ -225,6 +344,9 @@ def evaluate_l1_on_airline(
         "total_time": total_time,
         "total_input_tokens": total_input_tokens,
         "total_output_tokens": total_output_tokens,
+        "total_tokens": total_tokens,
+        "estimated_cost": estimated_cost,
+        "avg_cost_per_problem": avg_cost,
         "model": model,
         "complexity_level": complexity_level,
         "results": results,
@@ -238,7 +360,7 @@ def evaluate_l1_on_airline(
 def run_l1_baseline(
     num_problems: int = 30,
     complexity_level: int = 0,
-    model: str = "gpt-4o-mini",
+    model: str = DEFAULT_MODEL,
     save_results: bool = True,
 ) -> Dict[str, Any]:
     """
@@ -264,6 +386,7 @@ def run_l1_baseline(
     # Initialize loader (uses RuleArena reference implementation)
     try:
         loader = AirlineLoader("external/RuleArena")
+        print("AirlineLoader initialized successfully")
         print()
     except FileNotFoundError as e:
         print(f"Error: {e}")
@@ -298,6 +421,8 @@ def run_l1_baseline(
                 return int(obj)
             elif isinstance(obj, np.floating):
                 return float(obj)
+            elif isinstance(obj, np.bool_): 
+                return bool(obj)
             elif isinstance(obj, np.ndarray):
                 return obj.tolist()
             elif isinstance(obj, dict):
@@ -327,7 +452,7 @@ if __name__ == "__main__":
     results = run_l1_baseline(
         num_problems=10,  # Start small for testing
         complexity_level=0,
-        model="gpt-4o-mini",
+        model=DEFAULT_MODEL,
         save_results=True,
     )
     

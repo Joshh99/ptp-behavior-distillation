@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,211 +8,203 @@
     <style>
         * { box-sizing: border-box; }
         body { 
-            font-family: 'Söhne', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; 
+            font-family: 'Times New Roman', Georgia, serif; 
             margin: 0; 
-            padding: 20px; 
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%);
-            min-height: 100vh;
-            color: #e4e4e7;
+            padding: 40px 20px; 
+            background: #ffffff;
+            color: #000000;
+            line-height: 1.6;
         }
-        .container { max-width: 1400px; margin: 0 auto; }
+        .container { max-width: 1200px; margin: 0 auto; }
         
         header { 
             text-align: center; 
             margin-bottom: 40px; 
-            padding: 40px 20px;
-            background: linear-gradient(180deg, rgba(99, 102, 241, 0.1) 0%, transparent 100%);
-            border-radius: 16px;
-            border: 1px solid rgba(99, 102, 241, 0.2);
+            padding: 20px;
+            border-bottom: 2px solid #000;
         }
         h1 { 
-            color: #fff; 
-            margin-bottom: 8px; 
-            font-size: 2.5em;
-            font-weight: 600;
-            letter-spacing: -0.02em;
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #000;
         }
         .subtitle { 
-            color: #a1a1aa; 
-            font-size: 1.2em; 
-            margin-bottom: 8px;
+            font-size: 1.1em; 
+            margin-bottom: 5px;
+            color: #333;
         }
         .research-question {
-            color: #818cf8;
             font-style: italic;
-            font-size: 1em;
+            font-size: 0.95em;
             max-width: 700px;
-            margin: 20px auto 0;
-            line-height: 1.5;
+            margin: 15px auto 0;
+            color: #555;
         }
-        .timestamp { color: #71717a; font-size: 0.9em; }
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8em;
+        .timestamp { font-size: 0.85em; color: #666; margin-top: 10px; }
+        
+        nav {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        nav a {
+            padding: 10px 20px;
+            background: #f0f0f0;
+            color: #000;
+            text-decoration: none;
+            border: 1px solid #333;
             font-weight: 500;
-            margin: 10px 5px;
+            transition: background 0.2s;
         }
-        .badge-model { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
-        .badge-dataset { background: rgba(251, 146, 60, 0.2); color: #fb923c; border: 1px solid rgba(251, 146, 60, 0.3); }
+        nav a:hover {
+            background: #ddd;
+        }
+        
+        .filter-controls {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+        }
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .filter-group label {
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        select {
+            padding: 8px 12px;
+            border: 1px solid #333;
+            background: white;
+            font-size: 0.95em;
+            cursor: pointer;
+        }
         
         table { 
             width: 100%; 
             border-collapse: collapse; 
-            background: rgba(30, 30, 50, 0.8); 
-            box-shadow: 0 4px 24px rgba(0,0,0,0.3);
-            border-radius: 12px;
-            overflow: hidden;
+            margin: 20px 0;
+            border: 1px solid #000;
         }
         th, td { 
-            padding: 14px 16px; 
+            padding: 12px; 
             text-align: left; 
-            border-bottom: 1px solid rgba(255,255,255,0.05); 
-            font-size: 0.95em; 
+            border: 1px solid #333;
+            font-size: 0.9em;
         }
         th { 
-            background: linear-gradient(180deg, #2d2d5a 0%, #252550 100%);
-            color: #e4e4e7; 
-            font-weight: 600; 
-            text-transform: uppercase;
-            font-size: 0.8em;
-            letter-spacing: 0.05em;
+            background: #f0f0f0;
+            font-weight: bold;
+            text-align: center;
         }
-        tr:hover { background: rgba(99, 102, 241, 0.1); }
+        .metric-header {
+            font-size: 0.85em;
+            text-align: center;
+        }
+        td.numeric {
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .model-cell {
+            font-weight: bold;
+            white-space: nowrap;
+        }
         
         .section { 
-            background: rgba(30, 30, 50, 0.6); 
-            padding: 28px; 
-            border-radius: 16px; 
-            box-shadow: 0 4px 24px rgba(0,0,0,0.2); 
-            margin-bottom: 24px;
-            border: 1px solid rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
+            margin: 40px 0;
+            padding: 20px 0;
         }
         h2 { 
-            color: #fff; 
-            border-bottom: 2px solid #6366f1; 
-            padding-bottom: 12px; 
-            margin-top: 0;
-            font-weight: 600;
-            font-size: 1.4em;
+            font-size: 1.5em;
+            font-weight: bold;
+            border-bottom: 1px solid #000;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
         }
-        h3 { color: #a1a1aa; margin-top: 24px; margin-bottom: 12px; font-weight: 500; }
+        h3 { 
+            font-size: 1.2em; 
+            font-weight: bold;
+            margin: 25px 0 15px 0;
+        }
         
         .summary-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
-            gap: 16px; 
-            margin-bottom: 24px; 
+            gap: 15px; 
+            margin: 20px 0; 
         }
         .summary-card { 
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0.05) 100%);
-            padding: 20px; 
-            border-radius: 12px; 
+            border: 1px solid #333;
+            padding: 15px; 
             text-align: center;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .summary-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.2);
+            background: #f9f9f9;
         }
         .summary-card .value { 
-            font-size: 2.2em; 
-            font-weight: 700; 
-            color: #fff;
-            line-height: 1.2;
+            font-size: 2em; 
+            font-weight: bold;
         }
-        .summary-card .label { color: #a1a1aa; font-size: 0.85em; margin-top: 4px; }
-        .summary-card.highlight { 
-            background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0.05) 100%);
-            border-color: rgba(34, 197, 94, 0.3);
+        .summary-card .label { 
+            font-size: 0.85em; 
+            margin-top: 5px;
+            color: #555;
         }
-        .summary-card.warning { 
-            background: linear-gradient(135deg, rgba(251, 146, 60, 0.2) 0%, rgba(251, 146, 60, 0.05) 100%);
-            border-color: rgba(251, 146, 60, 0.3);
-        }
-        .summary-card.danger { 
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.05) 100%);
-            border-color: rgba(239, 68, 68, 0.3);
-        }
-        
-        .chart-container { height: 400px; margin: 20px 0; }
-        
-        nav { 
-            display: flex; 
-            gap: 10px; 
-            justify-content: center; 
-            margin-bottom: 24px; 
-            flex-wrap: wrap; 
-        }
-        nav a { 
-            padding: 10px 20px; 
-            background: rgba(99, 102, 241, 0.2); 
-            color: #a5b4fc; 
-            text-decoration: none; 
-            border-radius: 8px;
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            transition: all 0.2s;
-            font-weight: 500;
-        }
-        nav a:hover { 
-            background: rgba(99, 102, 241, 0.4); 
-            color: #fff;
-            transform: translateY(-1px);
-        }
-        
-        .winner { color: #4ade80; font-weight: 600; }
-        .loser { color: #f87171; }
         
         .insight-box {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
-            border-left: 4px solid #8b5cf6;
-            padding: 16px 20px;
-            margin: 16px 0;
-            border-radius: 0 8px 8px 0;
+            background: #f5f5f5;
+            border-left: 4px solid #000;
+            padding: 15px 20px;
+            margin: 20px 0;
         }
         .insight-box h4 { 
-            color: #c4b5fd; 
-            margin: 0 0 8px 0; 
-            font-size: 0.9em;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            margin: 0 0 10px 0; 
+            font-size: 1em;
+            font-weight: bold;
         }
-        .insight-box p { margin: 0; color: #e4e4e7; line-height: 1.6; }
+        .insight-box p { 
+            margin: 8px 0;
+        }
         
-        .spectrum-table td, .spectrum-table th { text-align: center; }
-        .spectrum-table .level-tag {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 6px;
-            font-weight: 600;
+        .chart-container {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background: #fafafa;
+        }
+        
+        .note {
             font-size: 0.85em;
+            color: #666;
+            font-style: italic;
+            margin-top: 10px;
         }
-        .level-l0 { background: #1e3a5f; color: #60a5fa; }
-        .level-l1 { background: #166534; color: #4ade80; }
-        .level-l3 { background: #7c2d12; color: #fb923c; }
-        
-        .metric-good { color: #4ade80; }
-        .metric-bad { color: #f87171; }
-        .metric-neutral { color: #a1a1aa; }
-        
-        .comparison-row { display: flex; gap: 20px; margin: 20px 0; }
-        .comparison-col { flex: 1; }
         
         footer {
             text-align: center;
-            padding: 20px;
-            color: #71717a;
+            padding: 30px 20px;
+            margin-top: 60px;
+            border-top: 1px solid #000;
             font-size: 0.85em;
-            margin-top: 40px;
+            color: #555;
         }
-        footer a { color: #818cf8; }
         
-        @media (max-width: 768px) {
-            .comparison-row { flex-direction: column; }
-            h1 { font-size: 1.8em; }
+        .pending-cell {
+            color: #999;
+            font-style: italic;
+        }
+        
+        @media print {
+            body { background: white; }
+            .filter-controls, nav { display: none; }
         }
     </style>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -220,413 +213,458 @@
 <div class="container">
     <header>
         <h1>RuleArena Baseline Results</h1>
-        <p class="subtitle">Behavior Distillation via Program Trace Prompting</p>
-        <div>
-            <span class="badge badge-model">Model: Qwen-72B</span>
-            <span class="badge badge-dataset">Dataset: Airline Baggage Fees</span>
+        <div class="subtitle">Behavior Distillation via Program Trace Prompting</div>
+        <div class="research-question">
+            How do different workflow complexity levels (fixed pipelines to autonomous agents) 
+            trade off reliability, cost, and generality on real-world rule-guided reasoning?
         </div>
-        <p class="research-question">
-            "Can we replace unreliable, expensive autonomous agents (L3) with predictable, cheaper, code-driven workflows (L1) by distilling their behavior?"
-        </p>
-        <p class="timestamp">Generated: January 30, 2026 • 30 Test Instances • Complexity Level 0</p>
+        <div class="timestamp">Generated: February 2, 2026</div>
     </header>
-    
+
     <nav>
         <a href="#summary">Summary</a>
-        <a href="#spectrum">The Spectrum</a>
-        <a href="#comparison">Comparison</a>
-        <a href="#charts">Charts</a>
-        <a href="#insights">Key Insights</a>
+        <a href="#results">Results Table</a>
+        <a href="#visualizations">Visualizations</a>
+        <a href="#findings">Key Findings</a>
+        <a href="#methodology">Methodology</a>
     </nav>
 
-    <div class="section" id="summary">
+    <div class="filter-controls">
+        <div class="filter-group">
+            <label for="task-filter">Task Domain:</label>
+            <select id="task-filter" onchange="filterResults()">
+                <option value="all">All Domains</option>
+                <option value="airline" selected>Airline Baggage</option>
+                <option value="nba">NBA Transactions</option>
+                <option value="tax">Tax Regulations</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="level-filter">Complexity Level:</label>
+            <select id="level-filter" onchange="filterResults()">
+                <option value="all">All Levels</option>
+                <option value="0" selected>Level 0 (Simple)</option>
+                <option value="1">Level 1 (Medium)</option>
+                <option value="2">Level 2 (Complex)</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="model-filter">Model:</label>
+            <select id="model-filter" onchange="filterResults()">
+                <option value="all">All Models</option>
+                <option value="qwen">Qwen2.5-72B</option>
+                <option value="gpt4o">GPT-4o</option>
+                <option value="claude">Claude-3.5-Sonnet</option>
+                <option value="deepseek">DeepSeek-R1</option>
+                <option value="o1">o1-preview</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="summary" class="section">
         <h2>Executive Summary</h2>
         <div class="summary-grid">
-            <div class="summary-card highlight">
+            <div class="summary-card">
+                <div class="value">30</div>
+                <div class="label">Problems Tested</div>
+            </div>
+            <div class="summary-card">
+                <div class="value">3</div>
+                <div class="label">Task Domains</div>
+            </div>
+            <div class="summary-card">
+                <div class="value">2</div>
+                <div class="label">Approaches (L1, L3)</div>
+            </div>
+            <div class="summary-card">
+                <div class="value">5</div>
+                <div class="label">Models Planned</div>
+            </div>
+            <div class="summary-card">
                 <div class="value">80%</div>
-                <div class="label">L1 (PTool) Accuracy</div>
+                <div class="label">Best Accuracy (L1)</div>
             </div>
-            <div class="summary-card danger">
-                <div class="value">0%</div>
-                <div class="label">L3 (ReAct) Accuracy</div>
-            </div>
-            <div class="summary-card">
-                <div class="value">1.6×</div>
-                <div class="label">L3 Cost Overhead</div>
-            </div>
-            <div class="summary-card">
-                <div class="value">3.4×</div>
-                <div class="label">L3 Time Overhead</div>
-            </div>
-            <div class="summary-card highlight">
-                <div class="value">$0.015</div>
-                <div class="label">L1 Total Cost</div>
-            </div>
-            <div class="summary-card warning">
-                <div class="value">$0.024</div>
-                <div class="label">L3 Total Cost</div>
-            </div>
-        </div>
-        
-        <div class="insight-box">
-            <h4>Bottom Line</h4>
-            <p>The L1 PTool approach achieves <strong>80% accuracy</strong> while the L3 ReAct agent achieves <strong>0% accuracy</strong> on the airline baggage fee calculation task. L1 is not only more accurate but also <strong>1.6× cheaper</strong> and <strong>3.4× faster</strong>. This provides strong early evidence supporting the behavior distillation hypothesis.</p>
         </div>
     </div>
 
-    <div class="section" id="spectrum">
-        <h2>The Reliability/Autonomy Spectrum</h2>
-        <p style="color: #a1a1aa; margin-bottom: 20px;">
-            This research investigates the trade-off between control and autonomy in LLM-powered systems.
-        </p>
-        <table class="spectrum-table">
+    <div id="results" class="section">
+        <h2>Results by Model and Approach</h2>
+        
+        <p><strong>Table Design Rationale:</strong> Metrics are organized as columns for easy cross-model comparison. Core metrics (Accuracy, Cost, Latency) are always shown as they're measurable in every experiment. RuleArena-specific metrics (Recall, Precision, AC) appear only when available, as they require detailed rule-application tracking that may not be implemented for all approaches yet.</p>
+        
+        <table id="results-table">
             <thead>
                 <tr>
-                    <th>Level</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Target Reliability</th>
-                    <th>Cost Profile</th>
+                    <th rowspan="2">Model + Approach</th>
+                    <th colspan="3" class="metric-header">Core Metrics</th>
+                    <th colspan="3" class="metric-header">RuleArena Metrics (Problem-wise)</th>
+                </tr>
+                <tr>
+                    <th class="metric-header">Accuracy<br>Acc(%)</th>
+                    <th class="metric-header">Cost<br>(USD)</th>
+                    <th class="metric-header">Time<br>(sec)</th>
+                    <th class="metric-header">Recall<br>R(t)</th>
+                    <th class="metric-header">Precision<br>P(t)</th>
+                    <th class="metric-header">App.Correct<br>AC(t)</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><span class="level-tag level-l0">L0</span></td>
-                    <td><strong>Pure Code</strong></td>
-                    <td>Deterministic Python logic only</td>
-                    <td class="metric-good">100%</td>
-                    <td class="metric-good">$0 (Free)</td>
+                <!-- Qwen2.5-72B - Airline -->
+                <tr data-task="airline" data-level="0" data-model="qwen">
+                    <td class="model-cell">Qwen2.5-72B + L1</td>
+                    <td class="numeric">80.0</td>
+                    <td class="numeric">$0.015</td>
+                    <td class="numeric">67.8</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
                 </tr>
-                <tr style="background: rgba(34, 197, 94, 0.1);">
-                    <td><span class="level-tag level-l1">L1</span></td>
-                    <td><strong>PTool</strong></td>
-                    <td>LLM extracts parameters → Python calculates</td>
-                    <td class="metric-good">95%+ target</td>
-                    <td class="metric-good">Low (~$0.0005/call)</td>
+                <tr data-task="airline" data-level="0" data-model="qwen">
+                    <td class="model-cell">Qwen2.5-72B + L3</td>
+                    <td class="numeric">0.0</td>
+                    <td class="numeric">$0.024</td>
+                    <td class="numeric">231.7</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
                 </tr>
-                <tr>
-                    <td><span class="level-tag level-l3">L3</span></td>
-                    <td><strong>ReAct Agent</strong></td>
-                    <td>Autonomous reasoning loop with tools</td>
-                    <td class="metric-bad">60-75% typical</td>
-                    <td class="metric-bad">High (~$0.0008/call)</td>
+                
+                <!-- GPT-4o - Airline -->
+                <tr data-task="airline" data-level="0" data-model="gpt4o">
+                    <td class="model-cell">GPT-4o + L1</td>
+                    <td class="numeric pending-cell">pending</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                </tr>
+                <tr data-task="airline" data-level="0" data-model="gpt4o">
+                    <td class="model-cell">GPT-4o + L3</td>
+                    <td class="numeric pending-cell">pending</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                </tr>
+                
+                <!-- Claude-3.5-Sonnet - Airline -->
+                <tr data-task="airline" data-level="0" data-model="claude">
+                    <td class="model-cell">Claude-3.5-Sonnet + L1</td>
+                    <td class="numeric pending-cell">pending</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                </tr>
+                <tr data-task="airline" data-level="0" data-model="claude">
+                    <td class="model-cell">Claude-3.5-Sonnet + L3</td>
+                    <td class="numeric pending-cell">pending</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                </tr>
+                
+                <!-- DeepSeek-R1 - Airline -->
+                <tr data-task="airline" data-level="0" data-model="deepseek">
+                    <td class="model-cell">DeepSeek-R1 + L1</td>
+                    <td class="numeric pending-cell">pending</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                </tr>
+                <tr data-task="airline" data-level="0" data-model="deepseek">
+                    <td class="model-cell">DeepSeek-R1 + L3</td>
+                    <td class="numeric pending-cell">pending</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                </tr>
+                
+                <!-- o1-preview - Airline -->
+                <tr data-task="airline" data-level="0" data-model="o1">
+                    <td class="model-cell">o1-preview + L1</td>
+                    <td class="numeric pending-cell">pending</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                </tr>
+                <tr data-task="airline" data-level="0" data-model="o1">
+                    <td class="model-cell">o1-preview + L3</td>
+                    <td class="numeric pending-cell">pending</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                </tr>
+                
+                <!-- NBA - All pending -->
+                <tr data-task="nba" data-level="0" data-model="qwen">
+                    <td class="model-cell">Qwen2.5-72B + L1 (NBA)</td>
+                    <td class="numeric pending-cell">pending</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                </tr>
+                
+                <!-- Tax - All pending -->
+                <tr data-task="tax" data-level="0" data-model="qwen">
+                    <td class="model-cell">Qwen2.5-72B + L1 (Tax)</td>
+                    <td class="numeric pending-cell">pending</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
+                    <td class="numeric pending-cell">—</td>
                 </tr>
             </tbody>
         </table>
         
-        <div class="insight-box" style="margin-top: 20px;">
-            <h4>The Core Idea</h4>
-            <p>
-                <strong>L1 (PTool)</strong> keeps Python in control of the workflow while using LLMs only for understanding natural language inputs. This makes the system predictable and testable.
-                <br><br>
-                <strong>L3 (ReAct)</strong> gives the LLM full autonomy to reason and call tools. While flexible, it introduces unpredictability and higher costs.
-            </p>
+        <div class="note">
+            <strong>Note on RuleArena Metrics:</strong> Recall R(t), Precision P(t), and Application Correctness AC(t) 
+            require detailed rule-application tracking. These metrics will be populated as experiments with structured 
+            trace analysis are completed. Currently focusing on end-to-end accuracy as the primary signal.
         </div>
     </div>
 
-    <div class="section" id="comparison">
-        <h2>Detailed Comparison</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Metric</th>
-                    <th>L1 (PTool)</th>
-                    <th>L3 (ReAct)</th>
-                    <th>Winner</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>Accuracy</strong></td>
-                    <td class="winner">80.0%</td>
-                    <td class="loser">0.0%</td>
-                    <td class="winner">L1 (+80pp)</td>
-                </tr>
-                <tr>
-                    <td><strong>Correct / Total</strong></td>
-                    <td class="winner">24 / 30</td>
-                    <td class="loser">0 / 30</td>
-                    <td class="winner">L1</td>
-                </tr>
-                <tr>
-                    <td><strong>Avg LLM Calls</strong></td>
-                    <td>1.0</td>
-                    <td>1.0</td>
-                    <td class="metric-neutral">Tie</td>
-                </tr>
-                <tr>
-                    <td><strong>Cost per Problem</strong></td>
-                    <td class="winner">$0.000490</td>
-                    <td class="loser">$0.000795</td>
-                    <td class="winner">L1 (1.6× cheaper)</td>
-                </tr>
-                <tr>
-                    <td><strong>Total Cost</strong></td>
-                    <td class="winner">$0.0147</td>
-                    <td class="loser">$0.0239</td>
-                    <td class="winner">L1</td>
-                </tr>
-                <tr>
-                    <td><strong>Total Time</strong></td>
-                    <td class="winner">67.8s</td>
-                    <td class="loser">231.7s</td>
-                    <td class="winner">L1 (3.4× faster)</td>
-                </tr>
-                <tr>
-                    <td><strong>Avg Time / Problem</strong></td>
-                    <td class="winner">2.26s</td>
-                    <td class="loser">7.72s</td>
-                    <td class="winner">L1</td>
-                </tr>
-                <tr>
-                    <td><strong>Success Rate</strong></td>
-                    <td>100%</td>
-                    <td>100%</td>
-                    <td class="metric-neutral">Tie (no crashes)</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="section" id="charts">
+    <div id="visualizations" class="section">
         <h2>Visualizations</h2>
         
-        <div class="comparison-row">
-            <div class="comparison-col">
-                <div id="accuracy-chart" class="chart-container"></div>
-            </div>
-            <div class="comparison-col">
-                <div id="cost-chart" class="chart-container"></div>
-            </div>
+        <div class="chart-container">
+            <div id="accuracy-chart"></div>
         </div>
         
-        <div id="time-chart" class="chart-container"></div>
+        <div class="chart-container">
+            <div id="cost-chart"></div>
+        </div>
         
-        <div id="efficiency-chart" class="chart-container"></div>
+        <div class="chart-container">
+            <div id="time-chart"></div>
+        </div>
+        
+        <div class="chart-container">
+            <div id="efficiency-chart"></div>
+        </div>
     </div>
 
-    <div class="section" id="insights">
-        <h2>Key Insights</h2>
+    <div id="findings" class="section">
+        <h2>Key Findings</h2>
         
         <div class="insight-box">
-            <h4>Why L3 Failed Completely</h4>
+            <h4>L1 Structured Extraction Outperforms L3 Autonomous Reasoning</h4>
             <p>
-                The L3 ReAct agent achieved <strong>0% accuracy</strong> because it lacks access to the actual fee tables. It attempts to reason about baggage fees from general knowledge, producing plausible-looking but incorrect answers. Without the ability to look up specific airline fees for bag sizes, weights, and customer classes, autonomous reasoning is futile for this task.
+                On RuleArena Airline Level 0, L1 achieves <strong>80% accuracy</strong> while L3 achieves <strong>0%</strong>. 
+                L1 is also <strong>1.6× cheaper</strong> ($0.015 vs $0.024) and <strong>3.4× faster</strong> (68s vs 232s). 
+                This supports the distillation hypothesis: decomposing into extraction + deterministic calculation yields 
+                more reliable results than end-to-end LLM reasoning. The 20% L1 errors are extraction failures—debuggable 
+                and potentially fixable with better prompting.
             </p>
         </div>
-        
-        <div class="insight-box">
-            <h4>Why L1 Works (and Where It Fails)</h4>
-            <p>
-                L1 achieves <strong>80% accuracy</strong> by:
-                <br>• Using the LLM only to extract structured parameters (bag dimensions, weights, customer class, route)
-                <br>• Delegating all fee calculations to deterministic Python code with access to actual fee tables
-                <br><br>
-                The <strong>20% errors</strong> come from extraction failures—the LLM sometimes misparses complex multi-bag scenarios or unusual phrasings.
-            </p>
-        </div>
-        
-        <div class="insight-box">
-            <h4>Implications for Distillation</h4>
-            <p>
-                These results strongly support the distillation hypothesis:
-                <br>• For structured domains with clear rules, L1 dramatically outperforms L3
-                <br>• The cost savings (1.6×) and speed improvements (3.4×) compound at scale
-                <br>• Remaining L1 errors are <em>debuggable</em>—we can inspect the extracted parameters and fix specific patterns
-            </p>
-        </div>
-        
-        <h3>Error Analysis</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Error Type</th>
-                    <th>L1 Count</th>
-                    <th>L3 Count</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Extraction Error</td>
-                    <td>0</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                    <td>Calculation Error</td>
-                    <td>0</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                    <td>Max Steps Exceeded</td>
-                    <td>N/A</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                    <td>Timeout</td>
-                    <td>0</td>
-                    <td>0</td>
-                </tr>
-                <tr>
-                    <td><strong>Wrong Answer</strong></td>
-                    <td>6</td>
-                    <td>30</td>
-                </tr>
-            </tbody>
-        </table>
     </div>
 
-    <div class="section">
+    <div id="methodology" class="section">
         <h2>Methodology</h2>
         <h3>Experimental Setup</h3>
-        <ul style="color: #a1a1aa; line-height: 1.8;">
-            <li><strong>Dataset:</strong> RuleArena Airline Baggage Fees (external/RuleArena)</li>
-            <li><strong>Complexity Level:</strong> 0 (simplest tier)</li>
-            <li><strong>Sample Size:</strong> 30 problems</li>
-            <li><strong>Model:</strong> Qwen/Qwen2.5-72B-Instruct-Turbo via Together.ai</li>
-            <li><strong>L1 Approach:</strong> LLM extracts parameters → Python fee calculation with actual CSV tables</li>
-            <li><strong>L3 Approach:</strong> ReAct agent with Think/Act/Observe loop, single LLM call per problem</li>
+        <ul>
+            <li><strong>Dataset:</strong> RuleArena (3 domains)
+                <ul>
+                    <li>Airline Baggage Fees (10 rules, 300 problems) — <em>in progress</em></li>
+                    <li>NBA Transactions (54 rules, 216 problems) — <em>planned</em></li>
+                    <li>Tax Regulations (31 rules, 300 problems) — <em>planned</em></li>
+                </ul>
+            </li>
+            <li><strong>Complexity Levels:</strong> 0 (simple), 1 (medium), 2 (complex)</li>
+            <li><strong>Sample Size:</strong> 30 problems per configuration</li>
+            <li><strong>Models:</strong> 
+                <ul>
+                    <li>Qwen2.5-72B-Instruct-Turbo (Together.ai) — <em>Airline L0 completed</em></li>
+                    <li>GPT-4o (OpenAI) — <em>planned</em></li>
+                    <li>Claude-3.5-Sonnet (Anthropic) — <em>planned</em></li>
+                    <li>DeepSeek-R1 (Together.ai) — <em>planned</em></li>
+                    <li>o1-preview (OpenAI) — <em>planned</em></li>
+                </ul>
+            </li>
+            <li><strong>L1 Approach:</strong> LLM extracts structured parameters → Python calculates using ground-truth rule tables</li>
+            <li><strong>L3 Approach:</strong> ReAct agent with Think/Act/Observe loop (currently without tool access)</li>
         </ul>
         
         <h3>Next Steps</h3>
-        <ol style="color: #a1a1aa; line-height: 1.8;">
-            <li>Test on higher complexity levels (1, 2) with more bags</li>
-            <li>Implement tool access for L3 to enable fair comparison</li>
-            <li>Collect execution traces for trace pattern analysis</li>
-            <li>Attempt automatic distillation from L3 traces to L1 workflows</li>
+        <ol>
+            <li>Implement tool-enabled L3 agent with access to rule table lookups</li>
+            <li>Complete Airline experiments across all models and complexity levels</li>
+            <li>Extend to NBA and Tax domains</li>
+            <li>Implement rule-application tracking to populate R(t), P(t), AC(t) metrics</li>
+            <li>Collect detailed execution traces for behavior distillation analysis</li>
         </ol>
     </div>
     
     <footer>
         <p>
             <strong>Behavior Distillation Research Project</strong><br>
-            Independent Study with Prof. William Cohen (CMU / Google DeepMind)<br>
+            Independent Study with Prof. William Cohen (CMU Machine Learning / Google DeepMind)<br>
+            Student: Joshua Wisdom Momo | Spring 2026<br>
             Report generated by <code>scripts/run_rulearena_baselines.py</code>
         </p>
     </footer>
 </div>
 
 <script>
-    // Color palette
-    const colors = {
-        l1: '#4ade80',
-        l3: '#fb923c',
-        l1Light: 'rgba(74, 222, 128, 0.3)',
-        l3Light: 'rgba(251, 146, 60, 0.3)',
-        bg: '#1e1e32',
-        grid: 'rgba(255,255,255,0.1)',
-        text: '#a1a1aa'
-    };
+    function filterResults() {
+        const taskFilter = document.getElementById('task-filter').value;
+        const levelFilter = document.getElementById('level-filter').value;
+        const modelFilter = document.getElementById('model-filter').value;
+        const rows = document.querySelectorAll('#results-table tbody tr');
+        
+        rows.forEach(row => {
+            const rowTask = row.getAttribute('data-task');
+            const rowLevel = row.getAttribute('data-level');
+            const rowModel = row.getAttribute('data-model');
+            
+            let showRow = true;
+            
+            if (taskFilter !== 'all' && rowTask !== taskFilter) {
+                showRow = false;
+            }
+            
+            if (levelFilter !== 'all' && rowLevel !== levelFilter) {
+                showRow = false;
+            }
+            
+            if (modelFilter !== 'all' && rowModel !== modelFilter) {
+                showRow = false;
+            }
+            
+            row.style.display = showRow ? '' : 'none';
+        });
+        
+        updateCharts();
+    }
     
-    const layout = {
-        paper_bgcolor: 'transparent',
-        plot_bgcolor: 'transparent',
-        font: { color: colors.text, family: 'Söhne, Segoe UI, sans-serif' },
-        xaxis: { gridcolor: colors.grid, zerolinecolor: colors.grid },
-        yaxis: { gridcolor: colors.grid, zerolinecolor: colors.grid },
-        margin: { t: 50, b: 50, l: 60, r: 30 }
-    };
+    function updateCharts() {
+        const colors = {
+            l1: '#2563eb',
+            l3: '#dc2626',
+            grid: '#e5e5e5',
+            text: '#000000'
+        };
+        
+        const layout = {
+            paper_bgcolor: '#fafafa',
+            plot_bgcolor: '#fafafa',
+            font: { color: colors.text, family: 'Times New Roman, serif', size: 12 },
+            xaxis: { gridcolor: colors.grid, zerolinecolor: colors.grid },
+            yaxis: { gridcolor: colors.grid, zerolinecolor: colors.grid },
+            margin: { t: 50, b: 50, l: 60, r: 30 }
+        };
+        
+        // Accuracy Chart
+        Plotly.newPlot('accuracy-chart', [{
+            x: ['L1 (Structured)', 'L3 (ReAct)'],
+            y: [80, 0],
+            type: 'bar',
+            marker: { 
+                color: [colors.l1, colors.l3],
+                line: { color: '#000', width: 1 }
+            },
+            text: ['80%', '0%'],
+            textposition: 'outside',
+            textfont: { color: '#000', size: 14 }
+        }], {
+            ...layout,
+            title: { text: 'Accuracy Comparison', font: { size: 16, color: '#000' } },
+            yaxis: { ...layout.yaxis, title: 'Accuracy (%)', range: [0, 100] },
+            showlegend: false,
+            height: 350
+        });
+        
+        // Cost Chart
+        Plotly.newPlot('cost-chart', [{
+            x: ['L1 (Structured)', 'L3 (ReAct)'],
+            y: [0.0147, 0.0239],
+            type: 'bar',
+            marker: { 
+                color: [colors.l1, colors.l3],
+                line: { color: '#000', width: 1 }
+            },
+            text: ['$0.015', '$0.024'],
+            textposition: 'outside',
+            textfont: { color: '#000', size: 14 }
+        }], {
+            ...layout,
+            title: { text: 'Total Cost Comparison', font: { size: 16, color: '#000' } },
+            yaxis: { ...layout.yaxis, title: 'Cost (USD)', range: [0, 0.03] },
+            showlegend: false,
+            height: 350
+        });
+        
+        // Time Chart
+        Plotly.newPlot('time-chart', [{
+            x: ['L1 (Structured)', 'L3 (ReAct)'],
+            y: [67.8, 231.7],
+            type: 'bar',
+            marker: { 
+                color: [colors.l1, colors.l3],
+                line: { color: '#000', width: 1 }
+            },
+            text: ['67.8s', '231.7s'],
+            textposition: 'outside',
+            textfont: { color: '#000', size: 14 }
+        }], {
+            ...layout,
+            title: { text: 'Total Execution Time', font: { size: 16, color: '#000' } },
+            yaxis: { ...layout.yaxis, title: 'Time (seconds)', range: [0, 280] },
+            showlegend: false,
+            height: 350
+        });
+        
+        // Efficiency Scatter
+        Plotly.newPlot('efficiency-chart', [{
+            x: [0.0147],
+            y: [80],
+            mode: 'markers+text',
+            type: 'scatter',
+            name: 'L1',
+            marker: { size: 20, color: colors.l1, symbol: 'circle', line: { color: '#000', width: 1 } },
+            text: ['L1'],
+            textposition: 'top center',
+            textfont: { color: colors.l1, size: 12 }
+        }, {
+            x: [0.0239],
+            y: [0],
+            mode: 'markers+text',
+            type: 'scatter',
+            name: 'L3',
+            marker: { size: 20, color: colors.l3, symbol: 'diamond', line: { color: '#000', width: 1 } },
+            text: ['L3'],
+            textposition: 'top center',
+            textfont: { color: colors.l3, size: 12 }
+        }], {
+            ...layout,
+            title: { text: 'Cost vs Accuracy (Efficiency Frontier)', font: { size: 16, color: '#000' } },
+            xaxis: { ...layout.xaxis, title: 'Total Cost (USD)' },
+            yaxis: { ...layout.yaxis, title: 'Accuracy (%)', range: [-5, 100] },
+            showlegend: true,
+            legend: { orientation: 'h', y: 1.1, x: 0.5, xanchor: 'center' },
+            height: 400
+        });
+    }
     
-    // Accuracy Chart
-    Plotly.newPlot('accuracy-chart', [{
-        x: ['L1 (PTool)', 'L3 (ReAct)'],
-        y: [80, 0],
-        type: 'bar',
-        marker: { 
-            color: [colors.l1, colors.l3],
-            line: { color: [colors.l1, colors.l3], width: 2 }
-        },
-        text: ['80%', '0%'],
-        textposition: 'outside',
-        textfont: { color: '#fff', size: 16, family: 'Söhne' }
-    }], {
-        ...layout,
-        title: { text: 'Accuracy Comparison', font: { size: 18, color: '#fff' } },
-        yaxis: { ...layout.yaxis, title: 'Accuracy (%)', range: [0, 100] },
-        showlegend: false
-    });
-    
-    // Cost Chart
-    Plotly.newPlot('cost-chart', [{
-        x: ['L1 (PTool)', 'L3 (ReAct)'],
-        y: [0.0147, 0.0239],
-        type: 'bar',
-        marker: { 
-            color: [colors.l1, colors.l3],
-            line: { color: [colors.l1, colors.l3], width: 2 }
-        },
-        text: ['$0.015', '$0.024'],
-        textposition: 'outside',
-        textfont: { color: '#fff', size: 16, family: 'Söhne' }
-    }], {
-        ...layout,
-        title: { text: 'Total Cost Comparison', font: { size: 18, color: '#fff' } },
-        yaxis: { ...layout.yaxis, title: 'Cost (USD)', range: [0, 0.03] },
-        showlegend: false
-    });
-    
-    // Time Chart
-    Plotly.newPlot('time-chart', [{
-        x: ['L1 (PTool)', 'L3 (ReAct)'],
-        y: [67.8, 231.7],
-        type: 'bar',
-        marker: { 
-            color: [colors.l1, colors.l3],
-            line: { color: [colors.l1, colors.l3], width: 2 }
-        },
-        text: ['67.8s', '231.7s'],
-        textposition: 'outside',
-        textfont: { color: '#fff', size: 16, family: 'Söhne' }
-    }], {
-        ...layout,
-        title: { text: 'Total Execution Time', font: { size: 18, color: '#fff' } },
-        yaxis: { ...layout.yaxis, title: 'Time (seconds)', range: [0, 280] },
-        showlegend: false,
-        height: 350
-    });
-    
-    // Efficiency Scatter (Cost vs Accuracy)
-    Plotly.newPlot('efficiency-chart', [{
-        x: [0.0147],
-        y: [80],
-        mode: 'markers+text',
-        type: 'scatter',
-        name: 'L1 (PTool)',
-        marker: { size: 30, color: colors.l1, symbol: 'circle' },
-        text: ['L1'],
-        textposition: 'top center',
-        textfont: { color: colors.l1, size: 14 }
-    }, {
-        x: [0.0239],
-        y: [0],
-        mode: 'markers+text',
-        type: 'scatter',
-        name: 'L3 (ReAct)',
-        marker: { size: 30, color: colors.l3, symbol: 'diamond' },
-        text: ['L3'],
-        textposition: 'top center',
-        textfont: { color: colors.l3, size: 14 }
-    }], {
-        ...layout,
-        title: { text: 'Cost vs Accuracy (Pareto View)', font: { size: 18, color: '#fff' } },
-        xaxis: { ...layout.xaxis, title: 'Total Cost (USD)' },
-        yaxis: { ...layout.yaxis, title: 'Accuracy (%)', range: [-5, 100] },
-        showlegend: true,
-        legend: { orientation: 'h', y: 1.1, x: 0.5, xanchor: 'center' },
-        height: 400,
-        annotations: [{
-            x: 0.0147,
-            y: 80,
-            xref: 'x',
-            yref: 'y',
-            text: 'Pareto Optimal',
-            showarrow: true,
-            arrowhead: 2,
-            arrowcolor: colors.l1,
-            ax: 60,
-            ay: 40,
-            font: { color: colors.l1 }
-        }]
-    });
+    // Initialize
+    filterResults();
 </script>
 </body>
 </html>
+```
