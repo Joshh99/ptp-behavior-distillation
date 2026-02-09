@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,59 +7,137 @@
     <style>
         * { box-sizing: border-box; }
         body { 
-            font-family: 'Times New Roman', Georgia, serif; 
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif; 
             margin: 0; 
             padding: 40px 20px; 
-            background: #ffffff;
-            color: #000000;
-            line-height: 1.6;
+            background: #fefdfb;
+            color: #1a1a1a;
+            line-height: 1.65;
         }
-        .container { max-width: 1200px; margin: 0 auto; }
+        .container { max-width: 1300px; margin: 0 auto; }
         
         header { 
             text-align: center; 
             margin-bottom: 40px; 
-            padding: 20px;
-            border-bottom: 2px solid #000;
+            padding: 30px 20px;
+            border-bottom: 3px double #2c3e50;
         }
         h1 { 
-            font-size: 2em;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #000;
+            font-size: 2.2em;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            letter-spacing: -0.5px;
         }
         .subtitle { 
-            font-size: 1.1em; 
+            font-size: 1.15em; 
             margin-bottom: 5px;
-            color: #333;
+            color: #34495e;
         }
         .research-question {
             font-style: italic;
             font-size: 0.95em;
-            max-width: 700px;
+            max-width: 750px;
             margin: 15px auto 0;
             color: #555;
         }
-        .timestamp { font-size: 0.85em; color: #666; margin-top: 10px; }
+        .timestamp { font-size: 0.85em; color: #7f8c8d; margin-top: 12px; }
         
         nav {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             justify-content: center;
             margin: 30px 0;
             flex-wrap: wrap;
         }
         nav a {
-            padding: 10px 20px;
-            background: #f0f0f0;
-            color: #000;
+            padding: 10px 18px;
+            background: #ecf0f1;
+            color: #2c3e50;
             text-decoration: none;
-            border: 1px solid #333;
+            border: 1px solid #bdc3c7;
             font-weight: 500;
-            transition: background 0.2s;
+            transition: all 0.2s;
         }
         nav a:hover {
-            background: #ddd;
+            background: #d5dbdb;
+            border-color: #95a5a6;
+        }
+        
+        /* File loader section */
+        .file-loader {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .file-loader h3 {
+            margin: 0 0 15px 0;
+            font-size: 1.1em;
+            color: #2c3e50;
+        }
+        .file-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        .file-chip {
+            padding: 6px 12px;
+            background: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 20px;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .file-chip:hover {
+            background: #e9ecef;
+        }
+        .file-chip.selected {
+            background: #2c3e50;
+            color: #fff;
+            border-color: #2c3e50;
+        }
+        .file-chip.error {
+            background: #fff5f5;
+            border-color: #e74c3c;
+            color: #c0392b;
+        }
+        .load-status {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-top: 10px;
+        }
+        .load-status.success { color: #27ae60; }
+        .load-status.error { color: #e74c3c; }
+        
+        /* Current selection display */
+        .current-selection {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: #fff;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .current-selection .label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        .current-selection .value {
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        .selection-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
         }
         
         .filter-controls {
@@ -69,56 +146,77 @@
             justify-content: center;
             margin: 30px 0;
             padding: 20px;
-            background: #f5f5f5;
-            border: 1px solid #ddd;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            flex-wrap: wrap;
         }
         .filter-group {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
         .filter-group label {
-            font-weight: bold;
-            font-size: 0.9em;
+            font-weight: 600;
+            font-size: 0.85em;
+            color: #495057;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         select {
-            padding: 8px 12px;
-            border: 1px solid #333;
+            padding: 10px 14px;
+            border: 1px solid #ced4da;
             background: white;
             font-size: 0.95em;
             cursor: pointer;
+            border-radius: 4px;
+            min-width: 180px;
+        }
+        select:focus {
+            outline: none;
+            border-color: #2c3e50;
+            box-shadow: 0 0 0 2px rgba(44, 62, 80, 0.1);
         }
         
         table { 
             width: 100%; 
             border-collapse: collapse; 
             margin: 20px 0;
-            border: 1px solid #000;
-        }
-        th, td { 
-            padding: 12px; 
-            text-align: left; 
-            border: 1px solid #333;
+            border: 1px solid #dee2e6;
             font-size: 0.9em;
         }
+        th, td { 
+            padding: 12px 10px; 
+            text-align: left; 
+            border: 1px solid #dee2e6;
+        }
         th { 
-            background: #f0f0f0;
-            font-weight: bold;
+            background: #f8f9fa;
+            font-weight: 600;
             text-align: center;
+            color: #495057;
         }
         .metric-header {
-            font-size: 0.85em;
+            font-size: 0.8em;
             text-align: center;
         }
         td.numeric {
             text-align: center;
-            font-family: 'Courier New', monospace;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+        tr:hover {
+            background: #f8f9fa;
         }
         
         .model-cell {
-            font-weight: bold;
+            font-weight: 600;
             white-space: nowrap;
+            color: #2c3e50;
         }
+        
+        .accuracy-high { color: #27ae60; font-weight: 600; }
+        .accuracy-medium { color: #f39c12; }
+        .accuracy-low { color: #e74c3c; }
         
         .section { 
             margin: 40px 0;
@@ -126,64 +224,74 @@
         }
         h2 { 
             font-size: 1.5em;
-            font-weight: bold;
-            border-bottom: 1px solid #000;
+            font-weight: 600;
+            border-bottom: 2px solid #2c3e50;
             padding-bottom: 8px;
             margin-bottom: 20px;
+            color: #2c3e50;
         }
         h3 { 
             font-size: 1.2em; 
-            font-weight: bold;
+            font-weight: 600;
             margin: 25px 0 15px 0;
+            color: #34495e;
         }
         
         .summary-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); 
             gap: 15px; 
             margin: 20px 0; 
         }
         .summary-card { 
-            border: 1px solid #333;
-            padding: 15px; 
+            border: 1px solid #dee2e6;
+            padding: 20px 15px; 
             text-align: center;
-            background: #f9f9f9;
+            background: #fff;
+            border-radius: 4px;
         }
         .summary-card .value { 
-            font-size: 2em; 
-            font-weight: bold;
+            font-size: 2.2em; 
+            font-weight: 600;
+            color: #2c3e50;
         }
         .summary-card .label { 
-            font-size: 0.85em; 
+            font-size: 0.8em; 
             margin-top: 5px;
-            color: #555;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .insight-box {
-            background: #f5f5f5;
-            border-left: 4px solid #000;
-            padding: 15px 20px;
+            background: #fff;
+            border-left: 4px solid #2c3e50;
+            padding: 20px 25px;
             margin: 20px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
         .insight-box h4 { 
-            margin: 0 0 10px 0; 
-            font-size: 1em;
-            font-weight: bold;
+            margin: 0 0 12px 0; 
+            font-size: 1.05em;
+            font-weight: 600;
+            color: #2c3e50;
         }
         .insight-box p { 
             margin: 8px 0;
+            color: #495057;
         }
         
         .chart-container {
             margin: 30px 0;
-            padding: 20px;
-            border: 1px solid #ddd;
-            background: #fafafa;
+            padding: 25px;
+            border: 1px solid #dee2e6;
+            background: #fff;
+            border-radius: 4px;
         }
         
         .note {
             font-size: 0.85em;
-            color: #666;
+            color: #6c757d;
             font-style: italic;
             margin-top: 10px;
         }
@@ -192,22 +300,44 @@
             text-align: center;
             padding: 30px 20px;
             margin-top: 60px;
-            border-top: 1px solid #000;
+            border-top: 2px solid #dee2e6;
             font-size: 0.85em;
-            color: #555;
+            color: #6c757d;
         }
         
         .pending-cell {
-            color: #999;
+            color: #adb5bd;
             font-style: italic;
         }
         
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+            font-style: italic;
+        }
+        
+        /* Model color coding */
+        .model-llama70b { border-left: 3px solid #3498db; }
+        .model-qwen72b { border-left: 3px solid #27ae60; }
+        .model-llama405b { border-left: 3px solid #9b59b6; }
+        
         @media print {
             body { background: white; }
-            .filter-controls, nav { display: none; }
+            .filter-controls, nav, .file-loader { display: none; }
+        }
+        
+        @media (max-width: 768px) {
+            .filter-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            select {
+                width: 100%;
+            }
         }
     </style>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -218,7 +348,7 @@
             How do different workflow complexity levels (fixed pipelines to autonomous agents) 
             trade off reliability, cost, and generality on real-world rule-guided reasoning?
         </div>
-        <div class="timestamp">Generated: February 2, 2026</div>
+        <div class="timestamp" id="report-timestamp">Loading results...</div>
     </header>
 
     <nav>
@@ -229,215 +359,118 @@
         <a href="#methodology">Methodology</a>
     </nav>
 
+    <!-- File Loader Section -->
+    <div class="file-loader" id="file-loader">
+        <h3>Available Result Files</h3>
+        <div class="file-list" id="file-list">
+            <span class="file-chip selected" onclick="loadResultFile('results/baseline_all_complete.json')">baseline_all_complete.json</span>
+            <span class="file-chip" onclick="loadResultFile('results/merged_for_meeting.json')">merged_for_meeting.json</span>
+        </div>
+        <div class="load-status" id="load-status">Click a file to load, or drag & drop JSON files here</div>
+        <input type="file" id="file-input" accept=".json" multiple style="display: none;">
+    </div>
+
+    <!-- Current Selection Display -->
+    <div class="current-selection" id="current-selection" style="display: none;">
+        <div class="selection-group">
+            <span class="label">Viewing</span>
+            <span class="value" id="sel-file">-</span>
+        </div>
+        <div class="selection-group">
+            <span class="label">Models</span>
+            <span class="value" id="sel-models">-</span>
+        </div>
+        <div class="selection-group">
+            <span class="label">Levels</span>
+            <span class="value" id="sel-levels">-</span>
+        </div>
+        <div class="selection-group">
+            <span class="label">Experiments</span>
+            <span class="value" id="sel-experiments">-</span>
+        </div>
+    </div>
+
     <div class="filter-controls">
         <div class="filter-group">
-            <label for="task-filter">Task Domain:</label>
+            <label for="task-filter">Task Domain</label>
             <select id="task-filter" onchange="filterResults()">
                 <option value="all">All Domains</option>
                 <option value="airline" selected>Airline Baggage</option>
-                <option value="nba">NBA Transactions</option>
-                <option value="tax">Tax Regulations</option>
+                <option value="nba" disabled>NBA Transactions</option>
+                <option value="tax" disabled>Tax Regulations</option>
             </select>
         </div>
         <div class="filter-group">
-            <label for="level-filter">Complexity Level:</label>
+            <label for="level-filter">Complexity Level</label>
             <select id="level-filter" onchange="filterResults()">
                 <option value="all">All Levels</option>
-                <option value="0" selected>Level 0 (Simple)</option>
-                <option value="1">Level 1 (Medium)</option>
-                <option value="2">Level 2 (Complex)</option>
             </select>
         </div>
         <div class="filter-group">
-            <label for="model-filter">Model:</label>
+            <label for="model-filter">Model</label>
             <select id="model-filter" onchange="filterResults()">
                 <option value="all">All Models</option>
-                <option value="qwen">Qwen2.5-72B</option>
-                <option value="gpt4o">GPT-4o</option>
-                <option value="claude">Claude-3.5-Sonnet</option>
-                <option value="deepseek">DeepSeek-R1</option>
-                <option value="o1">o1-preview</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="experiment-filter">Experiment</label>
+            <select id="experiment-filter" onchange="filterResults()">
+                <option value="all">All Experiments</option>
             </select>
         </div>
     </div>
 
     <div id="summary" class="section">
         <h2>Executive Summary</h2>
-        <div class="summary-grid">
+        <div class="summary-grid" id="summary-grid">
             <div class="summary-card">
-                <div class="value">30</div>
+                <div class="value" id="stat-problems">-</div>
                 <div class="label">Problems Tested</div>
             </div>
             <div class="summary-card">
-                <div class="value">3</div>
-                <div class="label">Task Domains</div>
+                <div class="value" id="stat-experiments">-</div>
+                <div class="label">Experiment Runs</div>
             </div>
             <div class="summary-card">
-                <div class="value">2</div>
-                <div class="label">Approaches (L1, L3)</div>
+                <div class="value" id="stat-models">-</div>
+                <div class="label">Models</div>
             </div>
             <div class="summary-card">
-                <div class="value">5</div>
-                <div class="label">Models Planned</div>
+                <div class="value" id="stat-best-acc">-</div>
+                <div class="label">Best Accuracy</div>
             </div>
             <div class="summary-card">
-                <div class="value">80%</div>
-                <div class="label">Best Accuracy (L1)</div>
+                <div class="value" id="stat-total-cost">-</div>
+                <div class="label">Total Cost</div>
             </div>
         </div>
     </div>
 
     <div id="results" class="section">
         <h2>Results by Model and Approach</h2>
-        
-        <p><strong>Table Design Rationale:</strong> Metrics are organized as columns for easy cross-model comparison. Core metrics (Accuracy, Cost, Latency) are always shown as they're measurable in every experiment. RuleArena-specific metrics (Recall, Precision, AC) appear only when available, as they require detailed rule-application tracking that may not be implemented for all approaches yet.</p>
-        
         <table id="results-table">
             <thead>
                 <tr>
-                    <th rowspan="2">Model + Approach</th>
-                    <th colspan="3" class="metric-header">Core Metrics</th>
-                    <th colspan="3" class="metric-header">RuleArena Metrics (Problem-wise)</th>
+                    <th rowspan="2">Experiment</th>
+                    <th rowspan="2">Model</th>
+                    <th rowspan="2">Level</th>
+                    <th colspan="4" class="metric-header">Performance</th>
+                    <th colspan="3" class="metric-header">Efficiency</th>
                 </tr>
                 <tr>
-                    <th class="metric-header">Accuracy<br>Acc(%)</th>
-                    <th class="metric-header">Cost<br>(USD)</th>
-                    <th class="metric-header">Time<br>(sec)</th>
-                    <th class="metric-header">Recall<br>R(t)</th>
-                    <th class="metric-header">Precision<br>P(t)</th>
-                    <th class="metric-header">App.Correct<br>AC(t)</th>
+                    <th class="metric-header">N</th>
+                    <th class="metric-header">Acc (%)</th>
+                    <th class="metric-header">Correct</th>
+                    <th class="metric-header">Failed</th>
+                    <th class="metric-header">Cost ($)</th>
+                    <th class="metric-header">Time (s)</th>
+                    <th class="metric-header">Tokens</th>
                 </tr>
             </thead>
-            <tbody>
-                <!-- Qwen2.5-72B - Airline -->
-                <tr data-task="airline" data-level="0" data-model="qwen">
-                    <td class="model-cell">Qwen2.5-72B + L1</td>
-                    <td class="numeric">80.0</td>
-                    <td class="numeric">$0.015</td>
-                    <td class="numeric">67.8</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                </tr>
-                <tr data-task="airline" data-level="0" data-model="qwen">
-                    <td class="model-cell">Qwen2.5-72B + L3</td>
-                    <td class="numeric">0.0</td>
-                    <td class="numeric">$0.024</td>
-                    <td class="numeric">231.7</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                </tr>
-                
-                <!-- GPT-4o - Airline -->
-                <tr data-task="airline" data-level="0" data-model="gpt4o">
-                    <td class="model-cell">GPT-4o + L1</td>
-                    <td class="numeric pending-cell">pending</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                </tr>
-                <tr data-task="airline" data-level="0" data-model="gpt4o">
-                    <td class="model-cell">GPT-4o + L3</td>
-                    <td class="numeric pending-cell">pending</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                </tr>
-                
-                <!-- Claude-3.5-Sonnet - Airline -->
-                <tr data-task="airline" data-level="0" data-model="claude">
-                    <td class="model-cell">Claude-3.5-Sonnet + L1</td>
-                    <td class="numeric pending-cell">pending</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                </tr>
-                <tr data-task="airline" data-level="0" data-model="claude">
-                    <td class="model-cell">Claude-3.5-Sonnet + L3</td>
-                    <td class="numeric pending-cell">pending</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                </tr>
-                
-                <!-- DeepSeek-R1 - Airline -->
-                <tr data-task="airline" data-level="0" data-model="deepseek">
-                    <td class="model-cell">DeepSeek-R1 + L1</td>
-                    <td class="numeric pending-cell">pending</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                </tr>
-                <tr data-task="airline" data-level="0" data-model="deepseek">
-                    <td class="model-cell">DeepSeek-R1 + L3</td>
-                    <td class="numeric pending-cell">pending</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                </tr>
-                
-                <!-- o1-preview - Airline -->
-                <tr data-task="airline" data-level="0" data-model="o1">
-                    <td class="model-cell">o1-preview + L1</td>
-                    <td class="numeric pending-cell">pending</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                </tr>
-                <tr data-task="airline" data-level="0" data-model="o1">
-                    <td class="model-cell">o1-preview + L3</td>
-                    <td class="numeric pending-cell">pending</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                </tr>
-                
-                <!-- NBA - All pending -->
-                <tr data-task="nba" data-level="0" data-model="qwen">
-                    <td class="model-cell">Qwen2.5-72B + L1 (NBA)</td>
-                    <td class="numeric pending-cell">pending</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                </tr>
-                
-                <!-- Tax - All pending -->
-                <tr data-task="tax" data-level="0" data-model="qwen">
-                    <td class="model-cell">Qwen2.5-72B + L1 (Tax)</td>
-                    <td class="numeric pending-cell">pending</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                    <td class="numeric pending-cell">—</td>
-                </tr>
+            <tbody id="results-tbody">
+                <tr><td colspan="10" class="no-data">Load a result file to see data</td></tr>
             </tbody>
         </table>
-        
-        <div class="note">
-            <strong>Note on RuleArena Metrics:</strong> Recall R(t), Precision P(t), and Application Correctness AC(t) 
-            require detailed rule-application tracking. These metrics will be populated as experiments with structured 
-            trace analysis are completed. Currently focusing on end-to-end accuracy as the primary signal.
-        </div>
     </div>
 
     <div id="visualizations" class="section">
@@ -452,26 +485,17 @@
         </div>
         
         <div class="chart-container">
-            <div id="time-chart"></div>
-        </div>
-        
-        <div class="chart-container">
             <div id="efficiency-chart"></div>
         </div>
     </div>
 
     <div id="findings" class="section">
         <h2>Key Findings</h2>
-        
-        <div class="insight-box">
-            <h4>L1 Structured Extraction Outperforms L3 Autonomous Reasoning</h4>
-            <p>
-                On RuleArena Airline Level 0, L1 achieves <strong>80% accuracy</strong> while L3 achieves <strong>0%</strong>. 
-                L1 is also <strong>1.6× cheaper</strong> ($0.015 vs $0.024) and <strong>3.4× faster</strong> (68s vs 232s). 
-                This supports the distillation hypothesis: decomposing into extraction + deterministic calculation yields 
-                more reliable results than end-to-end LLM reasoning. The 20% L1 errors are extraction failures—debuggable 
-                and potentially fixable with better prompting.
-            </p>
+        <div id="findings-content">
+            <div class="insight-box">
+                <h4>Load Results to Generate Findings</h4>
+                <p>Key findings will be automatically generated based on the loaded experimental results.</p>
+            </div>
         </div>
     </div>
 
@@ -479,192 +503,600 @@
         <h2>Methodology</h2>
         <h3>Experimental Setup</h3>
         <ul>
-            <li><strong>Dataset:</strong> RuleArena (3 domains)
+            <li><strong>Dataset:</strong> RuleArena benchmark
                 <ul>
-                    <li>Airline Baggage Fees (10 rules, 300 problems) — <em>in progress</em></li>
-                    <li>NBA Transactions (54 rules, 216 problems) — <em>planned</em></li>
-                    <li>Tax Regulations (31 rules, 300 problems) — <em>planned</em></li>
+                    <li>Airline Baggage Fees (10 rules, 300 problems)</li>
+                    <li>NBA Transactions (54 rules, 216 problems) - planned</li>
+                    <li>Tax Regulations (31 rules, 300 problems) - planned</li>
                 </ul>
             </li>
             <li><strong>Complexity Levels:</strong> 0 (simple), 1 (medium), 2 (complex)</li>
-            <li><strong>Sample Size:</strong> 30 problems per configuration</li>
-            <li><strong>Models:</strong> 
+            <li><strong>Approaches:</strong>
                 <ul>
-                    <li>Qwen2.5-72B-Instruct-Turbo (Together.ai) — <em>Airline L0 completed</em></li>
-                    <li>GPT-4o (OpenAI) — <em>planned</em></li>
-                    <li>Claude-3.5-Sonnet (Anthropic) — <em>planned</em></li>
-                    <li>DeepSeek-R1 (Together.ai) — <em>planned</em></li>
-                    <li>o1-preview (OpenAI) — <em>planned</em></li>
+                    <li><strong>L1 Pure:</strong> LLM extracts parameters without seeing rules, deterministic calculation</li>
+                    <li><strong>L1 Transparent:</strong> LLM extracts parameters with full rules visible</li>
+                    <li><strong>CoT:</strong> Chain-of-thought reasoning (RuleArena baseline)</li>
+                    <li><strong>Tool-Aug:</strong> LLM generates Python code using compute function</li>
                 </ul>
             </li>
-            <li><strong>L1 Approach:</strong> LLM extracts structured parameters → Python calculates using ground-truth rule tables</li>
-            <li><strong>L3 Approach:</strong> ReAct agent with Think/Act/Observe loop (currently without tool access)</li>
         </ul>
-        
-        <h3>Next Steps</h3>
-        <ol>
-            <li>Implement tool-enabled L3 agent with access to rule table lookups</li>
-            <li>Complete Airline experiments across all models and complexity levels</li>
-            <li>Extend to NBA and Tax domains</li>
-            <li>Implement rule-application tracking to populate R(t), P(t), AC(t) metrics</li>
-            <li>Collect detailed execution traces for behavior distillation analysis</li>
-        </ol>
     </div>
     
     <footer>
         <p>
             <strong>Behavior Distillation Research Project</strong><br>
             Independent Study with Prof. William Cohen (CMU Machine Learning / Google DeepMind)<br>
-            Student: Joshua Wisdom Momo | Spring 2026<br>
-            Report generated by <code>scripts/run_rulearena_baselines.py</code>
+            Student: Joshua Wisdom Momo | Spring 2026
         </p>
     </footer>
 </div>
 
 <script>
-    function filterResults() {
-        const taskFilter = document.getElementById('task-filter').value;
-        const levelFilter = document.getElementById('level-filter').value;
-        const modelFilter = document.getElementById('model-filter').value;
-        const rows = document.querySelectorAll('#results-table tbody tr');
+// ============================================================================
+// GLOBAL STATE
+// ============================================================================
+
+let allResults = [];
+let loadedFiles = {};
+let currentFilename = '';
+
+const EXPERIMENT_NAMES = {
+    'l1_pure': 'L1 Pure (PTP)',
+    'l1_transparent': 'L1 Transparent (PTP + Rules)',
+    'cot': 'CoT (RuleArena)',
+    'tool_aug': 'Tool-Augmented'
+};
+
+const MODEL_SHORT_NAMES = {
+    'meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo': 'Llama-70B',
+    'Qwen/Qwen2.5-7B-Instruct-Turbo': 'Qwen-7B',
+    'deepseek-ai/DeepSeek-V3': 'DeepSeek-V3',
+    'Qwen/Qwen2.5-72B-Instruct': 'Qwen-72B',
+};
+
+const COLORS = {
+    l1_pure: '#2980b9',
+    l1_transparent: '#27ae60',
+    cot: '#c0392b',
+    tool_aug: '#f39c12',
+    grid: '#ecf0f1',
+    text: '#2c3e50'
+};
+
+// ============================================================================
+// FILE LOADING
+// ============================================================================
+
+async function loadResultFile(filepath) {
+    const statusEl = document.getElementById('load-status');
+    statusEl.textContent = `Loading ${filepath}...`;
+    statusEl.className = 'load-status';
+    
+    try {
+        const response = await fetch(filepath);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
         
-        rows.forEach(row => {
-            const rowTask = row.getAttribute('data-task');
-            const rowLevel = row.getAttribute('data-level');
-            const rowModel = row.getAttribute('data-model');
-            
-            let showRow = true;
-            
-            if (taskFilter !== 'all' && rowTask !== taskFilter) {
-                showRow = false;
-            }
-            
-            if (levelFilter !== 'all' && rowLevel !== levelFilter) {
-                showRow = false;
-            }
-            
-            if (modelFilter !== 'all' && rowModel !== modelFilter) {
-                showRow = false;
-            }
-            
-            row.style.display = showRow ? '' : 'none';
-        });
+        processLoadedData(data, filepath);
+        statusEl.textContent = `Loaded ${filepath} successfully`;
+        statusEl.className = 'load-status success';
         
-        updateCharts();
+    } catch (error) {
+        console.error('Error loading file:', error);
+        statusEl.textContent = `Failed to load ${filepath}: ${error.message}`;
+        statusEl.className = 'load-status error';
+    }
+}
+
+function processLoadedData(data, filename) {
+    currentFilename = filename.split('/').pop();
+    loadedFiles[currentFilename] = data;
+    
+    // Extract results
+    allResults = data.results || [];
+    
+    // Update UI
+    updateFilterOptions();
+    updateSummaryStats();
+    populateTable();
+    updateCharts();
+    generateFindings();
+    updateSelectionDisplay();
+    
+    // Update timestamp
+    const timestamp = data.metadata?.timestamp || data.metadata?.completed_timestamp;
+    if (timestamp) {
+        document.getElementById('report-timestamp').textContent = 
+            `Data from: ${new Date(timestamp).toLocaleString()}`;
     }
     
-    function updateCharts() {
-        const colors = {
-            l1: '#2563eb',
-            l3: '#dc2626',
-            grid: '#e5e5e5',
-            text: '#000000'
-        };
-        
-        const layout = {
-            paper_bgcolor: '#fafafa',
-            plot_bgcolor: '#fafafa',
-            font: { color: colors.text, family: 'Times New Roman, serif', size: 12 },
-            xaxis: { gridcolor: colors.grid, zerolinecolor: colors.grid },
-            yaxis: { gridcolor: colors.grid, zerolinecolor: colors.grid },
-            margin: { t: 50, b: 50, l: 60, r: 30 }
-        };
-        
-        // Accuracy Chart
-        Plotly.newPlot('accuracy-chart', [{
-            x: ['L1 (Structured)', 'L3 (ReAct)'],
-            y: [80, 0],
-            type: 'bar',
-            marker: { 
-                color: [colors.l1, colors.l3],
-                line: { color: '#000', width: 1 }
-            },
-            text: ['80%', '0%'],
-            textposition: 'outside',
-            textfont: { color: '#000', size: 14 }
-        }], {
-            ...layout,
-            title: { text: 'Accuracy Comparison', font: { size: 16, color: '#000' } },
-            yaxis: { ...layout.yaxis, title: 'Accuracy (%)', range: [0, 100] },
-            showlegend: false,
-            height: 350
-        });
-        
-        // Cost Chart
-        Plotly.newPlot('cost-chart', [{
-            x: ['L1 (Structured)', 'L3 (ReAct)'],
-            y: [0.0147, 0.0239],
-            type: 'bar',
-            marker: { 
-                color: [colors.l1, colors.l3],
-                line: { color: '#000', width: 1 }
-            },
-            text: ['$0.015', '$0.024'],
-            textposition: 'outside',
-            textfont: { color: '#000', size: 14 }
-        }], {
-            ...layout,
-            title: { text: 'Total Cost Comparison', font: { size: 16, color: '#000' } },
-            yaxis: { ...layout.yaxis, title: 'Cost (USD)', range: [0, 0.03] },
-            showlegend: false,
-            height: 350
-        });
-        
-        // Time Chart
-        Plotly.newPlot('time-chart', [{
-            x: ['L1 (Structured)', 'L3 (ReAct)'],
-            y: [67.8, 231.7],
-            type: 'bar',
-            marker: { 
-                color: [colors.l1, colors.l3],
-                line: { color: '#000', width: 1 }
-            },
-            text: ['67.8s', '231.7s'],
-            textposition: 'outside',
-            textfont: { color: '#000', size: 14 }
-        }], {
-            ...layout,
-            title: { text: 'Total Execution Time', font: { size: 16, color: '#000' } },
-            yaxis: { ...layout.yaxis, title: 'Time (seconds)', range: [0, 280] },
-            showlegend: false,
-            height: 350
-        });
-        
-        // Efficiency Scatter
-        Plotly.newPlot('efficiency-chart', [{
-            x: [0.0147],
-            y: [80],
-            mode: 'markers+text',
-            type: 'scatter',
-            name: 'L1',
-            marker: { size: 20, color: colors.l1, symbol: 'circle', line: { color: '#000', width: 1 } },
-            text: ['L1'],
-            textposition: 'top center',
-            textfont: { color: colors.l1, size: 12 }
-        }, {
-            x: [0.0239],
-            y: [0],
-            mode: 'markers+text',
-            type: 'scatter',
-            name: 'L3',
-            marker: { size: 20, color: colors.l3, symbol: 'diamond', line: { color: '#000', width: 1 } },
-            text: ['L3'],
-            textposition: 'top center',
-            textfont: { color: colors.l3, size: 12 }
-        }], {
-            ...layout,
-            title: { text: 'Cost vs Accuracy (Efficiency Frontier)', font: { size: 16, color: '#000' } },
-            xaxis: { ...layout.xaxis, title: 'Total Cost (USD)' },
-            yaxis: { ...layout.yaxis, title: 'Accuracy (%)', range: [-5, 100] },
-            showlegend: true,
-            legend: { orientation: 'h', y: 1.1, x: 0.5, xanchor: 'center' },
-            height: 400
-        });
+    // Show current selection
+    document.getElementById('current-selection').style.display = 'flex';
+}
+
+// Drag and drop support
+const fileLoader = document.getElementById('file-loader');
+
+fileLoader.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    fileLoader.style.borderColor = '#2c3e50';
+    fileLoader.style.background = '#ecf0f1';
+});
+
+fileLoader.addEventListener('dragleave', () => {
+    fileLoader.style.borderColor = '#dee2e6';
+    fileLoader.style.background = '#f8f9fa';
+});
+
+fileLoader.addEventListener('drop', (e) => {
+    e.preventDefault();
+    fileLoader.style.borderColor = '#dee2e6';
+    fileLoader.style.background = '#f8f9fa';
+    
+    const files = e.dataTransfer.files;
+    for (const file of files) {
+        if (file.name.endsWith('.json')) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    const data = JSON.parse(event.target.result);
+                    processLoadedData(data, file.name);
+                    addFileChip(file.name);
+                } catch (error) {
+                    alert(`Invalid JSON in ${file.name}`);
+                }
+            };
+            reader.readAsText(file);
+        }
+    }
+});
+
+function addFileChip(filename) {
+    const fileList = document.getElementById('file-list');
+    const existingChips = fileList.querySelectorAll('.file-chip');
+    
+    // Check if chip already exists
+    for (const chip of existingChips) {
+        if (chip.textContent === filename) return;
     }
     
-    // Initialize
-    filterResults();
+    const chip = document.createElement('span');
+    chip.className = 'file-chip selected';
+    chip.textContent = filename;
+    chip.onclick = () => {
+        if (loadedFiles[filename]) {
+            processLoadedData(loadedFiles[filename], filename);
+            // Update chip selection state
+            existingChips.forEach(c => c.classList.remove('selected'));
+            chip.classList.add('selected');
+        }
+    };
+    fileList.appendChild(chip);
+    
+    // Deselect other chips
+    existingChips.forEach(c => c.classList.remove('selected'));
+}
+
+// ============================================================================
+// FILTER OPTIONS
+// ============================================================================
+
+function updateFilterOptions() {
+    // Get unique values from results
+    const models = [...new Set(allResults.map(r => r.model))].filter(Boolean);
+    const levels = [...new Set(allResults.map(r => r.complexity_level))].filter(l => l !== undefined).sort();
+    const experiments = [...new Set(allResults.map(r => r.experiment))].filter(Boolean);
+    
+    // Update model filter
+    const modelSelect = document.getElementById('model-filter');
+    modelSelect.innerHTML = '<option value="all">All Models</option>';
+    models.forEach(model => {
+        const opt = document.createElement('option');
+        opt.value = model;
+        opt.textContent = MODEL_SHORT_NAMES[model] || model;
+        modelSelect.appendChild(opt);
+    });
+    
+    // Update level filter
+    const levelSelect = document.getElementById('level-filter');
+    levelSelect.innerHTML = '<option value="all">All Levels</option>';
+    levels.forEach(level => {
+        const opt = document.createElement('option');
+        opt.value = level;
+        opt.textContent = `Level ${level}`;
+        levelSelect.appendChild(opt);
+    });
+    
+    // Update experiment filter
+    const expSelect = document.getElementById('experiment-filter');
+    expSelect.innerHTML = '<option value="all">All Experiments</option>';
+    experiments.forEach(exp => {
+        const opt = document.createElement('option');
+        opt.value = exp;
+        opt.textContent = EXPERIMENT_NAMES[exp] || exp;
+        expSelect.appendChild(opt);
+    });
+}
+
+function updateSelectionDisplay() {
+    const models = [...new Set(getFilteredResults().map(r => MODEL_SHORT_NAMES[r.model] || r.model))];
+    const levels = [...new Set(getFilteredResults().map(r => r.complexity_level))].sort();
+    const experiments = [...new Set(getFilteredResults().map(r => r.experiment))];
+    
+    document.getElementById('sel-file').textContent = currentFilename || '-';
+    document.getElementById('sel-models').textContent = models.join(', ') || '-';
+    document.getElementById('sel-levels').textContent = levels.map(l => `L${l}`).join(', ') || '-';
+    document.getElementById('sel-experiments').textContent = experiments.length + ' types';
+}
+
+// ============================================================================
+// FILTERING
+// ============================================================================
+
+function getFilteredResults() {
+    const modelFilter = document.getElementById('model-filter')?.value || 'all';
+    const levelFilter = document.getElementById('level-filter')?.value || 'all';
+    const expFilter = document.getElementById('experiment-filter')?.value || 'all';
+    
+    return allResults.filter(r => {
+        if (modelFilter !== 'all' && r.model !== modelFilter) return false;
+        if (levelFilter !== 'all' && r.complexity_level !== parseInt(levelFilter)) return false;
+        if (expFilter !== 'all' && r.experiment !== expFilter) return false;
+        return true;
+    });
+}
+
+function filterResults() {
+    populateTable();
+    updateCharts();
+    updateSummaryStats();
+    updateSelectionDisplay();
+}
+
+// ============================================================================
+// TABLE POPULATION
+// ============================================================================
+
+function populateTable() {
+    const tbody = document.getElementById('results-tbody');
+    const filtered = getFilteredResults();
+    
+    if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="10" class="no-data">No results match the current filters</td></tr>';
+        return;
+    }
+    
+    // Sort by level, then experiment, then model
+    filtered.sort((a, b) => {
+        if (a.complexity_level !== b.complexity_level) return a.complexity_level - b.complexity_level;
+        if (a.experiment !== b.experiment) return a.experiment.localeCompare(b.experiment);
+        return (a.model || '').localeCompare(b.model || '');
+    });
+    
+    tbody.innerHTML = '';
+    
+    filtered.forEach(result => {
+        const row = document.createElement('tr');
+        
+        // Determine model class for color coding
+        let modelClass = '';
+        if (result.model?.includes('70B')) modelClass = 'model-llama70b';
+        else if (result.model?.includes('72B')) modelClass = 'model-qwen72b';
+        else if (result.model?.includes('405B')) modelClass = 'model-llama405b';
+        
+        row.className = modelClass;
+        
+        // Determine accuracy class
+        const acc = result.accuracy * 100;
+        let accClass = 'accuracy-low';
+        if (acc >= 70) accClass = 'accuracy-high';
+        else if (acc >= 40) accClass = 'accuracy-medium';
+        
+        row.innerHTML = `
+            <td class="model-cell">${EXPERIMENT_NAMES[result.experiment] || result.experiment}</td>
+            <td>${MODEL_SHORT_NAMES[result.model] || result.model || '-'}</td>
+            <td class="numeric">${result.complexity_level}</td>
+            <td class="numeric">${result.num_problems || '-'}</td>
+            <td class="numeric ${accClass}">${acc.toFixed(1)}</td>
+            <td class="numeric">${result.correct || 0}</td>
+            <td class="numeric">${result.num_failed || 0}</td>
+            <td class="numeric">$${(result.total_cost || 0).toFixed(4)}</td>
+            <td class="numeric">${(result.total_time || 0).toFixed(1)}</td>
+            <td class="numeric">${result.total_tokens?.toLocaleString() || '-'}</td>
+        `;
+        
+        tbody.appendChild(row);
+    });
+}
+
+// ============================================================================
+// SUMMARY STATS
+// ============================================================================
+
+function updateSummaryStats() {
+    const filtered = getFilteredResults();
+    
+    if (filtered.length === 0) {
+        document.getElementById('stat-problems').textContent = '-';
+        document.getElementById('stat-experiments').textContent = '-';
+        document.getElementById('stat-models').textContent = '-';
+        document.getElementById('stat-best-acc').textContent = '-';
+        document.getElementById('stat-total-cost').textContent = '-';
+        return;
+    }
+    
+    const totalProblems = filtered.reduce((sum, r) => sum + (r.num_problems || 0), 0);
+    const numExperiments = filtered.length;
+    const uniqueModels = new Set(filtered.map(r => r.model)).size;
+    const bestAcc = Math.max(...filtered.map(r => r.accuracy || 0)) * 100;
+    const totalCost = filtered.reduce((sum, r) => sum + (r.total_cost || 0), 0);
+    
+    document.getElementById('stat-problems').textContent = totalProblems.toLocaleString();
+    document.getElementById('stat-experiments').textContent = numExperiments;
+    document.getElementById('stat-models').textContent = uniqueModels;
+    document.getElementById('stat-best-acc').textContent = bestAcc.toFixed(1) + '%';
+    document.getElementById('stat-total-cost').textContent = '$' + totalCost.toFixed(2);
+}
+
+// ============================================================================
+// CHARTS
+// ============================================================================
+
+function updateCharts() {
+    const filtered = getFilteredResults();
+    
+    if (filtered.length === 0) {
+        Plotly.purge('accuracy-chart');
+        Plotly.purge('cost-chart');
+        Plotly.purge('efficiency-chart');
+        return;
+    }
+    
+    const layout = {
+        paper_bgcolor: '#fff',
+        plot_bgcolor: '#fff',
+        font: { color: COLORS.text, family: "'Palatino Linotype', Georgia, serif", size: 12 },
+        xaxis: { gridcolor: COLORS.grid, zerolinecolor: COLORS.grid },
+        yaxis: { gridcolor: COLORS.grid, zerolinecolor: COLORS.grid },
+        margin: { t: 50, b: 80, l: 60, r: 30 }
+    };
+    
+    // Group by experiment for comparison
+    const byExperiment = {};
+    filtered.forEach(r => {
+        const key = r.experiment;
+        if (!byExperiment[key]) {
+            byExperiment[key] = { accuracies: [], costs: [], times: [], names: [] };
+        }
+        byExperiment[key].accuracies.push(r.accuracy * 100);
+        byExperiment[key].costs.push(r.total_cost || 0);
+        byExperiment[key].times.push(r.total_time || 0);
+        byExperiment[key].names.push(`${MODEL_SHORT_NAMES[r.model] || r.model} L${r.complexity_level}`);
+    });
+    
+    // Compute averages
+    const chartData = Object.entries(byExperiment).map(([exp, data]) => ({
+        experiment: exp,
+        name: EXPERIMENT_NAMES[exp] || exp,
+        avgAccuracy: data.accuracies.reduce((a, b) => a + b, 0) / data.accuracies.length,
+        avgCost: data.costs.reduce((a, b) => a + b, 0) / data.costs.length,
+        avgTime: data.times.reduce((a, b) => a + b, 0) / data.times.length,
+        totalCost: data.costs.reduce((a, b) => a + b, 0),
+    }));
+    
+    // Sort by accuracy descending
+    chartData.sort((a, b) => b.avgAccuracy - a.avgAccuracy);
+    
+    // ========================================================================
+    // ACCURACY CHART
+    // ========================================================================
+    Plotly.newPlot('accuracy-chart', [{
+        x: chartData.map(d => d.name),
+        y: chartData.map(d => d.avgAccuracy),
+        type: 'bar',
+        marker: { 
+            color: chartData.map(d => COLORS[d.experiment] || '#666'),
+            line: { color: '#fff', width: 1 }
+        },
+        text: chartData.map(d => `${d.avgAccuracy.toFixed(1)}%`),
+        textposition: 'outside',
+        textfont: { color: COLORS.text, size: 13 }
+    }], {
+        ...layout,
+        title: { text: 'Average Accuracy by Approach', font: { size: 16, color: COLORS.text } },
+        yaxis: { ...layout.yaxis, title: 'Accuracy (%)', range: [0, Math.max(110, ...chartData.map(d => d.avgAccuracy + 15))] },
+        height: 380
+    });
+    
+    // ========================================================================
+    // COST CHART
+    // ========================================================================
+    Plotly.newPlot('cost-chart', [{
+        x: chartData.map(d => d.name),
+        y: chartData.map(d => d.totalCost),
+        type: 'bar',
+        marker: { 
+            color: chartData.map(d => COLORS[d.experiment] || '#666'),
+            line: { color: '#fff', width: 1 }
+        },
+        text: chartData.map(d => `$${d.totalCost.toFixed(3)}`),
+        textposition: 'outside',
+        textfont: { color: COLORS.text, size: 13 }
+    }], {
+        ...layout,
+        title: { text: 'Total Cost by Approach', font: { size: 16, color: COLORS.text } },
+        yaxis: { ...layout.yaxis, title: 'Cost (USD)' },
+        height: 380
+    });
+    
+    // ========================================================================
+    // EFFICIENCY SCATTER (Cost vs Accuracy)
+    // ========================================================================
+    const scatterTraces = chartData.map(d => ({
+        x: [d.totalCost],
+        y: [d.avgAccuracy],
+        mode: 'markers+text',
+        type: 'scatter',
+        name: d.name,
+        marker: { 
+            size: 18, 
+            color: COLORS[d.experiment] || '#666',
+            line: { color: '#fff', width: 2 }
+        },
+        text: [d.name.split(' ')[0]],
+        textposition: 'top center',
+        textfont: { color: COLORS.text, size: 11 }
+    }));
+    
+    Plotly.newPlot('efficiency-chart', scatterTraces, {
+        ...layout,
+        title: { text: 'Cost vs Accuracy (Efficiency Frontier)', font: { size: 16, color: COLORS.text } },
+        xaxis: { ...layout.xaxis, title: 'Total Cost (USD)' },
+        yaxis: { ...layout.yaxis, title: 'Accuracy (%)', range: [-5, Math.max(110, ...chartData.map(d => d.avgAccuracy + 10))] },
+        showlegend: true,
+        legend: { orientation: 'h', y: -0.15, x: 0.5, xanchor: 'center' },
+        height: 420
+    });
+}
+
+// ============================================================================
+// FINDINGS GENERATION
+// ============================================================================
+
+function generateFindings() {
+    const filtered = getFilteredResults();
+    const container = document.getElementById('findings-content');
+    
+    if (filtered.length === 0) {
+        container.innerHTML = `
+            <div class="insight-box">
+                <h4>No Data Loaded</h4>
+                <p>Load experimental results to generate key findings.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    // Find best and worst performers
+    const sorted = [...filtered].sort((a, b) => b.accuracy - a.accuracy);
+    const best = sorted[0];
+    const worst = sorted[sorted.length - 1];
+    
+    // Calculate averages by experiment type
+    const byExp = {};
+    filtered.forEach(r => {
+        if (!byExp[r.experiment]) byExp[r.experiment] = [];
+        byExp[r.experiment].push(r);
+    });
+    
+    const expStats = Object.entries(byExp).map(([exp, results]) => ({
+        experiment: exp,
+        name: EXPERIMENT_NAMES[exp] || exp,
+        avgAccuracy: results.reduce((s, r) => s + r.accuracy, 0) / results.length * 100,
+        avgCost: results.reduce((s, r) => s + (r.total_cost || 0), 0) / results.length,
+        totalCost: results.reduce((s, r) => s + (r.total_cost || 0), 0),
+    })).sort((a, b) => b.avgAccuracy - a.avgAccuracy);
+    
+    let html = '';
+    
+    // Best performer insight
+    if (best) {
+        html += `
+            <div class="insight-box">
+                <h4>Best Performer: ${EXPERIMENT_NAMES[best.experiment] || best.experiment}</h4>
+                <p>
+                    Achieved <strong>${(best.accuracy * 100).toFixed(1)}% accuracy</strong> on 
+                    Level ${best.complexity_level} problems using ${MODEL_SHORT_NAMES[best.model] || best.model}.
+                    Total cost: $${(best.total_cost || 0).toFixed(4)} for ${best.num_problems} problems.
+                </p>
+            </div>
+        `;
+    }
+    
+    // Comparison insight
+    if (expStats.length >= 2) {
+        const bestExp = expStats[0];
+        const worstExp = expStats[expStats.length - 1];
+        
+        if (bestExp.avgAccuracy > worstExp.avgAccuracy) {
+            const accDiff = bestExp.avgAccuracy - worstExp.avgAccuracy;
+            const costRatio = worstExp.avgCost > 0 ? bestExp.avgCost / worstExp.avgCost : 0;
+            
+            html += `
+                <div class="insight-box">
+                    <h4>Approach Comparison</h4>
+                    <p>
+                        <strong>${bestExp.name}</strong> outperforms <strong>${worstExp.name}</strong> by 
+                        ${accDiff.toFixed(1)} percentage points in accuracy.
+                        ${costRatio > 0 ? `Cost ratio: ${costRatio.toFixed(2)}x.` : ''}
+                    </p>
+                    <p>
+                        This ${bestExp.avgAccuracy > 50 ? 'supports' : 'partially supports'} the hypothesis that 
+                        ${bestExp.experiment.includes('l1') ? 'structured extraction with deterministic calculation' : 'end-to-end reasoning'}
+                        is ${bestExp.avgAccuracy > worstExp.avgAccuracy ? 'more' : 'less'} reliable for rule-guided tasks.
+                    </p>
+                </div>
+            `;
+        }
+    }
+    
+    // Cost efficiency insight
+    const lowestCostExp = [...expStats].sort((a, b) => a.totalCost - b.totalCost)[0];
+    if (lowestCostExp && expStats.length > 1) {
+        html += `
+            <div class="insight-box">
+                <h4>Cost Efficiency</h4>
+                <p>
+                    <strong>${lowestCostExp.name}</strong> is the most cost-efficient approach at 
+                    $${lowestCostExp.totalCost.toFixed(4)} total, achieving ${lowestCostExp.avgAccuracy.toFixed(1)}% accuracy.
+                </p>
+            </div>
+        `;
+    }
+    
+    container.innerHTML = html || `
+        <div class="insight-box">
+            <h4>Insufficient Data</h4>
+            <p>Need more experimental results to generate meaningful findings.</p>
+        </div>
+    `;
+}
+
+// ============================================================================
+// INITIALIZATION
+// ============================================================================
+
+// Try to auto-load default files
+async function init() {
+    const defaultFiles = [
+        'results/baseline_all_complete.json',
+        'results/merged_for_meeting.json',
+        'results/baseline_results.json',
+        'results/baseline_llama70b_level0.json',
+    ];
+    
+    for (const file of defaultFiles) {
+        try {
+            const response = await fetch(file);
+            if (response.ok) {
+                const data = await response.json();
+                if (data.results && data.results.length > 0) {
+                    processLoadedData(data, file);
+                    addFileChip(file.split('/').pop());
+                    return;  // Stop after first successful load
+                }
+            }
+        } catch (e) {
+            // Continue to next file
+        }
+    }
+    
+    // No files loaded, show instructions
+    document.getElementById('load-status').textContent = 
+        'No results found. Run experiments or drop JSON files here.';
+}
+
+init();
 </script>
 </body>
 </html>
-```
