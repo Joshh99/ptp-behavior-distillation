@@ -1,0 +1,60 @@
+----------------------Level 0 -----------------------------
+python src/experiments/run_full_baseline.py \
+    --num-problems 100 \
+    --complexity 0 \
+    --model "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo" \
+    --output results/baseline_llama70b_level0.json
+
+
+python src/experiments/run_full_baseline.py \
+    --num-problems 100 \
+    --complexity 0 \
+    --model "Qwen/Qwen2.5-72B-Instruct" \
+    --output results/baseline_qwen72b_level0.json
+
+
+python src/experiments/run_full_baseline.py \
+    --num-problems 100 \
+    --complexity 0 \
+    --model "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo" \
+    --output results/baseline_llama405b_level0.json
+
+python src/experiments/merge_results.py \
+    results/baseline_llama70b_level0.json \
+    results/baseline_qwen72b_level0.json \
+    results/baseline_llama405b_level0.json \
+    --output results/baseline_all_models_level0.json
+
+---------------Level 0---------------------------------------
+
+
+
+----------------Level 1 and 2 -------------------------------
+
+python src/experiments/run_full_baseline.py \
+    --num-problems 100 \
+    --complexity 1 2 \
+    --model "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo" \
+    --output results/baseline_llama70b_level1_2.json
+
+python src/experiments/run_full_baseline.py \
+    --num-problems 100 \
+    --complexity 1 2 \
+    --model "Qwen/Qwen2.5-72B-Instruct" \
+    --output results/baseline_qwen72b_level1_2.json
+
+python src/experiments/run_full_baseline.py \
+    --num-problems 100 \
+    --complexity 1 2 \
+    --model "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo" \
+    --output results/baseline_llama405b_level1_2.json
+
+
+python src/experiments/merge_results.py \
+       results/baseline_llama70b_level0.json \
+       results/baseline_llama70b_level1_2.json \
+       results/baseline_qwen72b_level0.json \
+       results/baseline_qwen72b_level1_2.json \
+       results/baseline_llama405b_level0.json \
+       results/baseline_llama405b_level1_2.json \
+       --output results/baseline_all_complete.json

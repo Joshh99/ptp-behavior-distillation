@@ -1,0 +1,149 @@
+{
+  "metadata": {
+    "timestamp": "2026-02-09T19:30:45.480447",
+    "complexity_levels": [
+      0
+    ],
+    "num_problems_per_level": 1,
+    "model": "Qwen/Qwen2.5-72B-Instruct",
+    "completed_timestamp": "2026-02-09T19:30:49.354536",
+    "total_experiments": 4,
+    "total_api_calls": 4
+  },
+  "results": [
+    {
+      "experiment": "l1_pure",
+      "model": "Qwen/Qwen2.5-72B-Instruct",
+      "complexity_level": 0,
+      "num_problems": 1,
+      "num_completed": 1,
+      "num_failed": 0,
+      "accuracy": 0.0,
+      "correct": 0,
+      "total_cost": 0.0,
+      "avg_cost": 0.0,
+      "total_time": 1.411696434020996,
+      "avg_time": 1.411696434020996,
+      "total_input_tokens": 0,
+      "total_output_tokens": 0,
+      "total_tokens": 0,
+      "avg_tokens": 0.0,
+      "results": [
+        {
+          "problem_id": 0,
+          "complexity_level": 0,
+          "query": "Sarah is a Main Cabin Class passenger flying from Orlando to Philadelphia with the following items:\n...",
+          "predicted": 0,
+          "expected": 1245,
+          "correct": false,
+          "cost": 0.0,
+          "time": 1.411696434020996,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "success": false
+        }
+      ]
+    },
+    {
+      "experiment": "l1_transparent",
+      "model": "Qwen/Qwen2.5-72B-Instruct",
+      "complexity_level": 0,
+      "num_problems": 1,
+      "num_completed": 1,
+      "num_failed": 0,
+      "accuracy": 0.0,
+      "correct": 0,
+      "total_cost": 0.0,
+      "avg_cost": 0.0,
+      "total_time": 1.0705411434173584,
+      "avg_time": 1.0705411434173584,
+      "total_input_tokens": 0,
+      "total_output_tokens": 0,
+      "total_tokens": 0,
+      "avg_tokens": 0.0,
+      "results": [
+        {
+          "problem_id": 0,
+          "complexity_level": 0,
+          "query": "Sarah is a Main Cabin Class passenger flying from Orlando to Philadelphia with the following items:\n...",
+          "predicted": 0,
+          "expected": 1245,
+          "correct": false,
+          "cost": 0.0,
+          "time": 1.0705411434173584,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "success": false
+        }
+      ]
+    },
+    {
+      "experiment": "cot",
+      "model": "Qwen/Qwen2.5-72B-Instruct",
+      "complexity_level": 0,
+      "num_problems": 1,
+      "num_completed": 0,
+      "num_failed": 1,
+      "accuracy": 0.0,
+      "correct": 0,
+      "total_cost": 0.0,
+      "avg_cost": 0,
+      "total_time": 0.0,
+      "avg_time": 0,
+      "total_input_tokens": 0,
+      "total_output_tokens": 0,
+      "total_tokens": 0,
+      "avg_tokens": 0,
+      "results": [
+        {
+          "problem_id": 0,
+          "complexity_level": 0,
+          "query": "Sarah is a Main Cabin Class passenger flying from Orlando to Philadelphia with the following items:\n...",
+          "predicted": 0,
+          "expected": 1245,
+          "correct": false,
+          "cost": 0.0,
+          "time": 0.6711304187774658,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "success": false,
+          "error": "Together API error: Error code: 400 - {\"message\": \"Unable to access non-serverless model Qwen/Qwen2.5-72B-Instruct. Please visit https://api.together.ai/models/Qwen/Qwen2.5-72B-Instruct to create and start a new dedicated endpoint for the model.\", \"type_\": \"invalid_request_error\", \"code\": \"model_not_available\"}"
+        }
+      ]
+    },
+    {
+      "experiment": "tool_aug",
+      "model": "Qwen/Qwen2.5-72B-Instruct",
+      "complexity_level": 0,
+      "num_problems": 1,
+      "num_completed": 0,
+      "num_failed": 1,
+      "accuracy": 0.0,
+      "correct": 0,
+      "total_cost": 0.0,
+      "avg_cost": 0,
+      "total_time": 0.0,
+      "avg_time": 0,
+      "total_input_tokens": 0,
+      "total_output_tokens": 0,
+      "total_tokens": 0,
+      "avg_tokens": 0,
+      "results": [
+        {
+          "problem_id": 0,
+          "complexity_level": 0,
+          "query": "Sarah is a Main Cabin Class passenger flying from Orlando to Philadelphia with the following items:\n...",
+          "predicted": 0,
+          "expected": 1245,
+          "correct": false,
+          "cost": 0.0,
+          "time": 0.6877365112304688,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "success": false,
+          "error": "Together API error: Error code: 400 - {\"message\": \"Unable to access non-serverless model Qwen/Qwen2.5-72B-Instruct. Please visit https://api.together.ai/models/Qwen/Qwen2.5-72B-Instruct to create and start a new dedicated endpoint for the model.\", \"type_\": \"invalid_request_error\", \"code\": \"model_not_available\"}"
+        }
+      ]
+    }
+  ]
+}

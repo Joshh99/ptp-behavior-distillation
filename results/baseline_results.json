@@ -1,0 +1,321 @@
+{
+  "metadata": {
+    "timestamp": "2026-02-05T20:40:58.126325",
+    "complexity_levels": [
+      0
+    ],
+    "num_problems_per_level": 5,
+    "total_experiments": 4,
+    "total_api_calls": 20
+  },
+  "results": [
+    {
+      "experiment": "l1_pure",
+      "complexity_level": 0,
+      "num_problems": 5,
+      "accuracy": 0.8,
+      "correct": 4,
+      "total_cost": 0.00388432,
+      "avg_cost": 0.000776864,
+      "total_time": 9.211368083953857,
+      "avg_time": 1.8422736167907714,
+      "total_input_tokens": 3445,
+      "total_output_tokens": 969,
+      "total_tokens": 4414,
+      "avg_tokens": 882.8,
+      "results": [
+        {
+          "problem_id": 0,
+          "complexity_level": 0,
+          "query": "Sarah is a Main Cabin Class passenger flying from Orlando to Philadelphia with the following items:\n...",
+          "predicted": 1245,
+          "expected": 1245,
+          "correct": true,
+          "cost": 0.00077616,
+          "time": 2.672619581222534,
+          "input_tokens": 688,
+          "output_tokens": 194
+        },
+        {
+          "problem_id": 1,
+          "complexity_level": 0,
+          "query": "Linda is a Business Class passenger flying from Charlotte to Phoenix with the following items:\n1. A ...",
+          "predicted": 1166,
+          "expected": 1166,
+          "correct": true,
+          "cost": 0.0007744000000000001,
+          "time": 1.7973856925964355,
+          "input_tokens": 688,
+          "output_tokens": 192
+        },
+        {
+          "problem_id": 2,
+          "complexity_level": 0,
+          "query": "Jessica is a First Class passenger flying from Las Vegas to Philadelphia with the following items:\n1...",
+          "predicted": 949,
+          "expected": 949,
+          "correct": true,
+          "cost": 0.00077352,
+          "time": 1.5365118980407715,
+          "input_tokens": 687,
+          "output_tokens": 192
+        },
+        {
+          "problem_id": 3,
+          "complexity_level": 0,
+          "query": "Daniel is a Main Cabin Class passenger flying from Toronto to New Orleans with the following items:\n...",
+          "predicted": 1518,
+          "expected": 1513,
+          "correct": false,
+          "cost": 0.00078056,
+          "time": 1.3696913719177246,
+          "input_tokens": 691,
+          "output_tokens": 196
+        },
+        {
+          "problem_id": 4,
+          "complexity_level": 0,
+          "query": "Joseph is a Main Plus Class passenger flying from Charlotte to Bogot\u00e1 with the following items:\n1. A...",
+          "predicted": 1434,
+          "expected": 1434,
+          "correct": true,
+          "cost": 0.00077968,
+          "time": 1.8351595401763916,
+          "input_tokens": 691,
+          "output_tokens": 195
+        }
+      ]
+    },
+    {
+      "experiment": "l1_transparent",
+      "complexity_level": 0,
+      "num_problems": 5,
+      "accuracy": 1.0,
+      "correct": 5,
+      "total_cost": 0.054633039999999994,
+      "avg_cost": 0.010926607999999999,
+      "total_time": 16.73965811729431,
+      "avg_time": 3.3479316234588623,
+      "total_input_tokens": 61115,
+      "total_output_tokens": 968,
+      "total_tokens": 62083,
+      "avg_tokens": 12416.6,
+      "results": [
+        {
+          "problem_id": 0,
+          "complexity_level": 0,
+          "query": "Sarah is a Main Cabin Class passenger flying from Orlando to Philadelphia with the following items:\n...",
+          "predicted": 1245,
+          "expected": 1245,
+          "correct": true,
+          "cost": 0.01092608,
+          "time": 2.693403720855713,
+          "input_tokens": 12222,
+          "output_tokens": 194
+        },
+        {
+          "problem_id": 1,
+          "complexity_level": 0,
+          "query": "Linda is a Business Class passenger flying from Charlotte to Phoenix with the following items:\n1. A ...",
+          "predicted": 1166,
+          "expected": 1166,
+          "correct": true,
+          "cost": 0.01092432,
+          "time": 2.6561453342437744,
+          "input_tokens": 12222,
+          "output_tokens": 192
+        },
+        {
+          "problem_id": 2,
+          "complexity_level": 0,
+          "query": "Jessica is a First Class passenger flying from Las Vegas to Philadelphia with the following items:\n1...",
+          "predicted": 949,
+          "expected": 949,
+          "correct": true,
+          "cost": 0.010923439999999998,
+          "time": 3.508326292037964,
+          "input_tokens": 12221,
+          "output_tokens": 192
+        },
+        {
+          "problem_id": 3,
+          "complexity_level": 0,
+          "query": "Daniel is a Main Cabin Class passenger flying from Toronto to New Orleans with the following items:\n...",
+          "predicted": 1513,
+          "expected": 1513,
+          "correct": true,
+          "cost": 0.0109296,
+          "time": 4.4193079471588135,
+          "input_tokens": 12225,
+          "output_tokens": 195
+        },
+        {
+          "problem_id": 4,
+          "complexity_level": 0,
+          "query": "Joseph is a Main Plus Class passenger flying from Charlotte to Bogot\u00e1 with the following items:\n1. A...",
+          "predicted": 1434,
+          "expected": 1434,
+          "correct": true,
+          "cost": 0.0109296,
+          "time": 3.462474822998047,
+          "input_tokens": 12225,
+          "output_tokens": 195
+        }
+      ]
+    },
+    {
+      "experiment": "cot",
+      "complexity_level": 0,
+      "num_problems": 5,
+      "accuracy": 0.0,
+      "correct": 0,
+      "total_cost": 0.05410328,
+      "avg_cost": 0.010820656,
+      "total_time": 28.422005653381348,
+      "avg_time": 5.684401130676269,
+      "total_input_tokens": 58240,
+      "total_output_tokens": 3241,
+      "total_tokens": 61481,
+      "avg_tokens": 12296.2,
+      "results": [
+        {
+          "problem_id": 0,
+          "complexity_level": 0,
+          "query": "Sarah is a Main Cabin Class passenger flying from Orlando to Philadelphia with the following items:\n...",
+          "predicted": 1205,
+          "expected": 1245,
+          "correct": false,
+          "cost": 0.010812559999999999,
+          "time": 5.334188222885132,
+          "input_tokens": 11647,
+          "output_tokens": 640
+        },
+        {
+          "problem_id": 1,
+          "complexity_level": 0,
+          "query": "Linda is a Business Class passenger flying from Charlotte to Phoenix with the following items:\n1. A ...",
+          "predicted": 1241,
+          "expected": 1166,
+          "correct": false,
+          "cost": 0.01100352,
+          "time": 6.906148195266724,
+          "input_tokens": 11647,
+          "output_tokens": 857
+        },
+        {
+          "problem_id": 2,
+          "complexity_level": 0,
+          "query": "Jessica is a First Class passenger flying from Las Vegas to Philadelphia with the following items:\n1...",
+          "predicted": 139,
+          "expected": 949,
+          "correct": false,
+          "cost": 0.010771200000000002,
+          "time": 5.029670238494873,
+          "input_tokens": 11646,
+          "output_tokens": 594
+        },
+        {
+          "problem_id": 3,
+          "complexity_level": 0,
+          "query": "Daniel is a Main Cabin Class passenger flying from Toronto to New Orleans with the following items:\n...",
+          "predicted": 283,
+          "expected": 1513,
+          "correct": false,
+          "cost": 0.010655920000000001,
+          "time": 4.410765886306763,
+          "input_tokens": 11650,
+          "output_tokens": 459
+        },
+        {
+          "problem_id": 4,
+          "complexity_level": 0,
+          "query": "Joseph is a Main Plus Class passenger flying from Charlotte to Bogot\u00e1 with the following items:\n1. A...",
+          "predicted": 2314,
+          "expected": 1434,
+          "correct": false,
+          "cost": 0.010860080000000001,
+          "time": 6.7412331104278564,
+          "input_tokens": 11650,
+          "output_tokens": 691
+        }
+      ]
+    },
+    {
+      "experiment": "tool_aug",
+      "complexity_level": 0,
+      "num_problems": 5,
+      "accuracy": 0.8,
+      "correct": 4,
+      "total_cost": 0.05320832,
+      "avg_cost": 0.010641664,
+      "total_time": 14.733389616012573,
+      "avg_time": 2.9466779232025146,
+      "total_input_tokens": 59315,
+      "total_output_tokens": 1149,
+      "total_tokens": 60464,
+      "avg_tokens": 12092.8,
+      "results": [
+        {
+          "problem_id": 0,
+          "complexity_level": 0,
+          "query": "Sarah is a Main Cabin Class passenger flying from Orlando to Philadelphia with the following items:\n...",
+          "predicted": 1245,
+          "expected": 1245,
+          "correct": true,
+          "cost": 0.01064096,
+          "time": 3.062169313430786,
+          "input_tokens": 11862,
+          "output_tokens": 230
+        },
+        {
+          "problem_id": 1,
+          "complexity_level": 0,
+          "query": "Linda is a Business Class passenger flying from Charlotte to Phoenix with the following items:\n1. A ...",
+          "predicted": 1166,
+          "expected": 1166,
+          "correct": true,
+          "cost": 0.0106392,
+          "time": 3.153322458267212,
+          "input_tokens": 11862,
+          "output_tokens": 228
+        },
+        {
+          "problem_id": 2,
+          "complexity_level": 0,
+          "query": "Jessica is a First Class passenger flying from Las Vegas to Philadelphia with the following items:\n1...",
+          "predicted": 949,
+          "expected": 949,
+          "correct": true,
+          "cost": 0.01063832,
+          "time": 2.9790947437286377,
+          "input_tokens": 11861,
+          "output_tokens": 228
+        },
+        {
+          "problem_id": 3,
+          "complexity_level": 0,
+          "query": "Daniel is a Main Cabin Class passenger flying from Toronto to New Orleans with the following items:\n...",
+          "predicted": 1518,
+          "expected": 1513,
+          "correct": false,
+          "cost": 0.010645360000000001,
+          "time": 2.9170749187469482,
+          "input_tokens": 11865,
+          "output_tokens": 232
+        },
+        {
+          "problem_id": 4,
+          "complexity_level": 0,
+          "query": "Joseph is a Main Plus Class passenger flying from Charlotte to Bogot\u00e1 with the following items:\n1. A...",
+          "predicted": 1434,
+          "expected": 1434,
+          "correct": true,
+          "cost": 0.010644480000000001,
+          "time": 2.6217281818389893,
+          "input_tokens": 11865,
+          "output_tokens": 231
+        }
+      ]
+    }
+  ]
+}

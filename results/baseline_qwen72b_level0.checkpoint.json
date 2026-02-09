@@ -1,0 +1,13 @@
+{
+  "metadata": {
+    "timestamp": "2026-02-09T19:19:17.782338",
+    "complexity_levels": [
+      0
+    ],
+    "num_problems_per_level": 100,
+    "model": "Qwen/Qwen2.5-72B-Instruct",
+    "checkpoint_timestamp": "2026-02-09T19:19:42.992747",
+    "is_checkpoint": true
+  },
+  "results": []
+}
