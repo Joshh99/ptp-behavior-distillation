@@ -231,7 +231,7 @@ def reload_config(config_path: Optional[str] = None) -> LLMConfig:
 # Provider-Specific Implementations
 # ============================================================================
 
-def _call_together(prompt: str, model_config: ModelConfig, max_tokens: int = 4096) -> str:
+def _call_together(prompt: str, model_config: ModelConfig, max_tokens: int = 4096) -> tuple[str, int, int]:
     """Call Together.ai API."""
     if not HAS_TOGETHER:
         # Fall back to OpenAI client with Together endpoint
@@ -258,7 +258,8 @@ def _call_together(prompt: str, model_config: ModelConfig, max_tokens: int = 409
             raise LLMError(f"Together API error: {e}")
 
     # Use native together client
-    api_key = model_config.get_api_key()
+    # api_key = model_config.get_api_key()
+    api_key = os.getenv(model_config.api_key_env)
     if not api_key:
         raise LLMError(f"API key not found in {model_config.api_key_env}")
 
@@ -267,10 +268,19 @@ def _call_together(prompt: str, model_config: ModelConfig, max_tokens: int = 409
     try:
         response = client.chat.completions.create(
             model=model_config.model_id,
-            max_tokens=max_tokens,
             messages=[{"role": "user", "content": prompt}],
+            max_tokens=max_tokens,
+            temperature=0.0,
         )
-        return response.choices[0].message.content
+        # Extract response text
+        content = response.choices[0].message.content
+        
+        # Extract token counts from usage
+        input_tokens = response.usage.prompt_tokens if hasattr(response, 'usage') else 0
+        output_tokens = response.usage.completion_tokens if hasattr(response, 'usage') else 0
+        
+        return content, input_tokens, output_tokens
+        
     except Exception as e:
         raise LLMError(f"Together API error: {e}")
 
@@ -391,7 +401,7 @@ def call_llm(
     prompt: str,
     model: Optional[str] = None,
     max_tokens: int = 4096,
-) -> str:
+) -> tuple[str, int, int]:
     """
     Call an LLM with the given prompt.
 
@@ -403,7 +413,7 @@ def call_llm(
         max_tokens: Maximum tokens in response
 
     Returns:
-        The LLM's response text
+        (response_text, input_tokens, output_tokens)
     """
     config = get_config()
     model_config = config.get_model(model)
@@ -477,45 +487,54 @@ def _extract_json_object(text: str) -> Optional[str]:
     return None
 
 
-def parse_structured_response(response: str, return_type: Type[T]) -> T:
+def parse_structured_response(response: str, expected_type: Type) -> Any:
     """
-    Parse a structured (JSON) response from an LLM.
-
-    Expects format: {"result": <value>}
+    Parse a structured JSON response from the LLM.
+    
+    The LLM is instructed to return {"result": <value>}, so we:
+    1. Extract the JSON object
+    2. Get the "result" field
+    3. Validate it matches expected_type
+    
+    Args:
+        response: Raw LLM response text
+        expected_type: Expected Python type
+        
+    Returns:
+        Parsed result (unwrapped from {"result": ...})
     """
-    # Try to extract JSON from the response
-    # Handle cases where LLM adds extra text
-    json_match = re.search(r'\{[^{}]*"result"[^{}]*\}', response, re.DOTALL)
-
-    if json_match:
-        json_str = json_match.group()
-    else:
-        # Try to find any JSON object using balanced brace matching
-        json_str = _extract_json_object(response)
-        if not json_str:
-            raise ParseError(f"No JSON found in response: {response[:200]}...")
-
+    # Extract JSON from response (handles markdown fences)
+    json_match = re.search(r'\{.*\}', response, re.DOTALL)
+    if not json_match:
+        raise ParseError(f"No JSON object found in response: {response[:200]}...")
+    
+    json_str = json_match.group()
+    
     try:
         data = json.loads(json_str)
     except json.JSONDecodeError as e:
-        raise ParseError(f"Invalid JSON: {e}\nResponse: {json_str[:200]}...")
-
-    # Extract result based on return type
-    origin = get_origin(return_type)
-
-    # If return type is Dict, use the entire parsed object (not just "result" key)
-    if origin is dict or return_type is dict:
-        result = data
-    elif "result" in data:
+        raise ParseError(f"Invalid JSON: {e}\nResponse: {response[:200]}...")
+    
+    # Check if it's wrapped in {"result": ...}
+    if isinstance(data, dict) and "result" in data:
+        # Unwrap it
         result = data["result"]
     else:
-        # Use the entire parsed object
+        # No wrapper, use as-is
         result = data
-
-    # Validate against return type
-    result = _coerce_type(result, return_type)
+    
+    # Type validation (basic)
+    if expected_type != Any:
+        # For Dict types, check if it's a dict
+        if hasattr(expected_type, '__origin__') and expected_type.__origin__ is dict:
+            if not isinstance(result, dict):
+                raise ParseError(f"Expected dict, got {type(result)}")
+        # For List types, check if it's a list
+        elif hasattr(expected_type, '__origin__') and expected_type.__origin__ is list:
+            if not isinstance(result, list):
+                raise ParseError(f"Expected list, got {type(result)}")
+    
     return result
-
 
 def parse_freeform_response(response: str, return_type: Type[T]) -> T:
     """
@@ -642,119 +661,131 @@ def _coerce_type(value: Any, target_type: Type[T]) -> T:
 
 def execute_ptool(
     spec: PToolSpec,
-    inputs: Dict[str, Any],
-    custom_backend: Optional[Callable] = None,
-    model_override: Optional[str] = None,
-    collect_traces: bool = True,
-    additional_context: Optional[str] = None,
+    kwargs: Dict[str, Any],
+    llm_backend: Optional[Callable] = None,
 ) -> Any:
     """
-    Execute a ptool with the given inputs.
-
+    Execute a ptool via LLM with full tracking.
+    
+    This is the core execution function that:
+    1. Formats the prompt from the ptool spec
+    2. Calls the LLM
+    3. Parses the response
+    4. Tracks tokens, cost, and execution time
+    5. Logs to trace store
+    
     Args:
-        spec: The ptool specification
-        inputs: Dictionary of input arguments
-        custom_backend: Optional custom LLM backend function
-        model_override: Override the model specified in the ptool
-        collect_traces: Whether to log this execution to the trace store
-        additional_context: Optional additional context to append to the prompt
-            (used for repair, ICL examples, etc.)
-
+        spec: PToolSpec defining the ptool
+        kwargs: Arguments to pass to the ptool
+        llm_backend: Optional custom LLM backend
+        
     Returns:
-        The parsed result from the LLM
+        Parsed result matching spec.return_type
     """
+    from .trace_store import get_trace_store, ExecutionTrace
     import time
     import uuid
-
-    # Generate trace ID for this execution
+    
+    trace_store = get_trace_store()
     trace_id = str(uuid.uuid4())[:8]
-
-    # Format the prompt
-    prompt = spec.format_prompt(**inputs)
-
-    # Add additional context if provided (for repair, ICL, etc.)
-    if additional_context:
-        prompt = f"{prompt}\n\n{additional_context}"
-
-    model = model_override or spec.model
-
-    logger.debug(f"Executing ptool {spec.name} with model {model}")
-
-    # Get trace store if tracing is enabled
-    trace_store = None
-    if TRACE_ENABLED and collect_traces:
-        try:
-            from .trace_store import get_trace_store, ExecutionTrace
-            trace_store = get_trace_store()
-
-            # Emit start event
-            trace_store.emit_ptool_start(spec.name, inputs, trace_id)
-        except ImportError:
-            pass  # trace_store not available
-
-    # Track timing
+    
+    # Emit start event
+    trace_store.emit_ptool_start(
+        ptool_name=spec.name,
+        args=kwargs,
+        trace_id=trace_id,
+    )
+    
+    # Format prompt
+    prompt = spec.format_prompt(**kwargs)
+    
+    # Emit LLM request
+    trace_store.emit_llm_request(
+        trace_id=trace_id,
+        model=spec.model,
+        prompt=prompt,
+    )
+    
+    # Execute
     start_time = time.time()
-    response = None
-    result = None
-    error_msg = None
-    success = False
-
     try:
-        # Emit LLM request event
-        if trace_store:
-            trace_store.emit_llm_request(trace_id, model, prompt)
-
-        # Call LLM
-        llm_start = time.time()
-        if custom_backend:
-            response = custom_backend(prompt, model)
+        if llm_backend:
+            # Custom backend - doesn't return tokens
+            response = llm_backend(prompt, spec.model)
+            input_tokens = 0
+            output_tokens = 0
         else:
-            response = call_llm(prompt, model)
-        llm_duration = (time.time() - llm_start) * 1000  # ms
-
-        # Emit LLM response event
-        if trace_store:
-            trace_store.emit_llm_response(trace_id, response, llm_duration)
-
-        logger.debug(f"Response length: {len(response)}")
-
+            # Standard backend - returns (response, input_tokens, output_tokens)
+            response, input_tokens, output_tokens = call_llm(prompt, spec.model)
+        
+        end_time = time.time()
+        execution_time_ms = (end_time - start_time) * 1000
+        
+        # Emit LLM response
+        trace_store.emit_llm_response(
+            trace_id=trace_id,
+            response=response,
+            latency_ms=execution_time_ms,
+        )
+        
         # Parse response based on output mode
         if spec.output_mode == "structured":
             result = parse_structured_response(response, spec.return_type)
         else:
             result = parse_freeform_response(response, spec.return_type)
-
-        success = True
-        logger.debug(f"ptool {spec.name} returned: {result!r}")
-
-    except Exception as e:
-        error_msg = str(e)
-        if trace_store:
-            trace_store.emit_error(trace_id, error_msg, spec.name)
-        raise
-
-    finally:
+        
+        # Calculate cost
+        estimated_cost = calculate_cost(
+            model=spec.model,
+            input_tokens=input_tokens,
+            output_tokens=output_tokens,
+        )
+        
         # Log execution trace
+        trace = ExecutionTrace(
+            ptool_name=spec.name,
+            inputs=kwargs,
+            output=result,
+            success=True,
+            execution_time_ms=execution_time_ms,
+            model_used=spec.model,
+            trace_id=trace_id,
+            prompt=prompt,
+            raw_response=response,
+            prompt_tokens=input_tokens,
+            completion_tokens=output_tokens,
+            total_tokens=input_tokens + output_tokens,
+            estimated_cost=estimated_cost,
+        )
+        trace_store.log_execution(trace)
+        
+        return result
+        
+    except Exception as e:
         end_time = time.time()
         execution_time_ms = (end_time - start_time) * 1000
-
-        if trace_store and TRACE_ENABLED and collect_traces:
-            from .trace_store import ExecutionTrace
-            trace = ExecutionTrace(
-                ptool_name=spec.name,
-                inputs=inputs,
-                output=result,
-                success=success,
-                execution_time_ms=execution_time_ms,
-                model_used=model,
-                trace_id=trace_id,
-                error=error_msg,
-                prompt=prompt,
-                raw_response=response,
-            )
-            trace_store.log_execution(trace)
-
-    return result
+        
+        # Log failed execution
+        trace = ExecutionTrace(
+            ptool_name=spec.name,
+            inputs=kwargs,
+            output=None,
+            success=False,
+            execution_time_ms=execution_time_ms,
+            model_used=spec.model,
+            trace_id=trace_id,
+            error=str(e),
+            prompt=prompt if 'prompt' in locals() else None,
+            raw_response=response if 'response' in locals() else None,
+            prompt_tokens=input_tokens if 'input_tokens' in locals() else 0,
+            completion_tokens=output_tokens if 'output_tokens' in locals() else 0,
+            total_tokens=0,
+            estimated_cost=0.0,
+        )
+        trace_store.log_execution(trace)
+        
+        trace_store.emit_error(trace_id=trace_id, error=str(e), ptool_name=spec.name)
+        raise
 
 
 def enable_tracing(enabled: bool = True) -> None:
@@ -844,3 +875,32 @@ def select_model_by_capability(capability: str) -> str:
 
     matching.sort(key=get_cost)
     return matching[0].name
+
+# Model pricing (USD per 1M tokens)
+# Prices from Together.ai as of Feb 2026
+MODEL_PRICING = {
+    "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo": {
+        "input": 0.88,
+        "output": 0.88,
+    },
+    "Qwen/Qwen2.5-7B-Instruct-Turbo": {
+        "input": 1.20,
+        "output": 1.20,
+    },
+    "deepseek-ai/DeepSeek-V3": {
+        "input": 0.60,
+        "output": 1.25,
+    },
+}
+
+def calculate_cost(model: str, input_tokens: int, output_tokens: int) -> float:
+    """Calculate estimated cost in USD."""
+    pricing = MODEL_PRICING.get(model)
+    if not pricing:
+        # Default pricing if model not found
+        return (input_tokens + output_tokens) / 1_000_000 * 1.0
+    
+    input_cost = (input_tokens / 1_000_000) * pricing["input"]
+    output_cost = (output_tokens / 1_000_000) * pricing["output"]
+    
+    return input_cost + output_cost

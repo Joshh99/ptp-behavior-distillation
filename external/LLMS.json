@@ -1,0 +1,23 @@
+{
+  "default_model": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+  "models": {
+    "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo": {
+      "provider": "together",
+      "model_id": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "api_key_env": "TOGETHER_API_KEY",
+      "cost": {"input": 0.88, "output": 0.88}
+    },
+    "Qwen/Qwen2.5-7B-Instruct-Turbo": {
+      "provider": "together",
+      "model_id": "Qwen/Qwen2.5-7B-Instruct-Turbo",
+      "api_key_env": "TOGETHER_API_KEY",
+      "cost": {"input": 1.20, "output": 1.20}
+    },
+    "deepseek-ai/DeepSeek-V3": {
+      "provider": "together",
+      "model_id": "deepseek-ai/DeepSeek-V3",
+      "api_key_env": "TOGETHER_API_KEY",
+      "cost": {"input": 0.60, "output": 1.25}
+    }
+  }
+}

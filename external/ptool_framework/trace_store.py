@@ -45,6 +45,12 @@ class ExecutionTrace:
     prompt: Optional[str] = None  # The actual prompt sent to LLM
     raw_response: Optional[str] = None  # Raw LLM response before parsing
 
+    # ADDED THESE NEW FIELDS:
+    prompt_tokens: int = 0
+    completion_tokens: int = 0
+    total_tokens: int = 0
+    estimated_cost: float = 0.0  # in USD
+
     def to_dict(self) -> dict:
         """Convert to dictionary for JSON serialization."""
         return asdict(self)
