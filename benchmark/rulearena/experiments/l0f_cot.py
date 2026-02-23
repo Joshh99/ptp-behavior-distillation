@@ -166,17 +166,18 @@ class L0F_CoT_Experiment(BaseExperiment):
                 instance_id=instance.instance_id,
                 predicted=predicted,
                 expected=instance.ground_truth_answer,
-                correct=exact_match,
-                time_seconds=elapsed,
+                is_correct_exact=exact_match,
+                is_correct_tolerance=tolerance_match,
+                latency_ms=elapsed * 1000,
                 cost_usd=cost,
                 input_tokens=input_tokens,
                 output_tokens=output_tokens,
+                calculator_name=instance.domain,
                 error=None,
                 raw_response=raw_response,
                 metadata={
                     "domain": instance.domain,
                     "complexity_level": instance.complexity_level,
-                    "tolerance_match": tolerance_match,
                 }
             )
 
@@ -187,11 +188,13 @@ class L0F_CoT_Experiment(BaseExperiment):
                 instance_id=instance.instance_id,
                 predicted=None,
                 expected=instance.ground_truth_answer,
-                correct=False,
-                time_seconds=elapsed,
+                is_correct_exact=False,
+                is_correct_tolerance=False,
+                latency_ms=elapsed * 1000,
                 cost_usd=0.0,
                 input_tokens=0,
                 output_tokens=0,
+                calculator_name=instance.domain,
                 error=str(e),
                 raw_response=None,
                 metadata={
@@ -284,8 +287,8 @@ if __name__ == "__main__":
     print(f"  Instance: {result.instance_id}")
     print(f"  Predicted: {result.predicted}")
     print(f"  Expected: {result.expected}")
-    print(f"  Correct: {result.correct}")
+    print(f"  Correct: {result.is_correct_exact}")
     print(f"  Cost: ${result.cost_usd:.4f}")
-    print(f"  Time: {result.time_seconds:.2f}s")
+    print(f"  Time: {result.latency_ms:.0f}ms")
     if result.error:
         print(f"  Error: {result.error}")
