@@ -18,13 +18,20 @@ from typing import Any, Dict, List, Optional
 REPO_ROOT = Path(__file__).parent.parent.parent.parent
 RULEARENA_PATH = REPO_ROOT / "external" / "RuleArena"
 
-# Import airline calculator
+# Import domain calculators
 try:
     from benchmark.rulearena.calculators.airline import compute_airline_fee
     AIRLINE_COMPUTE_FN = compute_airline_fee
 except Exception as e:
     print(f"Warning: Could not load airline calculator: {e}")
     AIRLINE_COMPUTE_FN = None
+
+try:
+    from benchmark.rulearena.calculators.tax import compute_tax_fee
+    TAX_COMPUTE_FN = compute_tax_fee
+except Exception as e:
+    print(f"Warning: Could not load tax calculator: {e}")
+    TAX_COMPUTE_FN = None
 
 
 @dataclass
@@ -163,7 +170,7 @@ class RuleArenaDataset:
             metadata = problem_data.get('info', {})
 
         # Compute ground truth if possible
-        ground_truth = self._compute_ground_truth(domain, metadata if domain != "tax" else {})
+        ground_truth = self._compute_ground_truth(domain, problem_data, metadata)
 
         return RuleArenaInstance(
             instance_id=f"{domain}_{complexity}_{idx}",
@@ -176,25 +183,28 @@ class RuleArenaDataset:
             metadata=metadata,
         )
 
-    def _compute_ground_truth(self, domain: str, info: Dict) -> Any:
+    def _compute_ground_truth(self, domain: str, problem_data: Dict, metadata: Dict) -> Any:
         """
         Compute ground truth using domain-specific calculators.
 
         Args:
             domain: Domain name (airline, nba, tax)
-            info: Problem info dict
+            problem_data: Raw problem dict from the JSON file
+            metadata: Processed metadata stored on the instance
 
         Returns:
             Ground truth answer or None if computation fails
         """
         try:
             if domain == "airline" and AIRLINE_COMPUTE_FN is not None:
-                return AIRLINE_COMPUTE_FN(info)
+                return AIRLINE_COMPUTE_FN(metadata)
+            elif domain == "tax" and TAX_COMPUTE_FN is not None:
+                return TAX_COMPUTE_FN(metadata)
+            elif domain == "nba":
+                return problem_data.get('answer')
             else:
-                # For NBA and tax, ground truth not yet implemented
                 return None
         except Exception as e:
-            # Silently fail - ground truth will be None
             return None
 
 
