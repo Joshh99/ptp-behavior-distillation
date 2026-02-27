@@ -162,9 +162,10 @@ class RuleArenaDataset:
         problem_data: Dict, rules_text: str
     ) -> RuleArenaInstance:
         """Create a RuleArenaInstance from problem data."""
-        # Tax problems have no 'info' key — store full problem_data so
-        # experiments can build the query from 'dict'/'pydantic' keys.
-        if domain == "tax":
+        # Tax and NBA problems have no 'info' key — store full problem_data
+        # so experiments can access 'dict'/'pydantic' (tax) or
+        # 'team_situations'/'player_situations'/'operations' (NBA).
+        if domain in ("tax", "nba"):
             metadata = problem_data
         else:
             metadata = problem_data.get('info', {})

@@ -1,0 +1,9 @@
+run_id,experiment_name,level,model,domain,complexity,n,accuracy_exact,accuracy_tolerance,f1_macro,error_count,error_rate,cost_per_problem,total_cost,avg_latency_ms,total_input_tokens,total_output_tokens,run_timestamp
+l0f_cot_debug,l0f_cot,L0F,deepseek-ai/DeepSeek-V3,nba,mixed,216,0.0046,0.0046,,0,0.0,0.000998,0.21566,15302.2,114696,201390,2026-02-26T19:43:24.016449+00:00
+l0f_cot_airline,l0f_cot_airline,L0F,deepseek-ai/DeepSeek-V3,airline,mixed,300,0.4833,0.49,,0,0.0,0.005404,1.621335,25626.6,3856863,515862,2026-02-27T13:40:19.255231+00:00
+l0f_cot_nba,l0f_cot_nba,L0F,deepseek-ai/DeepSeek-V3,nba,mixed,216,0.6435,0.6435,0.4955,0,0.0,0.007128,1.539683,13286.7,4621320,170319,2026-02-27T11:54:46.846519+00:00
+l0f_cot_tax,l0f_cot_tax,L0F,deepseek-ai/DeepSeek-V3,tax,mixed,300,0.3533,0.49,,0,0.0,0.004987,1.495971,37632.7,2512277,824764,2026-02-27T11:55:04.918072+00:00
+l1_ptool_debug,l1_ptool,L1,deepseek-ai/DeepSeek-V3,tax,mixed,300,0.9967,0.9967,,0,0.0,0.004268,1.280358,13916.6,3371186,298891,2026-02-26T19:56:13.364721+00:00
+l1_ptool_airline,l1_ptool_airline,L1,deepseek-ai/DeepSeek-V3,airline,mixed,300,0.77,0.7967,,0,0.0,0.000712,0.213659,6843.6,422435,96587,2026-02-27T10:58:56.613838+00:00
+l1_ptool_nba,l1_ptool_nba,L1,deepseek-ai/DeepSeek-V3,nba,mixed,216,0.8009,0.8009,0.4447,0,0.0,0.000922,0.199058,5080.6,509155,51457,2026-02-27T11:56:24.010157+00:00
+l1_ptool_tax,l1_ptool_tax,L1,deepseek-ai/DeepSeek-V3,tax,mixed,300,0.9967,0.9967,,0,0.0,0.004268,1.280287,14986.5,3371186,298812,2026-02-27T11:55:48.915770+00:00

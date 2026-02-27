@@ -34,6 +34,7 @@ class ExperimentResult:
     category: str = ""               # Category placeholder
     timestamp: str = ""              # ISO-format creation time
     error: Optional[str] = None      # Error message if failed
+    failure_mode: str = "none"       # none | extraction_failure | calculation_error | scope_error
     raw_response: Optional[str] = None
     metadata: Dict = field(default_factory=dict)
 
@@ -68,6 +69,7 @@ class ExperimentResult:
             "category": self.category,
             "timestamp": self.timestamp,
             "error": self.error,
+            "failure_mode": self.failure_mode,
             "raw_response": self.raw_response,
             "metadata": convert_value(self.metadata),
         }

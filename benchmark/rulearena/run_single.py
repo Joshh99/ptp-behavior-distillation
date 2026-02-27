@@ -32,6 +32,7 @@ def run_experiment(
     n: int = 3,
     domain: Optional[str] = None,
     seed: int = 42,
+    debug: bool = False,
 ):
     """
     Run a single experiment on n instances.
@@ -65,7 +66,10 @@ def run_experiment(
     print(f"Sampled {len(instances)} instances")
 
     # Load experiment
-    if experiment_name == "l0f_cot":
+    if experiment_name == "l0_python":
+        from benchmark.rulearena.experiments.l0_python import L0PythonExperiment
+        experiment = L0PythonExperiment()
+    elif experiment_name == "l0f_cot":
         from benchmark.rulearena.experiments.l0f_cot import L0F_CoT_Experiment
         experiment = L0F_CoT_Experiment()
     elif experiment_name == "l1_ptool":
@@ -96,6 +100,18 @@ def run_experiment(
 
         results.append(result)
 
+        if debug:
+            print("\n" + "-" * 60)
+            print(f"DEBUG [{instance.instance_id}]")
+            print("-" * 60)
+            print(f"RAW LLM RESPONSE:\n{result.raw_response}")
+            print("-" * 60)
+            print(f"EXTRACTED ANSWER : {result.predicted!r}")
+            print(f"GROUND TRUTH     : {result.expected!r}")
+            print(f"EXACT MATCH      : {result.is_correct_exact}")
+            print(f"TOLERANCE MATCH  : {result.is_correct_tolerance}")
+            print("-" * 60 + "\n")
+
     # Summary
     print("\n" + "=" * 60)
     print("SUMMARY")
@@ -114,15 +130,56 @@ def run_experiment(
     print(f"Total cost: ${total_cost:.4f}")
     print(f"Avg cost: ${total_cost/total:.4f}")
 
+    # Failure mode breakdown
+    from collections import Counter
+    failure_counts = Counter(getattr(r, 'failure_mode', 'none') for r in results)
+    print(f"\nFailure modes:")
+    for mode in ["none", "extraction_failure", "calculation_error", "scope_error"]:
+        count = failure_counts.get(mode, 0)
+        if count > 0 or mode == "none":
+            print(f"  {mode + ':':25s} {count}/{total}")
+    for mode in sorted(failure_counts):
+        if mode not in ["none", "extraction_failure", "calculation_error", "scope_error"]:
+            print(f"  {mode + ':':25s} {failure_counts[mode]}/{total}")
+
+    # Compute F1 macro for NBA domain (boolean classification)
+    nba_results = [r for r in results if r.metadata.get("domain") == "nba" and not r.error]
+    f1_macro = None
+    if nba_results:
+        y_true = [r.expected for r in nba_results]
+        y_pred = [r.predicted for r in nba_results]
+        if all(isinstance(v, bool) for v in y_true + y_pred):
+            from sklearn.metrics import f1_score
+            f1_macro = float(f1_score(y_true, y_pred, average="macro"))
+            print(f"F1 macro (NBA): {f1_macro:.4f}")
+
     # Save results
     output_dir = Path("benchmark_results") / "rulearena"
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    output_file = output_dir / f"{experiment_name}_debug.json"
+    domain_suffix = domain if domain else "all"
+    output_file = output_dir / f"{experiment_name}_{domain_suffix}.json"
     results_data = [r.to_dict() for r in results]
 
+    # Wrap in envelope with run-level summary
+    failure_modes_summary = dict(failure_counts)
+    output_envelope = {
+        "run_summary": {
+            "experiment_name": experiment_name,
+            "n": total,
+            "accuracy_exact": correct / total if total > 0 else 0.0,
+            "accuracy_tolerance": tolerance / total if total > 0 else 0.0,
+            "f1_macro": f1_macro,
+            "error_count": errors,
+            "failure_modes": failure_modes_summary,
+            "total_cost_usd": total_cost,
+            "avg_cost_usd": total_cost / total if total > 0 else 0.0,
+        },
+        "results": results_data,
+    }
+
     with open(output_file, 'w') as f:
-        json.dump(results_data, f, indent=2)
+        json.dump(output_envelope, f, indent=2)
 
     print(f"\nResults saved to: {output_file}")
     return results
@@ -218,22 +275,33 @@ def main():
         action="store_true",
         help="Generate HTML report after running experiments"
     )
+    parser.add_argument(
+        "--debug-n",
+        type=int,
+        default=None,
+        metavar="N",
+        help="Run N instances with verbose debug output (raw response, extraction, ground truth)"
+    )
 
     args = parser.parse_args()
+
+    debug = args.debug_n is not None
+    n = args.debug_n if debug else args.n
 
     if len(args.experiment) == 1:
         # Single experiment
         run_experiment(
             experiment_name=args.experiment[0],
-            n=args.n,
+            n=n,
             domain=args.domain,
             seed=args.seed,
+            debug=debug,
         )
     else:
         # Multiple experiments - always generate report
         run_multiple_experiments(
             experiment_names=args.experiment,
-            n=args.n,
+            n=n,
             domain=args.domain,
             seed=args.seed,
             generate_report=True,
@@ -243,11 +311,18 @@ def main():
     if len(args.experiment) == 1 and args.report:
         exp_name = args.experiment[0]
         output_dir = Path("benchmark_results") / "rulearena"
-        results_file = output_dir / f"{exp_name}_debug.json"
+        domain_suffix = args.domain if args.domain else "all"
+        results_file = output_dir / f"{exp_name}_{domain_suffix}.json"
 
         if results_file.exists():
             with open(results_file, 'r') as f:
-                results_data = json.load(f)
+                raw_data = json.load(f)
+
+            # Handle envelope format or legacy flat list
+            if isinstance(raw_data, dict) and "results" in raw_data:
+                results_data = raw_data["results"]
+            else:
+                results_data = raw_data
 
             # Convert back to ExperimentResult objects
             from benchmark.rulearena.experiments.base import ExperimentResult
@@ -256,13 +331,14 @@ def main():
                     instance_id=r['instance_id'],
                     predicted=r['predicted'],
                     expected=r['expected'],
-                    is_correct_exact=r.get('is_correct_exact', r.get('correct', False)),
-                    is_correct_tolerance=r.get('is_correct_tolerance', r.get('correct', False)),
-                    latency_ms=r.get('latency_ms', r.get('time_seconds', 0) * 1000),
+                    is_correct_exact=r.get('is_correct_exact', False),
+                    is_correct_tolerance=r.get('is_correct_tolerance', False),
+                    latency_ms=r.get('latency_ms', 0.0),
                     cost_usd=r['cost_usd'],
                     input_tokens=r['input_tokens'],
                     output_tokens=r['output_tokens'],
                     error=r.get('error'),
+                    failure_mode=r.get('failure_mode', 'none'),
                     raw_response=r.get('raw_response'),
                     metadata=r.get('metadata', {}),
                 )

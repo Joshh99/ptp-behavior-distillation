@@ -1,0 +1,302 @@
+{
+  "l0f_cot": {
+    "experiment_name": "l0f_cot",
+    "experiment_level": "L0F",
+    "total_instances": 10,
+    "correct_exact": 0,
+    "accuracy_exact": 0.0,
+    "correct_tolerance": 0,
+    "accuracy_tolerance": 0.0,
+    "total_cost_usd": 0.0099264,
+    "avg_cost_usd": 0.00099264,
+    "avg_latency_ms": 15479.218006134033,
+    "total_input_tokens": 6466,
+    "total_output_tokens": 8874,
+    "total_tokens": 15340,
+    "error_count": 0,
+    "error_rate": 0.0,
+    "by_category": {
+      "airline": {
+        "category": "airline",
+        "total_instances": 4,
+        "correct_exact": 0,
+        "accuracy_exact": 0.0,
+        "correct_tolerance": 0,
+        "accuracy_tolerance": 0.0,
+        "total_cost_usd": 0.006600900000000001,
+        "avg_cost_usd": 0.0016502250000000002,
+        "avg_latency_ms": 28199.24157857895,
+        "error_count": 0,
+        "error_rate": 0.0
+      },
+      "nba": {
+        "category": "nba",
+        "total_instances": 3,
+        "correct_exact": 0,
+        "accuracy_exact": 0.0,
+        "correct_tolerance": 0,
+        "accuracy_tolerance": 0.0,
+        "total_cost_usd": 0.0021672,
+        "avg_cost_usd": 0.0007224000000000001,
+        "avg_latency_ms": 9192.431211471558,
+        "error_count": 0,
+        "error_rate": 0.0
+      },
+      "tax": {
+        "category": "tax",
+        "total_instances": 3,
+        "correct_exact": 0,
+        "accuracy_exact": 0.0,
+        "correct_tolerance": 0,
+        "accuracy_tolerance": 0.0,
+        "total_cost_usd": 0.0011583000000000001,
+        "avg_cost_usd": 0.00038610000000000006,
+        "avg_latency_ms": 4805.973370869954,
+        "error_count": 0,
+        "error_rate": 0.0
+      }
+    },
+    "by_calculator": {
+      "airline_level_2": {
+        "calculator_name": "airline_level_2",
+        "total_instances": 1,
+        "correct_exact": 0,
+        "accuracy_exact": 0.0,
+        "correct_tolerance": 0,
+        "accuracy_tolerance": 0.0,
+        "avg_cost_usd": 0.0016023,
+        "error_count": 0
+      },
+      "airline_level_1": {
+        "calculator_name": "airline_level_1",
+        "total_instances": 1,
+        "correct_exact": 0,
+        "accuracy_exact": 0.0,
+        "correct_tolerance": 0,
+        "accuracy_tolerance": 0.0,
+        "avg_cost_usd": 0.0017652000000000002,
+        "error_count": 0
+      },
+      "nba_level_0": {
+        "calculator_name": "nba_level_0",
+        "total_instances": 1,
+        "correct_exact": 0,
+        "accuracy_exact": 0.0,
+        "correct_tolerance": 0,
+        "accuracy_tolerance": 0.0,
+        "avg_cost_usd": 0.0004968,
+        "error_count": 0
+      },
+      "tax_level_2": {
+        "calculator_name": "tax_level_2",
+        "total_instances": 1,
+        "correct_exact": 0,
+        "accuracy_exact": 0.0,
+        "correct_tolerance": 0,
+        "accuracy_tolerance": 0.0,
+        "avg_cost_usd": 0.00029549999999999997,
+        "error_count": 0
+      },
+      "nba_level_1": {
+        "calculator_name": "nba_level_1",
+        "total_instances": 1,
+        "correct_exact": 0,
+        "accuracy_exact": 0.0,
+        "correct_tolerance": 0,
+        "accuracy_tolerance": 0.0,
+        "avg_cost_usd": 0.0010170000000000001,
+        "error_count": 0
+      },
+      "tax_level_0": {
+        "calculator_name": "tax_level_0",
+        "total_instances": 1,
+        "correct_exact": 0,
+        "accuracy_exact": 0.0,
+        "correct_tolerance": 0,
+        "accuracy_tolerance": 0.0,
+        "avg_cost_usd": 0.0003216,
+        "error_count": 0
+      },
+      "airline_level_0": {
+        "calculator_name": "airline_level_0",
+        "total_instances": 2,
+        "correct_exact": 0,
+        "accuracy_exact": 0.0,
+        "correct_tolerance": 0,
+        "accuracy_tolerance": 0.0,
+        "avg_cost_usd": 0.0016167,
+        "error_count": 0
+      },
+      "nba_level_2": {
+        "calculator_name": "nba_level_2",
+        "total_instances": 1,
+        "correct_exact": 0,
+        "accuracy_exact": 0.0,
+        "correct_tolerance": 0,
+        "accuracy_tolerance": 0.0,
+        "avg_cost_usd": 0.0006534,
+        "error_count": 0
+      },
+      "tax_level_1": {
+        "calculator_name": "tax_level_1",
+        "total_instances": 1,
+        "correct_exact": 0,
+        "accuracy_exact": 0.0,
+        "correct_tolerance": 0,
+        "accuracy_tolerance": 0.0,
+        "avg_cost_usd": 0.0005412,
+        "error_count": 0
+      }
+    }
+  },
+  "l1_ptool": {
+    "experiment_name": "l1_ptool",
+    "experiment_level": "L1",
+    "total_instances": 10,
+    "correct_exact": 3,
+    "accuracy_exact": 0.3,
+    "correct_tolerance": 4,
+    "accuracy_tolerance": 0.4,
+    "total_cost_usd": 0.0054516,
+    "avg_cost_usd": 0.00054516,
+    "avg_latency_ms": 5820.445108413696,
+    "total_input_tokens": 8269,
+    "total_output_tokens": 3301,
+    "total_tokens": 11570,
+    "error_count": 6,
+    "error_rate": 0.6,
+    "by_category": {
+      "airline": {
+        "category": "airline",
+        "total_instances": 4,
+        "correct_exact": 3,
+        "accuracy_exact": 0.75,
+        "correct_tolerance": 4,
+        "accuracy_tolerance": 1.0,
+        "total_cost_usd": 0.0024186,
+        "avg_cost_usd": 0.00060465,
+        "avg_latency_ms": 5094.887912273407,
+        "error_count": 0,
+        "error_rate": 0.0
+      },
+      "nba": {
+        "category": "nba",
+        "total_instances": 3,
+        "correct_exact": 0,
+        "accuracy_exact": 0.0,
+        "correct_tolerance": 0,
+        "accuracy_tolerance": 0.0,
+        "total_cost_usd": 0.0017820000000000002,
+        "avg_cost_usd": 0.000594,
+        "avg_latency_ms": 8028.260389963786,
+        "error_count": 3,
+        "error_rate": 1.0
+      },
+      "tax": {
+        "category": "tax",
+        "total_instances": 3,
+        "correct_exact": 0,
+        "accuracy_exact": 0.0,
+        "correct_tolerance": 0,
+        "accuracy_tolerance": 0.0,
+        "total_cost_usd": 0.001251,
+        "avg_cost_usd": 0.000417,
+        "avg_latency_ms": 4580.039421717326,
+        "error_count": 3,
+        "error_rate": 1.0
+      }
+    },
+    "by_calculator": {
+      "airline_level_2": {
+        "calculator_name": "airline_level_2",
+        "total_instances": 1,
+        "correct_exact": 1,
+        "accuracy_exact": 1.0,
+        "correct_tolerance": 1,
+        "accuracy_tolerance": 1.0,
+        "avg_cost_usd": 0.0007374,
+        "error_count": 0
+      },
+      "airline_level_1": {
+        "calculator_name": "airline_level_1",
+        "total_instances": 1,
+        "correct_exact": 0,
+        "accuracy_exact": 0.0,
+        "correct_tolerance": 1,
+        "accuracy_tolerance": 1.0,
+        "avg_cost_usd": 0.0006312,
+        "error_count": 0
+      },
+      "nba_level_0": {
+        "calculator_name": "nba_level_0",
+        "total_instances": 1,
+        "correct_exact": 0,
+        "accuracy_exact": 0.0,
+        "correct_tolerance": 0,
+        "accuracy_tolerance": 0.0,
+        "avg_cost_usd": 0.0005793,
+        "error_count": 1
+      },
+      "tax_level_2": {
+        "calculator_name": "tax_level_2",
+        "total_instances": 1,
+        "correct_exact": 0,
+        "accuracy_exact": 0.0,
+        "correct_tolerance": 0,
+        "accuracy_tolerance": 0.0,
+        "avg_cost_usd": 0.00039,
+        "error_count": 1
+      },
+      "nba_level_1": {
+        "calculator_name": "nba_level_1",
+        "total_instances": 1,
+        "correct_exact": 0,
+        "accuracy_exact": 0.0,
+        "correct_tolerance": 0,
+        "accuracy_tolerance": 0.0,
+        "avg_cost_usd": 0.0006342,
+        "error_count": 1
+      },
+      "tax_level_0": {
+        "calculator_name": "tax_level_0",
+        "total_instances": 1,
+        "correct_exact": 0,
+        "accuracy_exact": 0.0,
+        "correct_tolerance": 0,
+        "accuracy_tolerance": 0.0,
+        "avg_cost_usd": 0.00047100000000000006,
+        "error_count": 1
+      },
+      "airline_level_0": {
+        "calculator_name": "airline_level_0",
+        "total_instances": 2,
+        "correct_exact": 2,
+        "accuracy_exact": 1.0,
+        "correct_tolerance": 2,
+        "accuracy_tolerance": 1.0,
+        "avg_cost_usd": 0.000525,
+        "error_count": 0
+      },
+      "nba_level_2": {
+        "calculator_name": "nba_level_2",
+        "total_instances": 1,
+        "correct_exact": 0,
+        "accuracy_exact": 0.0,
+        "correct_tolerance": 0,
+        "accuracy_tolerance": 0.0,
+        "avg_cost_usd": 0.0005685,
+        "error_count": 1
+      },
+      "tax_level_1": {
+        "calculator_name": "tax_level_1",
+        "total_instances": 1,
+        "correct_exact": 0,
+        "accuracy_exact": 0.0,
+        "correct_tolerance": 0,
+        "accuracy_tolerance": 0.0,
+        "avg_cost_usd": 0.00039,
+        "error_count": 1
+      }
+    }
+  }
+}

@@ -134,10 +134,26 @@ class L0F_CoT_Experiment(BaseExperiment):
             # Build prompt
             prompt = self._build_prompt(instance)
 
+            # Build messages — airline gets a domain-specific system prompt
+            messages = []
+            if instance.domain == "airline":
+                messages.append({
+                    "role": "system",
+                    "content": (
+                        "You are a helpful assistant at American Airlines. "
+                        "You are given the information of a passenger, his / her items, "
+                        "his / her special needs, and the policies of American Airlines. "
+                        "You should compute the total cost (including the flight ticket fee, "
+                        "checked bag fees, cost of special needs) according to the policies "
+                        "for the passenger."
+                    ),
+                })
+            messages.append({"role": "user", "content": prompt})
+
             # Call LLM
             response = self.client.chat.completions.create(
                 model=self.model_id,
-                messages=[{"role": "user", "content": prompt}],
+                messages=messages,
                 temperature=self.temperature,
                 max_tokens=self.max_tokens,
                 seed=self.seed,
@@ -149,7 +165,7 @@ class L0F_CoT_Experiment(BaseExperiment):
             output_tokens = response.usage.completion_tokens
 
             # Parse answer
-            predicted = self._parse_answer(raw_response)
+            predicted = self._parse_answer(raw_response, instance.domain)
 
             # Compare with ground truth
             exact_match, tolerance_match = self.compare_answers(
@@ -161,6 +177,14 @@ class L0F_CoT_Experiment(BaseExperiment):
 
             # Calculate time
             elapsed = time.time() - start_time
+
+            # Determine failure mode
+            if predicted is None:
+                failure_mode = "extraction_failure"
+            elif exact_match:
+                failure_mode = "none"
+            else:
+                failure_mode = "calculation_error"
 
             return ExperimentResult(
                 instance_id=instance.instance_id,
@@ -174,6 +198,7 @@ class L0F_CoT_Experiment(BaseExperiment):
                 output_tokens=output_tokens,
                 calculator_name=instance.domain,
                 error=None,
+                failure_mode=failure_mode,
                 raw_response=raw_response,
                 metadata={
                     "domain": instance.domain,
@@ -196,6 +221,7 @@ class L0F_CoT_Experiment(BaseExperiment):
                 output_tokens=0,
                 calculator_name=instance.domain,
                 error=str(e),
+                failure_mode="extraction_failure",
                 raw_response=None,
                 metadata={
                     "domain": instance.domain,
@@ -213,28 +239,157 @@ class L0F_CoT_Experiment(BaseExperiment):
         if instance.domain == "tax":
             return build_tax_query(instance.metadata)
 
-        prompt = f"""You are solving a {instance.domain} calculation problem.
+        if instance.domain == "nba":
+            return f"""You are a helpful NBA team consultant.
 
-RULES:
-{instance.rules_text[:2000]}
+{instance.rules_text}
 
-PROBLEM:
 {instance.problem_text}
 
-Think step by step. Show your reasoning, then give your final numeric answer on the last line as:
-ANSWER: <number>
+Analyze the described operations and explicitly state the type of Salary Cap Exceptions if you think the exception should be involved. Conclude your response with:
+* "Answer: False." if there is no violation to the rules;
+* "Answer: True. Illegal Operation: X. Problematic Team: Y." if Team Y in Operation X violates the rules. Both X and Y should be a single capital letter.
+Your response:
 """
-        return prompt
 
-    def _parse_answer(self, response: str) -> Optional[float]:
+        # Airline: match RuleArena reference prompt structure exactly
+        _AIRLINE_EXAMPLE = """\
+Here is an example for you to follow:
+<example>
+John is a Main Plus Class passenger flying from Orlando to Lima with the following items:
+1. A backpack: 21 x 11 x 7 inches, 9 lbs;
+2. A luggage box: 51 x 24 x 27 inches, 65 lbs;
+3. A backpack: 46 x 29 x 24 inches, 85 lbs;
+4. A luggage box: 35 x 12 x 11 inches, 44 lbs;
+5. A luggage box: 30 x 11 x 10 inches, 33 lbs;
+John's flight ticket is $448. Compute the total cost for him step by step and end your response with "The total cost is $xxx." (xxx is a number)
+Your response:
+To calculate the total cost for John, we need to consider the flight ticket cost, checked bag fees, and any overweight or oversize fees according to American Airlines' policies.
+
+Flight Ticket Cost:
+- John's flight ticket: $448
+
+Carry-on Allowance:
+- John is allowed 1 carry-on bag and 1 personal item.
+- Item 1 (Backpack):
+  - Dimensions: 21 x 11 x 7 inches
+  - Weight: 9 lbs
+  - This fits within the carry-on size limit of 22 x 14 x 9 inches.
+  - Fee: $0 (Allowed as carry-on bag)
+- John does not have any items that fit the personal item dimensions (18 x 14 x 8 inches). So, no personal item is carried.
+
+Checked Bags:
+- Items to be checked: Items 2, 3, 4, and 5
+- John is a Main Plus passenger, which includes 1 extra free checked bag in addition to the Main Cabin allowance, for a total of 2 free checked bags.
+- Checked Bag Fees:
+  - First Bag: $0 (free)
+  - Second Bag: $0 (free)
+  - Third Bag: $200
+  - Fourth Bag: $200
+
+Fees for Each Checked Bag:
+
+1. Item 2 (Luggage box):
+   - Dimensions: 51 x 24 x 27 inches
+     - Total dimensions: 51 + 24 + 27 = 102 inches
+     - Over the standard size limit of 62 inches.
+   - Weight: 65 lbs
+     - Over the standard weight limit of 50 lbs but under 70 lbs.
+   - Checking Fee:
+     - For the first checked bag, the checking fee is $0.
+   - Oversize Fee:
+     - For dimensions over 65 inches up to 115 inches between the U.S. and South America, the fee is $150.
+   - Overweight Fee:
+     - For weights over 53 lbs up to 70 lbs, the fee is $100.
+   - The higher of oversize and overweight fee should apply.
+   - Total Fee for Item 2: $0 (checking) + $150 (oversize) = $150
+2. Item 3 (Backpack):
+   - Dimensions: 46 x 29 x 24 inches
+     - Total dimensions: 46 + 29 + 24 = 99 inches
+     - Over the standard size limit of 62 inches.
+   - Weight: 85 lbs
+     - Over the standard weight limit of 50 lbs and over 70 lbs but under 100 lbs.
+   - Checking Fee:
+     - For the second checked bag, the checking fee is $0.
+   - Oversize Fee:
+     - For dimensions over 65 inches up to 115 inches between the U.S. and South America, the fee is $150.
+   - Overweight Fee:
+     - For weights over 70 lbs up to 100 lbs, the fee is $200.
+   - The higher of oversize and overweight fee should apply.
+   - Total Fee for Item 3: $0 (checking) + $200 (overweight) = $200
+3. Item 4 (Luggage box):
+   - Dimensions: 35 x 12 x 11 inches
+     - Total dimensions: 35 + 12 + 11 = 58 inches
+     - Within the standard size limit of 62 inches.
+   - Weight: 44 lbs
+     - Within the standard weight limit of 50 lbs.
+   - Checking Fee:
+     - For the third checked bag, the checking fee is $200.
+   - Total Fee for Item 4: $200 (checking) + $0 (No overweight or oversize fees) = $200
+4. Item 5 (Luggage box):
+   - Dimensions: 30 x 11 x 10 inches
+     - Total dimensions: 30 + 11 + 10 = 51 inches
+     - Within the standard size limit of 62 inches.
+   - Weight: 33 lbs
+     - Within the standard weight limit of 50 lbs.
+   - Checking Fee:
+     - For the fourth checked bag, the checking fee is $200.
+   - Total Fee for Item 5: $200 (checking) + $0 (No overweight or oversize fees) = $200
+Summary of Baggage Fees:
+  - Item 2: $150
+  - Item 3: $200
+  - Item 4: $200
+  - Item 5: $200
+Total Baggage Fees: $150 (Item 2) + $200 (Item 3) + $200 (Item 4) + $200 (Item 5) = $750
+Total Cost:
+- Flight Ticket: $448
+- Total Baggage Fees: $750
+The total cost is $1,198.
+</example>
+"""
+        return (
+            f"You should compute the total cost (including the flight ticket fee, "
+            f"checked bag fees, cost of special needs) according to the policies.\n\n"
+            f"The policies of American Airlines are as follows:\n\n"
+            f"{instance.rules_text}\n"
+            f"{_AIRLINE_EXAMPLE}\n"
+            f"{instance.problem_text} Compute the total cost step by step "
+            f"(don't omit any bag) and end your response with "
+            f'"The total cost is $xxx." (xxx is a number)\n'
+            f"Your response:\n"
+        )
+
+    def _parse_answer(self, response: str, domain: str = None):
         """
         Parse answer from LLM response.
 
-        Looks for "ANSWER: <number>" pattern, tax-specific patterns, or
-        extracts last number as fallback.
+        For NBA: returns True or False (boolean).
+        For tax/airline: returns float or None.
         """
         if not response:
             return None
+
+        # Strip markdown bold markers before any regex (matches auto_test.py:168)
+        response = response.replace("**", "")
+
+        # NBA: boolean classification — check for exact Answer: True/False strings
+        if domain == "nba":
+            if "Answer: True" in response:
+                return True
+            if "Answer: False" in response:
+                return False
+            return None
+
+        # Airline: "The total cost is $xxx." (matches reference auto_test.py extraction)
+        if domain == "airline":
+            airline_match = re.search(
+                r'The total cost is \$([\d,]+(?:\.\d+)?)', response
+            )
+            if airline_match:
+                try:
+                    return float(airline_match.group(1).replace(',', ''))
+                except ValueError:
+                    pass
 
         # Try to find "ANSWER: <number>" pattern
         answer_match = re.search(r'ANSWER:\s*\$?\s*([\d,]+\.?\d*)', response, re.IGNORECASE)
@@ -247,7 +402,7 @@ ANSWER: <number>
 
         # Tax-specific: "The total tax owed/overpaid is $xxx."
         tax_match = re.search(
-            r'The total tax (owed|overpaid) is \$((?:\d{1,3}(?:,\d{3})*|\d+)(\.\d+)?)',
+            r'The total tax (owed|overpaid) is \$([\d,]+(?:\.\d+)?)',
             response
         )
         if tax_match:
