@@ -131,10 +131,9 @@ class L0F_CoT_Experiment(BaseExperiment):
         start_time = time.time()
 
         try:
-            # Build prompt
             prompt = self._build_prompt(instance)
 
-            # Build messages — airline gets a domain-specific system prompt
+            # Airline gets a domain-specific system prompt
             messages = []
             if instance.domain == "airline":
                 messages.append({
@@ -150,7 +149,6 @@ class L0F_CoT_Experiment(BaseExperiment):
                 })
             messages.append({"role": "user", "content": prompt})
 
-            # Call LLM
             response = self.client.chat.completions.create(
                 model=self.model_id,
                 messages=messages,
@@ -159,26 +157,19 @@ class L0F_CoT_Experiment(BaseExperiment):
                 seed=self.seed,
             )
 
-            # Extract response
             raw_response = response.choices[0].message.content
             input_tokens = response.usage.prompt_tokens
             output_tokens = response.usage.completion_tokens
 
-            # Parse answer
             predicted = self._parse_answer(raw_response, instance.domain)
 
-            # Compare with ground truth
             exact_match, tolerance_match = self.compare_answers(
                 predicted, instance.ground_truth_answer
             )
 
-            # Calculate cost
             cost = calculate_cost(input_tokens, output_tokens)
-
-            # Calculate time
             elapsed = time.time() - start_time
 
-            # Determine failure mode
             if predicted is None:
                 failure_mode = "extraction_failure"
             elif exact_match:
@@ -207,7 +198,6 @@ class L0F_CoT_Experiment(BaseExperiment):
             )
 
         except Exception as e:
-            # Robust error handling - never crash
             elapsed = time.time() - start_time
             return ExperimentResult(
                 instance_id=instance.instance_id,

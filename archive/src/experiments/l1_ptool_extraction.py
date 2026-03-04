@@ -54,12 +54,9 @@ Valid regions: "U.S.", "Puerto Rico", "Canada", "Mexico", "Cuba", "Haiti",
 US cities: Orlando, Philadelphia, Charlotte, Phoenix, Las Vegas, Atlanta, 
 Boston, New York, Los Angeles, San Francisco, Miami
 
-EXAMPLES:
+EXAMPLE:
 Input: "Sarah is a Main Cabin passenger flying from Orlando to Tokyo..."
 Output: {{"base_price": 500, "customer_class": "Main Cabin", "routine": "Japan", "direction": 0, "bag_list": [...]}}
-
-Input: "John is a Business passenger flying from Paris to Atlanta..."
-Output: {{"base_price": 800, "customer_class": "Business", "routine": "Europe", "direction": 1, "bag_list": [...]}}
 
 QUERY:
 {query}
@@ -68,6 +65,10 @@ Return ONLY a valid JSON object with these exact fields. No markdown, no explana
 
 
 EXTRACTION_PROMPT_WITH_RULES = """Extract structured baggage parameters using the complete airline rules.
+
+EXAMPLE:
+Input: "Sarah is a Main Cabin passenger flying from Orlando to Tokyo..."
+Output: {{"base_price": 500, "customer_class": "Main Cabin", "routine": "Japan", "direction": 0, "bag_list": [...]}}
 
 AIRLINE BAGGAGE RULES:
 {rules_text}
@@ -166,38 +167,110 @@ VALID_REGIONS = {
     "Australia", "New Zealand"
 }
 
-# Map common LLM mistakes to valid regions
+# Map common LLM mistakes to valid regions (lowercase keys for case-insensitive matching)
 REGION_FIXES = {
-    "Asia": "China",
-    "United States": "U.S.",
-    "US": "U.S.",
-    "USA": "U.S.",
-    "Domestic": "U.S.",
-    "UK": "Europe",
-    "United Kingdom": "Europe",
-    "France": "Europe",
-    "Germany": "Europe",
-    "Spain": "Europe",
-    "Italy": "Europe",
-    "Tokyo": "Japan",
-    "Beijing": "China",
-    "Shanghai": "China",
-    "Seoul": "South Korea",
-    "Sydney": "Australia",
-    "Melbourne": "Australia",
-    "Auckland": "New Zealand",
-    "Mumbai": "India",
-    "Delhi": "India",
-    "Tel Aviv": "Israel",
-    "Doha": "Qatar",
+    # Continents/general areas - most common LLM errors
+    "asia": "China",
+    "north america": "U.S.",
+    "central america": "Mexico",
+    
+    # US variants
+    "united states": "U.S.",
+    "us": "U.S.",
+    "usa": "U.S.",
+    "domestic": "U.S.",
+    "america": "U.S.",
+    
+    # European countries to Europe
+    "uk": "Europe",
+    "united kingdom": "Europe",
+    "britain": "Europe",
+    "great britain": "Europe",
+    "england": "Europe",
+    "france": "Europe",
+    "germany": "Europe",
+    "spain": "Europe",
+    "italy": "Europe",
+    "netherlands": "Europe",
+    "belgium": "Europe",
+    "switzerland": "Europe",
+    "portugal": "Europe",
+    "greece": "Europe",
+    "ireland": "Europe",
+    "scotland": "Europe",
+    "austria": "Europe",
+    "poland": "Europe",
+    "denmark": "Europe",
+    "norway": "Europe",
+    "sweden": "Europe",
+    "finland": "Europe",
+    
+    # City to country mappings
+    "tokyo": "Japan",
+    "osaka": "Japan",
+    "beijing": "China",
+    "shanghai": "China",
+    "guangzhou": "China",
+    "shenzhen": "China",
+    "wuhan": "China",
+    "seoul": "South Korea",
+    "busan": "South Korea",
+    "sydney": "Australia",
+    "melbourne": "Australia",
+    "brisbane": "Australia",
+    "perth": "Australia",
+    "auckland": "New Zealand",
+    "wellington": "New Zealand",
+    "mumbai": "India",
+    "delhi": "India",
+    "bangalore": "India",
+    "chennai": "India",
+    "tel aviv": "Israel",
+    "jerusalem": "Israel",
+    "doha": "Qatar",
+    "bogota": "Colombia",
+    "lima": "Peru",
+    "santiago": "South America",
+    "buenos aires": "South America",
+    "sao paulo": "South America",
+    "rio de janeiro": "South America",
+    "havana": "Cuba",
+    "toronto": "Canada",
+    "vancouver": "Canada",
+    "montreal": "Canada",
+    "mexico city": "Mexico",
+    "cancun": "Mexico",
+    "london": "Europe",
+    "paris": "Europe",
+    "rome": "Europe",
+    "madrid": "Europe",
+    "berlin": "Europe",
+    "amsterdam": "Europe",
+    "barcelona": "Europe",
+    "frankfurt": "Europe",
+    "munich": "Europe",
+    "milan": "Europe",
+    "zurich": "Europe",
+    "vienna": "Europe",
 }
 
 
 def normalize_region(routine: str) -> str:
-    """Normalize region to valid RuleArena value."""
+    """Normalize region to valid RuleArena value (case-insensitive)."""
+    if not routine:
+        return "U.S."
+    
+    # Check if already valid (case-sensitive for valid regions)
     if routine in VALID_REGIONS:
         return routine
-    return REGION_FIXES.get(routine, "U.S.")
+    
+    # Try case-insensitive lookup in REGION_FIXES
+    routine_lower = routine.lower().strip()
+    if routine_lower in REGION_FIXES:
+        return REGION_FIXES[routine_lower]
+    
+    # Default to U.S. for unknown regions
+    return "U.S."
 
 
 def compute_baggage_cost(

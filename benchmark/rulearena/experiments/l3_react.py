@@ -1,42 +1,20 @@
 """
 L3 Experiment: ReActAgent with multi-step tool use for RuleArena.
 
-Building blocks only (no full experiment runner):
+Exports:
   - AIRLINE_CALC_SPEC  : PToolSpec wrapping compute_airline_fee (model="python")
   - TAX_CALC_SPEC      : PToolSpec wrapping compute_tax_fee    (model="python")
   - get_rulearena_ptools(domain) -> List[PToolSpec]
   - run_l3_instance(problem, domain, model, max_steps) -> Dict
 
-Design notes
-------------
 The extraction ptools (extract_airline_params, extract_tax_params,
-extract_nba_params) are imported from l1_ptool — not redefined here.
+extract_nba_params) are imported from l1_ptool -- not redefined here.
 Those wrappers carry a .spec attribute (PToolWrapper.spec) that we pass
-directly to ReActAgent, so the registry names are irrelevant to callers.
+directly to ReActAgent.
 
-Signature mismatch flag (see FLAGGED below)
--------------------------------------------
-compute_airline_fee_ptool(params: Dict) vs. compute_tax_fee_ptool(params: Dict)
-Both wrappers take a single dict argument named `params`.  The agent will call:
-
-  airline:
-    step 1 → _extract_airline_params_fn(query=...)  ← ugly private name
-    step 2 → compute_airline_fee(params=$<step-1-result>)
-
-  tax:
-    step 1 → _extract_tax_params_fn(query=...)
-    step 2 → compute_tax_fee(params=$<step-1-result>)
-              INTERNAL: wraps flat dict into {"pydantic": ...} + injects defaults
-
-The extraction ptool names have leading underscores (_extract_airline_params_fn
-etc.) because l1_ptool.py decorates private functions.  The ReActAgent lists
-them by those names in the thought prompt.  The goal strings below use
-"the available tools" generically so the agent reads the actual names from the
-thought prompt rather than a stale instruction.
-
-FLAGGED: compute_tax_fee_ptool performs structural adaptation (flat dict →
-{"pydantic": wrapped dict} + default injection).  This is hidden from the
-agent.  The agent sees a clean "pass the extraction result as params" interface.
+compute_tax_fee_ptool performs structural adaptation (flat dict ->
+{"pydantic": wrapped dict} + default injection) so the agent sees a clean
+single-dict interface.
 """
 
 from __future__ import annotations
@@ -254,7 +232,7 @@ class L3_ReAct_Experiment(BaseExperiment):
 
                      
 # ============================================================================
-# Task 1: Python calculator wrappers with agent-friendly single-dict interface
+# Python calculator wrappers with agent-friendly single-dict interface
 # ============================================================================
 
 def compute_airline_fee_ptool(params: Dict[str, Any]) -> Dict[str, Any]:
@@ -298,9 +276,6 @@ def compute_tax_fee_ptool(params: Dict[str, Any]) -> Dict[str, Any]:
       Positive = amount owed. Negative = overpaid (refund).
       or {"result": None, "error": "<message>", "calculator": "tax_fee"}
 
-    INTERNAL NOTE (not visible to agent):
-      _tax_calc_raw expects {"pydantic": <TaxPayer fields>}.
-      This wrapper performs that structural adaptation transparently.
     """
     pydantic_dict = dict(params)
     for defaults in (_TAXPAYER_REQUIRED_DEFAULTS, _SCHED_C_DEFAULTS, _SCHED_A_DEFAULTS, _EDU_DEFAULTS):
@@ -342,7 +317,7 @@ TAX_CALC_SPEC = PToolSpec(
 
 
 # ============================================================================
-# Task 2: get_rulearena_ptools(domain)
+# get_rulearena_ptools(domain)
 # ============================================================================
 
 def get_rulearena_ptools(domain: str) -> List[PToolSpec]:
@@ -436,7 +411,7 @@ _GOAL_BUILDERS = {
 
 
 # ============================================================================
-# Task 3: run_l3_instance
+# run_l3_instance
 # ============================================================================
 
 def run_l3_instance(

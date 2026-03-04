@@ -154,7 +154,7 @@ class AirlineLoader:
             self._compute_answer_fn = rulearena_reference.compute_answer
             self._fee_tables = rulearena_reference.load_checking_fee(str(self.repo_path))
             
-            print(f"✓ Loaded RuleArena reference implementation (vendored copy)")
+            print("[OK] Loaded RuleArena reference implementation (vendored copy)")
             
         except ImportError as e:
             raise ImportError(
@@ -225,7 +225,7 @@ class AirlineLoader:
                     print(f"Warning: Failed to parse problem {idx}: {e}")
                     continue
         
-        print(f"✓ Loaded {len(problems)} problems (complexity level {complexity_level})")
+        print(f"[OK] Loaded {len(problems)} problems (complexity level {complexity_level})")
         return problems
     
     def _parse_problem(
@@ -388,7 +388,7 @@ if __name__ == "__main__":
         # Load rules
         print("Loading reference rules...")
         rules = loader.load_rules(textual=False)
-        print(f"✓ Rules loaded: {len(rules)} characters")
+        print(f"[OK] Rules loaded: {len(rules)} characters")
         print(f"Preview: {rules[:200]}...")
         print()
         
