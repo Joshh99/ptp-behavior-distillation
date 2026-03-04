@@ -87,16 +87,16 @@ _AIRLINE_EXAMPLE = PToolExample(
 )
 
 
-def _extract_airline_params_fn(query: str) -> dict:
+def extract_airline_params(query: str) -> dict:
     ...
 
 
-_extract_airline_params_fn.__doc__ = _AIRLINE_DOC
+extract_airline_params.__doc__ = _AIRLINE_DOC
 extract_airline_params = ptool(
     model=_MODEL,
     output_mode="structured",
     examples=[_AIRLINE_EXAMPLE],
-)(_extract_airline_params_fn)
+)(extract_airline_params)
 
 
 # --- Tax ---
@@ -294,16 +294,16 @@ _TAX_EXAMPLE = PToolExample(
 )
 
 
-def _extract_tax_params_fn(query: str) -> dict:
+def extract_tax_params(query: str) -> dict:
     ...
 
 
-_extract_tax_params_fn.__doc__ = _TAX_DOC
+extract_tax_params.__doc__ = _TAX_DOC
 extract_tax_params = ptool(
     model=_MODEL,
     output_mode="structured",
     examples=[_TAX_EXAMPLE],
-)(_extract_tax_params_fn)
+)(extract_tax_params)
 
 
 # --- NBA ---
@@ -349,16 +349,16 @@ _NBA_EXAMPLE = PToolExample(
 )
 
 
-def _extract_nba_params_fn(query: str) -> dict:
+def extract_nba_params(query: str) -> dict:
     ...
 
 
-_extract_nba_params_fn.__doc__ = _NBA_DOC
+extract_nba_params.__doc__ = _NBA_DOC
 extract_nba_params = ptool(
     model=_MODEL,
     output_mode="structured",
     examples=[_NBA_EXAMPLE],
-)(_extract_nba_params_fn)
+)(extract_nba_params)
 
 
 # ============================================================================

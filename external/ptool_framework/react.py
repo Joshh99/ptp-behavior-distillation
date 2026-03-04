@@ -36,7 +36,7 @@ except ImportError:
 
 from .traces import WorkflowTrace, TraceStep, StepStatus, ExecutionResult
 from .ptool import PToolSpec, get_registry
-from .llm_backend import call_llm, execute_ptool, LLMError, ParseError
+from .llm_backend import call_llm, execute_ptool, LLMError, LLMResponse, ParseError
 
 
 # ============================================================================
@@ -560,9 +560,10 @@ class ReActAgent:
         prompt = self._format_thought_prompt(goal, history, self.available_ptools)
 
         if self.llm_backend:
-            response = self.llm_backend(prompt, self.model)
+            result = self.llm_backend(prompt, self.model)
+            response = result.content if isinstance(result, LLMResponse) else result
         else:
-            response = call_llm(prompt, self.model)
+            response = call_llm(prompt, self.model).content
 
         return Thought(
             content=response,
@@ -610,7 +611,11 @@ class ReActAgent:
                     lines.append(f"  Action: {step.action.ptool_name}({step.action.args})")
                     if step.observation:
                         if step.observation.success:
-                            result_str = repr(step.observation.result)[:200]
+                            full_repr = repr(step.observation.result)
+                            if len(full_repr) > 200:
+                                result_str = full_repr[:200] + "... [truncated for display — full result was passed to the action]"
+                            else:
+                                result_str = full_repr
                             lines.append(f"  Result: {result_str}")
                         else:
                             lines.append(f"  Error: {step.observation.error}")
@@ -634,11 +639,16 @@ class ReActAgent:
             "1. ALWAYS provide ALL required arguments - never call a ptool with empty args!",
             "2. Arguments must use Python syntax: strings in quotes, dicts with curly braces",
             "3. If you get 'Missing required parameters' error, re-read the signature and try again WITH all args",
+            "4. To pass the FULL result of a previous tool call, use \"$tool_name\" as the value.",
+            "   Example: after calling extract_params, pass its result as: some_arg=\"$extract_params\"",
+            "   This avoids truncation — NEVER retype or reconstruct a result dict from the display.",
             "",
             "## Correct Examples:",
             "<action>identify_calculator(clinical_text=\"Calculate BMI\")</action>",
             "<action>extract_clinical_values(patient_note=\"Patient is 70kg, 180cm\", required_values=[\"weight\", \"height\"])</action>",
             "<action>perform_calculation(calculator_name=\"BMI\", values={\"weight\": 70, \"height\": 1.8})</action>",
+            "# Passing a prior result by reference (preferred when result is a large dict):",
+            "<action>perform_calculation(params=\"$extract_clinical_values\")</action>",
             "",
             "## WRONG (will cause error):",
             "<action>perform_calculation()</action>  ← MISSING ARGS!",

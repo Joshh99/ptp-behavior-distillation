@@ -81,6 +81,7 @@ def run_experiment(
     elif experiment_name == "l3_react":
         from benchmark.rulearena.experiments.l3_react import L3_ReAct_Experiment
         experiment = L3_ReAct_Experiment()
+        experiment.debug = debug
     else:
         raise ValueError(f"Unknown experiment: {experiment_name}")
 
