@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RQ2 Results — Behavior Distillation Study</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+            margin: 0;
+            padding: 40px 20px;
+            background: #fefdfb;
+            color: #1a1a1a;
+            line-height: 1.65;
+        }
+        .container { max-width: 1300px; margin: 0 auto; }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 20px;
+            border-bottom: 3px double #2c3e50;
+        }
+        h1 {
+            font-size: 2.2em;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            letter-spacing: -0.5px;
+        }
+        .subtitle {
+            font-size: 1.15em;
+            margin-bottom: 5px;
+            color: #34495e;
+        }
+        .research-question {
+            font-style: italic;
+            font-size: 0.95em;
+            max-width: 750px;
+            margin: 15px auto 0;
+            color: #555;
+        }
+        .timestamp { font-size: 0.85em; color: #7f8c8d; margin-top: 12px; }
+
+        nav {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        nav a {
+            padding: 10px 18px;
+            background: #ecf0f1;
+            color: #2c3e50;
+            text-decoration: none;
+            border: 1px solid #bdc3c7;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        nav a:hover {
+            background: #d5dbdb;
+            border-color: #95a5a6;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border: 1px solid #dee2e6;
+            font-size: 0.9em;
+        }
+        th, td {
+            padding: 12px 10px;
+            text-align: left;
+            border: 1px solid #dee2e6;
+        }
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            text-align: center;
+            color: #495057;
+        }
+        .metric-header {
+            font-size: 0.8em;
+            text-align: center;
+        }
+        td.numeric {
+            text-align: center;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+        tr:hover { background: #f8f9fa; }
+
+        .model-cell {
+            font-weight: 600;
+            white-space: nowrap;
+            color: #2c3e50;
+        }
+
+        .accuracy-high   { color: #27ae60; font-weight: 600; }
+        .accuracy-medium { color: #f39c12; }
+        .accuracy-low    { color: #e74c3c; }
+
+        .section {
+            margin: 40px 0;
+            padding: 20px 0;
+        }
+        h2 {
+            font-size: 1.5em;
+            font-weight: 600;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin: 25px 0 15px 0;
+            color: #34495e;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .summary-card {
+            border: 1px solid #dee2e6;
+            padding: 20px 15px;
+            text-align: center;
+            background: #fff;
+            border-radius: 4px;
+        }
+        .summary-card .value {
+            font-size: 2.2em;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .summary-card .label {
+            font-size: 0.8em;
+            margin-top: 5px;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .insight-box {
+            background: #fff;
+            border-left: 4px solid #2c3e50;
+            padding: 20px 25px;
+            margin: 20px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        .insight-box h4 {
+            margin: 0 0 12px 0;
+            font-size: 1.05em;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .insight-box p, .insight-box li {
+            margin: 8px 0;
+            color: #495057;
+        }
+
+        .callout-positive {
+            background: #eafaf1;
+            border-left: 4px solid #27ae60;
+            padding: 14px 20px;
+            margin: 15px 0;
+            font-size: 0.9em;
+            color: #1e8449;
+        }
+
+        .chart-container {
+            margin: 30px 0;
+            padding: 25px;
+            border: 1px solid #dee2e6;
+            background: #fff;
+            border-radius: 4px;
+        }
+
+        .note {
+            font-size: 0.85em;
+            color: #6c757d;
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        .pending-cell {
+            color: #adb5bd;
+            font-style: italic;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 60px;
+            border-top: 2px solid #dee2e6;
+            font-size: 0.85em;
+            color: #6c757d;
+        }
+
+        @media print {
+            body { background: white; }
+            nav { display: none; }
+        }
+    </style>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body>
+<div class="container">
+
+    <header>
+        <h1>RQ2 Results: Complexity vs. Reliability</h1>
+        <div class="subtitle">Behavior Distillation via Program Trace Prompting</div>
+        <div class="research-question">
+            Does decomposing rule-guided tasks into structured extraction (L1 PTool) improve
+            over free-form CoT (L0F), and how does this trade off against cost and
+            failure diagnosability across domains?
+        </div>
+        <div class="timestamp">Generated: 2026-02-27 20:32 &nbsp;|&nbsp; Model: DeepSeek-V3 &nbsp;|&nbsp; Temp: 0, Seed: 42</div>
+    </header>
+
+    <nav>
+        <a href="#summary-section">Summary Table</a>
+        <a href="#chart-section">Bar Chart</a>
+        <a href="#failure-section">Failure Modes</a>
+        <a href="#findings-section">Key Findings</a>
+        <a href="#methodology-section">Methodology</a>
+    </nav>
+
+    <!-- ================================================================
+         EXECUTIVE SUMMARY CARDS
+         ================================================================ -->
+    <div class="section">
+        <h2>Executive Overview</h2>
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="value">8</div>
+                <div class="label">Experiment runs</div>
+            </div>
+            <div class="summary-card">
+                <div class="value">3</div>
+                <div class="label">Domains</div>
+            </div>
+            <div class="summary-card">
+                <div class="value">816</div>
+                <div class="label">Problems (L0F+L1)</div>
+            </div>
+            <div class="summary-card">
+                <div class="value">99.7%</div>
+                <div class="label">Best exact accuracy (L1 Tax)</div>
+            </div>
+            <div class="summary-card">
+                <div class="value">$6.21</div>
+                <div class="label">Total LLM spend</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================
+         SUMMARY TABLE
+         ================================================================ -->
+    <div id="summary-section" class="section">
+        <h2>Summary Table</h2>
+        
+    <table id="summary-table">
+      <thead>
+        <tr>
+          <th>Level / Approach</th>
+          <th>Airline</th><th>Tax</th><th>NBA</th>
+        </tr>
+        <tr>
+          <th></th>
+          <th class="metric-header">Primary metric · avg cost/problem · failure mode</th><th class="metric-header">Primary metric · avg cost/problem · failure mode</th><th class="metric-header">Primary metric · avg cost/problem · failure mode</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="model-cell">L0 — Python oracle</td><td class="numeric accuracy-high" style="text-align:center;vertical-align:top"><strong>100.0%</strong><br><small style="color:#6c757d">$0.00000/problem</small><br><small style="color:#888">none</small></td><td class="numeric accuracy-high" style="text-align:center;vertical-align:top"><strong>100.0%</strong><br><small style="color:#6c757d">$0.00000/problem</small><br><small style="color:#888">none</small></td><td style="background:#f8f9fa;text-align:center;color:#6c757d;font-style:italic;font-size:0.88em">N/A — no deterministic calculator<br>exists for boolean verdict</td></tr><tr><td class="model-cell">L0F — CoT (free-form)</td><td class="numeric accuracy-medium" style="text-align:center;vertical-align:top"><strong>48.3%</strong><br><small style="color:#6c757d;font-size:0.8em">(tol: 49.0%)</small><br><small style="color:#6c757d">$0.00540/problem</small><br><small style="color:#888">calculation_error</small></td><td class="numeric accuracy-low" style="text-align:center;vertical-align:top"><strong>35.3%</strong><br><small style="color:#6c757d;font-size:0.8em">(tol: 49.0%)</small><br><small style="color:#6c757d">$0.00499/problem</small><br><small style="color:#888">calculation_error</small></td><td class="numeric accuracy-medium" style="text-align:center;vertical-align:top"><strong>49.5%</strong><br><small style="color:#6c757d;font-size:0.8em">acc: 64.4%</small><br><small style="color:#6c757d">$0.00713/problem</small><br><small style="color:#888">calculation_error</small></td></tr><tr><td class="model-cell">L1 — PTool extraction</td><td class="numeric accuracy-high" style="text-align:center;vertical-align:top"><strong>77.0%</strong><br><small style="color:#6c757d;font-size:0.8em">(tol: 79.7%)</small><br><small style="color:#6c757d">$0.00071/problem</small><br><small style="color:#888">calculation_error</small></td><td class="numeric accuracy-high" style="text-align:center;vertical-align:top"><strong>99.7%</strong><br><small style="color:#6c757d">$0.00427/problem</small><br><small style="color:#888">calculation_error</small></td><td class="numeric accuracy-medium" style="text-align:center;vertical-align:top"><strong>44.5%</strong><br><small style="color:#6c757d;font-size:0.8em">acc: 80.1%</small><br><small style="color:#6c757d">$0.00092/problem</small><br><small style="color:#888">calculation_error</small></td></tr>
+      </tbody>
+    </table>
+    <p class="note">
+      Airline &amp; Tax: primary metric = exact accuracy (tolerance shown where it differs).
+      NBA: primary metric = F1 macro (accuracy shown in smaller text).
+      Cost is average USD per problem. L0 = deterministic Python oracle, zero LLM cost.
+    </p>
+
+    </div>
+
+    <!-- ================================================================
+         BAR CHART
+         ================================================================ -->
+    <div id="chart-section" class="section">
+        <h2>Performance by Level and Domain</h2>
+        <div class="chart-container">
+            <div id="perf-chart"></div>
+        </div>
+        <p class="note">
+            NBA uses F1 macro; Airline and Tax use exact accuracy.
+            L0 NBA bar is omitted (no deterministic calculator exists for that domain).
+        </p>
+    </div>
+
+    <!-- ================================================================
+         FAILURE MODE SECTION
+         ================================================================ -->
+    <div id="failure-section" class="section">
+        <h2>Failure Mode Distribution</h2>
+        <div class="callout-positive">
+            <strong>Zero extraction failures observed across all runs.</strong>
+            Every wrong answer is a calculation error (the LLM reasoned incorrectly),
+            not a schema / parsing failure. This means L1 failures are bounded and
+            diagnosable — a key claim of the PTP architecture.
+        </div>
+        
+    <h3>Airline</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Level</th>
+          <th class="metric-header">Extraction failure</th>
+          <th class="metric-header">Calculation error</th>
+          <th class="metric-header">None (correct)</th>
+        </tr>
+      </thead>
+      <tbody><tr><td>L0 — Python oracle</td><td class="numeric">0 (0%)</td><td class="numeric">0 (0%)</td><td class="numeric">300 (100%)</td></tr><tr><td>L0F — CoT (free-form)</td><td class="numeric">0 (0%)</td><td class="numeric">155 (52%)</td><td class="numeric">145 (48%)</td></tr><tr><td>L1 — PTool extraction</td><td class="numeric">0 (0%)</td><td class="numeric">69 (23%)</td><td class="numeric">231 (77%)</td></tr></tbody>
+    </table>
+
+    <h3>Tax</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Level</th>
+          <th class="metric-header">Extraction failure</th>
+          <th class="metric-header">Calculation error</th>
+          <th class="metric-header">None (correct)</th>
+        </tr>
+      </thead>
+      <tbody><tr><td>L0 — Python oracle</td><td class="numeric">0 (0%)</td><td class="numeric">0 (0%)</td><td class="numeric">300 (100%)</td></tr><tr><td>L0F — CoT (free-form)</td><td class="numeric">0 (0%)</td><td class="numeric">194 (65%)</td><td class="numeric">106 (35%)</td></tr><tr><td>L1 — PTool extraction</td><td class="numeric">0 (0%)</td><td class="numeric">1 (0%)</td><td class="numeric">299 (100%)</td></tr></tbody>
+    </table>
+
+    <h3>NBA</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Level</th>
+          <th class="metric-header">Extraction failure</th>
+          <th class="metric-header">Calculation error</th>
+          <th class="metric-header">None (correct)</th>
+        </tr>
+      </thead>
+      <tbody><tr><td>L0 — Python oracle</td><td class="numeric pending-cell" colspan="3">N/A</td></tr><tr><td>L0F — CoT (free-form)</td><td class="numeric">0 (0%)</td><td class="numeric">77 (36%)</td><td class="numeric">139 (64%)</td></tr><tr><td>L1 — PTool extraction</td><td class="numeric">0 (0%)</td><td class="numeric">43 (20%)</td><td class="numeric">173 (80%)</td></tr></tbody>
+    </table>
+
+    </div>
+
+    <!-- ================================================================
+         KEY FINDINGS
+         ================================================================ -->
+    <div id="findings-section" class="section">
+        <h2>Key Findings</h2>
+        <div class="insight-box">
+            <ul><li><strong>Airline — L1 vs L0F:</strong> L1 PTool scores 77.0% vs L0F CoT 48.3% on exact accuracy (+28.7pp improvement).</li><li><strong>Tax — L1 vs L0F:</strong> L1 PTool scores 99.7% vs L0F CoT 35.3% on exact accuracy (+64.3pp improvement).</li><li><strong>NBA — L1 vs L0F:</strong> L1 PTool scores 44.5% vs L0F CoT 49.5% on F1 macro (-5.1pp decline).</li><li><strong>NBA degenerate classifier:</strong> Despite 80.1% accuracy, L1 achieves only 44.5% F1 macro — well below L0F CoT (49.5% F1). This gap indicates a near-degenerate classifier that over-predicts one class (TN ≈ 0), exposing that accuracy alone is misleading on class-imbalanced NBA verdicts.</li><li><strong>Airline — Cost:</strong> L1 costs $0.00071/problem vs L0F CoT $0.00540/problem — L0F is 7.6x more expensive per query while achieving lower accuracy.</li><li><strong>Tax — Cost:</strong> L1 costs $0.00427/problem vs L0F CoT $0.00499/problem — L0F is 1.2x more expensive per query while achieving lower accuracy.</li></ul>
+        </div>
+    </div>
+
+    <!-- ================================================================
+         METHODOLOGY
+         ================================================================ -->
+    <div id="methodology-section" class="section">
+        <h2>Methodology</h2>
+        <h3>Experimental Setup</h3>
+        <ul>
+            <li><strong>Model:</strong> deepseek-ai/DeepSeek-V3 via Together.ai</li>
+            <li><strong>Temperature:</strong> 0 &nbsp;|&nbsp; <strong>Seed:</strong> 42</li>
+            <li><strong>Dataset:</strong> RuleArena benchmark (Zhou et al., ACL 2025)
+                <ul>
+                    <li>Airline Baggage Fees — 300 problems</li>
+                    <li>Tax Regulations — 300 problems</li>
+                    <li>NBA Transactions — 216 problems (boolean verdict, class-imbalanced)</li>
+                </ul>
+            </li>
+        </ul>
+        <h3>Levels</h3>
+        <ul>
+            <li><strong>L0 — Python oracle:</strong> Deterministic reference calculator; zero LLM cost. Establishes the ceiling.</li>
+            <li><strong>L0F — CoT (free-form):</strong> Single LLM call with chain-of-thought prompting. RuleArena-style baseline.</li>
+            <li><strong>L1 — PTool extraction:</strong> LLM extracts typed parameters into a structured schema; deterministic calculator applies the rules. Separates language understanding from arithmetic.</li>
+        </ul>
+        <h3>Metrics</h3>
+        <ul>
+            <li><strong>Airline / Tax:</strong> Exact accuracy (prediction == ground truth). Tolerance accuracy shown where floating-point rounding causes a gap.</li>
+            <li><strong>NBA:</strong> F1 macro (primary) because the verdict labels are class-imbalanced. Exact accuracy shown for reference but is misleading on its own.</li>
+        </ul>
+        <h3>Paper Baselines</h3>
+        <p>Approximate 1-shot CoT numbers from Zhou et al. (2025):
+        Airline ~35%, Tax ~40%, NBA ~55% F1 macro.
+        Exact model and table row TBD — verify against the paper before citing.</p>
+    </div>
+
+    <footer>
+        <p>
+            <strong>Behavior Distillation Research Project</strong><br>
+            Independent Study with Prof. William Cohen (CMU Machine Learning / Google DeepMind)<br>
+            Student: Joshua Wisdom Momo &nbsp;|&nbsp; Spring 2026
+        </p>
+    </footer>
+
+</div><!-- /.container -->
+
+<script>
+
+    var traces = [{x: ["Airline", "Tax", "NBA"], y: [100.0, 100.0, null], name: 'L0', type: 'bar', marker: {color: '#2c3e50', line: {color:'#fff', width:1}}, text: [100.0, 100.0, null].map(v => v !== null ? v+'%' : 'N/A'), textposition: 'outside'}, {x: ["Airline", "Tax", "NBA"], y: [48.33, 35.33, 49.55], name: 'L0F', type: 'bar', marker: {color: '#c0392b', line: {color:'#fff', width:1}}, text: [48.33, 35.33, 49.55].map(v => v !== null ? v+'%' : 'N/A'), textposition: 'outside'}, {x: ["Airline", "Tax", "NBA"], y: [77.0, 99.67, 44.47], name: 'L1', type: 'bar', marker: {color: '#27ae60', line: {color:'#fff', width:1}}, text: [77.0, 99.67, 44.47].map(v => v !== null ? v+'%' : 'N/A'), textposition: 'outside'}];
+    var layout = {
+        barmode: 'group',
+        paper_bgcolor: '#fff',
+        plot_bgcolor: '#fff',
+        font: {color: '#2c3e50', family: "'Palatino Linotype', Georgia, serif", size: 12},
+        xaxis: {gridcolor: '#ecf0f1', zerolinecolor: '#ecf0f1'},
+        yaxis: {
+            gridcolor: '#ecf0f1', zerolinecolor: '#ecf0f1',
+            title: 'Score (%)',
+            range: [0, 115]
+        },
+        margin: {t: 60, b: 80, l: 60, r: 30},
+        title: {
+            text: 'Performance by Level and Domain<br><sup>NBA: F1 macro; Airline/Tax: exact accuracy</sup>',
+            font: {size: 16, color: '#2c3e50'}
+        },
+        legend: {orientation: 'h', y: -0.15, x: 0.5, xanchor: 'center'},
+        height: 450
+    };
+    Plotly.newPlot('perf-chart', traces, layout, {responsive: true});
+
+</script>
+</body>
+</html>

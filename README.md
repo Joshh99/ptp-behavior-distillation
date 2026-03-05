@@ -8,7 +8,7 @@ A research framework for investigating the trade-offs between control and autono
 
 > **Research Question**: Can we replace unreliable, expensive autonomous agents (L3) with predictable, cheaper, code-driven workflows (L0/L1) by "distilling" their behavior?
 
-**Independent Study Research Project**  
+**Independent Study Research Project**
 **Advisor**: Professor William Cohen (CMU Machine Learning / Google DeepMind)
 
 ---
@@ -19,47 +19,31 @@ Traditional agent frameworks have LLMs decide what tools to call. This is **unpr
 
 This framework **inverts the relationship**: Python controls the workflow, LLMs handle the "thinking" parts.
 
-```python
-from src.experiments.l1_baggage import baggage_allowance_l1
-
-# Python controls the flow
-query = "Calculate the total fee for a Gold member flying from NYC to LAX with 2 bags"
-result = baggage_allowance_l1(query)
-
-# LLM extracts parameters → Python calculates with actual fee tables
-print(f"Fee: ${result['fee']}")  # Deterministic, testable, debuggable
-```
-
 ---
 
 ## Overview
 
-This project investigates the **Reliability/Autonomy Spectrum** using airline baggage fee calculation as a testbed domain ([RuleArena](https://github.com/SkyRiver-2000/RuleArena)).
+This project investigates the **Reliability/Autonomy Spectrum** using the [RuleArena](https://github.com/SkyRiver-2000/RuleArena) benchmark across three rule-guided reasoning domains.
 
 ### The Spectrum
 
 | Level | Name | Description | Reliability | Cost |
 |-------|------|-------------|-------------|------|
 | **L0** | Pure Code | Deterministic Python logic | 100% | Free |
-| **L1** | PTool | LLM extracts parameters → Python calculates | 95%+ target | Low |
-| **L3** | ReAct Agent | Autonomous reasoning loop | 60-75% typical | High |
+| **L0F** | CoT | Direct LLM chain-of-thought | Low | Low |
+| **L1** | PTool | LLM extracts parameters → Python calculates | High | Low |
+| **L1-TA** | Tool-Aug | LLM generates and executes code | Medium | Medium |
+| **L3** | ReAct Agent | Autonomous reasoning loop | Variable | High |
 
-### Core Hypothesis
+---
 
-By analyzing execution traces from L3 agents, we can systematically **distill** their behavior into L1 workflows that are:
-- **More reliable** (deterministic execution paths)
-- **Cheaper** (fewer LLM calls)  
-- **Debuggable** (Python-native control flow)
+## Domains
 
-### Initial Results (Complexity Level 0)
+**Airline baggage fees** (300 instances): Given a passenger itinerary and baggage details, compute the total baggage fee by applying multi-tier airline rules (fare class, route, loyalty status, bag weight/size).
 
-| Metric | L1 (PTool) | L3 (ReAct) |
-|--------|------------|------------|
-| **Accuracy** | **80%** | 0% |
-| **Cost/Problem** | **$0.0005** | $0.0008 |
-| **Time/Problem** | **2.3s** | 7.7s |
+**Tax computation** (300 instances): Given a taxpayer's IRS form fields, compute federal tax liability by applying bracket rules, deductions, and credits.
 
-📊 **[View Full Report](report.html)** for interactive charts and detailed analysis.
+**NBA transaction compliance** (216 instances): Given a proposed roster transaction, determine whether it violates NBA collective bargaining rules (salary cap, roster limits, contract restrictions). Binary classification; evaluated with F1 macro due to 82.9% class imbalance.
 
 ---
 
@@ -67,213 +51,134 @@ By analyzing execution traces from L3 agents, we can systematically **distill** 
 
 ```
 ptp-behavior-distillation/
-├── src/                          # Main source code
-│   ├── dataset/                  # Data loaders
-│   │   └── rule_arena_loader.py  # RuleArena baggage fees dataset
-│   ├── experiments/              # Research experiments
-│   │   ├── config.py             # Model configs, Together.ai setup
-│   │   ├── l1_baggage.py         # L1 PTool implementation
-│   │   └── l3_baggage_react.py   # L3 ReAct agent implementation
-│   ├── metrics/                  # Cost/accuracy tracking
-│   ├── secretagent/              # PTP framework (forked)
-│   └── utils/                    # Helper utilities
-├── scripts/                      # Utility scripts
-│   ├── list_models.py            # List available Together.ai models
-│   ├── test_together.py          # Test API connection
-│   └── usage_tracker.py          # Track API usage/costs
-├── data/                         # Datasets
-│   └── BBH/                      # BIG-Bench Hard benchmark
-├── archive/                      # Previous iterations
-│   ├── demo_v1/                  # Initial demo implementation
-│   └── old_experiments/          # Tutorial-style experiments
-├── docs/                         # Documentation
-│   ├── research-log.md           # Progress notes
-│   ├── meeting-notes.md          # Advisor meetings
-│   └── decisions.md              # Design decisions
-└── results/                      # Experimental outputs
+├── benchmark/
+│   ├── rq1/                          # RQ1 experiments (airline domain, multi-model)
+│   │   ├── dataset/airline_loader.py # Airline data loader
+│   │   ├── experiments/              # l1_ptool, cot, tool_aug implementations
+│   │   ├── run_full_baseline.py      # Main RQ1 runner
+│   │   └── generate_report.py        # Generates reports/rq1_report.html
+│   └── rulearena/                    # RQ2 experiments (all 3 domains)
+│       ├── experiments/              # l0_python, l0f_cot, l1_ptool, l3_react
+│       ├── run_single.py             # Per-domain experiment runner
+│       ├── aggregate_results.py      # Aggregate benchmark_results/rulearena/
+│       └── generate_report.py        # Generates reports/rq2_report.html
+├── external/
+│   ├── RuleArena/                    # Cloned benchmark repository
+│   └── ptool_framework/              # PTP framework
+├── results/
+│   └── rq1/                          # RQ1 experiment outputs
+├── benchmark_results/
+│   └── rulearena/                    # RQ2 per-run result JSONs
+└── reports/
+    ├── rq1_report.html               # Generated RQ1 HTML report
+    └── rq2_report.html               # Generated RQ2 HTML report
 ```
 
 ---
 
 ## Quick Start
 
-### 1. Setup
+### Setup
 
 ```bash
-# Clone and install
-git clone https://github.com/YOUR_USERNAME/ptp-behavior-distillation
-cd ptp-behavior-distillation
 pip install -r requirements.txt
-
-# Set API key
 export TOGETHER_API_KEY="your-key-here"
 ```
 
-### 2. Verify Setup
+---
+
+## Running RQ1 Experiments
+
+RQ1 evaluates four approaches on the airline baggage fee domain across multiple models and complexity levels.
 
 ```bash
-# Test API connection
-python scripts/test_together.py
+# Run all experiments for a single model (100 problems x 3 complexity levels)
+python -m benchmark.rq1.run_full_baseline --num-problems 100 --complexity 0 1 2 \
+  --model "deepseek-ai/DeepSeek-V3" --output results/rq1/baseline_deepseek.json --yes
 
-# List available models
-python scripts/list_models.py
-```
-
-### 3. Run Baseline Experiments
-
-```bash
-# Run both L1 and L3 on 30 problems
-python scripts/run_rulearena_baselines.py --num-problems 30 --complexity 0
-
-# Run L1 only
-python scripts/run_rulearena_baselines.py --num-problems 30 --skip-l3
-
-# Run L3 only
-python scripts/run_rulearena_baselines.py --num-problems 30 --skip-l1
-```
-
-Results are saved to:
-- `results/baseline_comparison.md` - Markdown summary
-- `results/baseline_comparison.json` - Raw data for analysis
-- `report.html` - Interactive visualization
-
-### 4. Use the Data Loader
-
-```python
-from src.dataset.rulearena_loader import RuleArenaLoader
-
-# Load RuleArena problems
-loader = RuleArenaLoader("external/RuleArena")
-problems = loader.load_airline_problems(complexity_level=0, max_problems=10)
-
-for p in problems:
-    print(f"Query: {p['query'][:80]}...")
-    print(f"Ground Truth: ${p['ground_truth']}")
-```
-
-### 5. Collect Traces (Coming Soon)
-
-```python
-from src.secretagent import sec
-
-# Enable tracing for L3 agent
-with sec.recorder() as trace:
-    result = l3_agent.run(query)
-
-# Analyze traces for distillation
-trace.save("traces/experiment_001.json")
+# Supported models: deepseek-ai/DeepSeek-V3, meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo, Qwen/Qwen2.5-7B-Instruct-Turbo
+# To run a single complexity level or single experiment type, replace --complexity and add --experiment <cot|tool_aug|l1_pure|l1_transparent>
 ```
 
 ---
 
-## Available Models
+## Running RQ2 Experiments
 
-Configured in `src/experiments/config.py`:
+RQ2 evaluates the full reliability/autonomy spectrum across all three domains.
 
-| Model | Provider | Use Case |
-|-------|----------|----------|
-| `qwen-72b` | Qwen | Default - strong reasoning |
-| `llama-70b` | Meta | Alternative large model |
-| `deepseek-chat` | DeepSeek | Cost-effective option |
-| `mixtral-8x7b` | Mistral | Fast inference |
+```bash
+# L1 PTool
+python -m benchmark.rulearena.run_single --experiment l1_ptool --domain airline --n 300 --seed 42
+python -m benchmark.rulearena.run_single --experiment l1_ptool --domain tax --n 300 --seed 42
+python -m benchmark.rulearena.run_single --experiment l1_ptool --domain nba --n 216 --seed 42
+
+# L0F CoT
+python -m benchmark.rulearena.run_single --experiment l0f_cot --domain airline --n 300 --seed 42
+python -m benchmark.rulearena.run_single --experiment l0f_cot --domain tax --n 300 --seed 42
+python -m benchmark.rulearena.run_single --experiment l0f_cot --domain nba --n 216 --seed 42
+
+# L3 ReAct
+python -m benchmark.rulearena.run_single --experiment l3_react --domain airline --n 300 --seed 42
+python -m benchmark.rulearena.run_single --experiment l3_react --domain tax --n 300 --seed 42
+python -m benchmark.rulearena.run_single --experiment l3_react --domain nba --n 216 --seed 42
+
+# Aggregate all results
+python -m benchmark.rulearena.aggregate_results
+```
 
 ---
 
-## Research Methodology
+## Reports
 
-### Phase 1: Baseline Implementation ✅
-- [x] Repository restructuring (src-layout)
-- [x] RuleArena data loader with ground truth computation
-- [x] Together.ai integration
-- [x] L1 PTool baseline (80% accuracy)
-- [x] L3 ReAct baseline (0% accuracy)
-- [x] Baseline comparison report
+Generated HTML reports are written to `reports/`:
 
-### Phase 2: Trace Collection 🔄
-- [ ] Instrument L3 agent with `sec.recorder()`
-- [ ] Collect execution traces on test set
-- [ ] Analyze trace patterns for distillation candidates
+- **`reports/rq1_report.html`** — RQ1 results (airline domain, multi-model comparison)
+- **`reports/rq2_report.html`** — RQ2 results (full spectrum, all three domains)
 
-### Phase 3: Distillation
-- [ ] Extract common decision paths from traces
-- [ ] Generate L1 workflows from patterns
-- [ ] Validate distilled workflows
+To regenerate:
 
-### Phase 4: Evaluation
-- [x] Accuracy comparison (L1 vs L3) - Initial results in
-- [x] Cost analysis (tokens, latency) - L1 is 1.6× cheaper
-- [ ] Higher complexity levels (1, 2)
-- [ ] Reliability metrics (variance across runs)
+```bash
+python -m benchmark.rq1.generate_report
+python -m benchmark.rulearena.generate_report
+```
+
+---
+
+## Results Summary
+
+### RQ1: Airline Domain (DeepSeek-V3, Complexity Level 0)
+
+| Experiment | Accuracy | Cost/Problem |
+|------------|----------|-------------|
+| L1 PTool (Pure) | ~80% | ~$0.0005 |
+| L1 PTool (Transparent) | ~85% | ~$0.0008 |
+| CoT Baseline | ~5% | ~$0.0010 |
+| Tool-Augmented | ~40% | ~$0.0008 |
+
+### RQ2: All Domains (DeepSeek-V3)
+
+See `reports/rq2_report.html` for the full breakdown.
 
 ---
 
 ## Key Concepts
 
 ### Program Trace Prompting (PTP)
-Unlike traditional agents where LLMs control execution flow, PTP inverts this relationship:
-- **Python controls the workflow** (predictable, testable)
-- **LLMs handle the "thinking"** (extraction, reasoning)
 
-### The `@subagent()` Decorator
-Transforms Python function stubs into LLM-powered callables:
+Python controls the workflow; LLMs handle extraction and reasoning. This separates concerns:
+- **Extraction (LLM)**: Convert natural language to structured parameters
+- **Calculation (Python)**: Apply rules deterministically
 
-```python
-@subagent()
-def extract_parameters(query: str) -> dict:
-    """Extract airline, class, route, and bag count from query."""
-    pass  # LLM fills in the implementation
-```
+### Behavior Distillation
 
-### Trace Recording
-Capture execution traces for analysis:
-
-```python
-with sec.recorder() as trace:
-    result = agent.run(query)
-# trace now contains all LLM calls and decisions
-```
-
----
-
-## Troubleshooting
-
-**"API key not found"**
-```bash
-export TOGETHER_API_KEY="your-key"
-# On Windows PowerShell:
-$env:TOGETHER_API_KEY="your-key"
-```
-
-**"Module not found"**
-```bash
-cd /path/to/ptp-behavior-distillation
-python -c "from src.experiments.config import call_llm"
-```
-
-**"Connection timeout to Together.ai"**
-- Check network/firewall settings
-- Verify API key is valid at [api.together.ai](https://api.together.ai)
+By analyzing execution traces from L3 agents, we systematically distill their behavior into L1 workflows that are more reliable, cheaper, and debuggable.
 
 ---
 
 ## References
 
-- [RuleArena Benchmark](https://github.com/SkyRiver-2000/RuleArena) - Airline baggage fee calculation dataset
-- [SecretAgent Framework](https://github.com/Joshh99/secretagent) - Program Trace Prompting implementation
-- [BIG-Bench Hard](https://github.com/suzgunmirac/BIG-Bench-Hard) - Evaluation benchmark
-- [Together.ai Documentation](https://docs.together.ai/) - LLM API reference
-
----
-
-## Research Context
-
-This framework implements ideas from William Cohen's agent research:
-
-- **ptools**: Prompt templates with type signatures
-- **Program Trace Prompting**: Observable execution traces  
-- **Behavior Distillation**: Converting LLM behavior to deterministic Python
-
-The goal: Start with flexible LLM agents, progressively optimize to deterministic code.
+- [RuleArena Benchmark](https://github.com/SkyRiver-2000/RuleArena) — Zhou et al., ACL 2025
+- [Together.ai Documentation](https://docs.together.ai/) — LLM API reference
 
 ---
 

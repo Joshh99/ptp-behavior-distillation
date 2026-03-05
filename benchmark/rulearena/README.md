@@ -14,7 +14,7 @@ Model: DeepSeek-V3 via Together.ai.
 | L1 PTP | 77.0% | 99.7% | 0.44 |
 | L3 ReAct | TBD | TBD | TBD |
 
-## Running Experiments
+## Running Experiments for RQ2
 ```bash
 # Standard run (from repo root)
 python -m benchmark.rulearena.run_single --experiment <name> --domain <domain> --n <N> --seed 42
@@ -23,8 +23,8 @@ python -m benchmark.rulearena.run_single --experiment <name> --domain <domain> -
 # Domains: airline, nba, tax
 
 # Examples
-python -m benchmark.rulearena.run_single --experiment l1_ptool --domain airline --n 50 --seed 42
-python -m benchmark.rulearena.run_single --experiment l3_react --domain tax --n 50 --seed 42
+python -m benchmark.rulearena.run_single --experiment l1_ptool --domain airline --n 300 --seed 42
+python -m benchmark.rulearena.run_single --experiment l3_react --domain tax --n 300 --seed 42
 
 # Debug mode (shows Thought/Action/Observation trace for L3)
 python -m benchmark.rulearena.run_single --experiment l3_react --domain airline --debug-n 3
