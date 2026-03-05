@@ -459,7 +459,9 @@ Format: "When [condition], [action/approach]"
 Heuristic:"""
 
         try:
-            response = self.llm_backend(prompt, model=self.model)
+            from .llm_backend import LLMResponse
+            result = self.llm_backend(prompt, model=self.model)
+            response = result.content if isinstance(result, LLMResponse) else result
             heuristic = response.strip()
 
             if heuristic and len(heuristic) > 10:

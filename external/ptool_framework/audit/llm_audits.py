@@ -131,10 +131,12 @@ class LLMAudit(BaseAudit):
         )
 
         # Call LLM
+        from ..llm_backend import LLMResponse
         if self.llm_backend:
-            response = self.llm_backend(prompt, self.model)
+            result = self.llm_backend(prompt, self.model)
+            response = result.content if isinstance(result, LLMResponse) else result
         else:
-            response = call_llm(prompt, self.model)
+            response = call_llm(prompt, self.model).content
 
         # Parse response
         violations, passed = self._parse_llm_response(response)
@@ -312,16 +314,17 @@ class AuditGenerator:
         audit_name: str,
     ) -> GeneratedAudit:
         """Use LLM to generate audit rules."""
-        from ..llm_backend import call_llm
+        from ..llm_backend import call_llm, LLMResponse
 
         # Build prompt
         prompt = self._build_generation_prompt(task_description, patterns, stats)
 
         # Call LLM
         if self.llm_backend:
-            response = self.llm_backend(prompt, self.model)
+            result = self.llm_backend(prompt, self.model)
+            response = result.content if isinstance(result, LLMResponse) else result
         else:
-            response = call_llm(prompt, self.model)
+            response = call_llm(prompt, self.model).content
 
         # Parse response
         rules = self._parse_generated_rules(response)

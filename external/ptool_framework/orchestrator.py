@@ -423,7 +423,9 @@ Respond in this exact JSON format:
 Your response (JSON only):"""
 
         # Call LLM
-        response = self.llm_backend(prompt, model=self.model)
+        from .llm_backend import LLMResponse
+        result = self.llm_backend(prompt, model=self.model)
+        response = result.content if isinstance(result, LLMResponse) else result
 
         # Parse response
         try:
@@ -1386,8 +1388,10 @@ Respond with a JSON array of subtask strings:
 
 Your response (JSON array only):"""
 
+        from .llm_backend import LLMResponse
         backend = self.llm_backend or call_llm
-        response = backend(prompt, model=self.model)
+        result = backend(prompt, model=self.model)
+        response = result.content if isinstance(result, LLMResponse) else result
 
         # Parse response
         try:

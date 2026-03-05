@@ -67,7 +67,7 @@ def get_known_calculators() -> Set[str]:
         Set of lowercase calculator names/patterns
     """
     try:
-        from benchmark.experiments.calculators import CALCULATOR_PATTERNS
+        from benchmark.medcalc.experiments.calculators import CALCULATOR_PATTERNS
         # Return all pattern keys (already lowercase)
         return set(CALCULATOR_PATTERNS.keys())
     except ImportError:

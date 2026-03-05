@@ -937,18 +937,18 @@ class ReActStore:
         """Store a trajectory for later analysis."""
         # Store full trajectory as JSON
         traj_file = self.base_path / "all_trajectories" / f"trajectory_{trajectory.trajectory_id}.json"
-        with open(traj_file, 'w') as f:
+        with open(traj_file, 'w', encoding='utf-8') as f:
             f.write(trajectory.to_json())
 
         # Store PTP format trace
         ptp_file = self.base_path / "ptp_traces" / f"trajectory_{trajectory.trajectory_id}.txt"
-        with open(ptp_file, 'w') as f:
+        with open(ptp_file, 'w', encoding='utf-8') as f:
             f.write(f"Goal: {trajectory.goal}\n\n")
             f.write(trajectory.to_ptp_trace())
 
         # Append to success/failure index
         status_file = "successful.jsonl" if trajectory.success else "failed.jsonl"
-        with open(self.base_path / "by_success" / status_file, 'a') as f:
+        with open(self.base_path / "by_success" / status_file, 'a', encoding='utf-8') as f:
             summary = {
                 "trajectory_id": trajectory.trajectory_id,
                 "goal": trajectory.goal,
@@ -968,7 +968,7 @@ class ReActStore:
         if not traj_file.exists():
             return None
 
-        with open(traj_file) as f:
+        with open(traj_file, encoding='utf-8') as f:
             data = json.load(f)
         return ReActTrajectory.from_dict(data)
 
@@ -978,7 +978,7 @@ class ReActStore:
         if not ptp_file.exists():
             return None
 
-        with open(ptp_file) as f:
+        with open(ptp_file, encoding='utf-8') as f:
             return f.read()
 
     def list_trajectories(
@@ -1004,7 +1004,7 @@ class ReActStore:
 
         for file_path in files_to_read:
             if file_path.exists():
-                with open(file_path) as f:
+                with open(file_path, encoding='utf-8') as f:
                     for line in f:
                         if line.strip():
                             results.append(json.loads(line))

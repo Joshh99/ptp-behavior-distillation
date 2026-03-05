@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RQ2 Meeting Report - 20260223_202606</title>
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<style>
+* { box-sizing: border-box; }
+body {
+    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+    margin: 0; padding: 40px 20px;
+    background: #fefdfb; color: #1a1a1a; line-height: 1.65;
+}
+.container { max-width: 1300px; margin: 0 auto; }
+header {
+    text-align: center; margin-bottom: 40px; padding: 30px 20px;
+    border-bottom: 3px double #2c3e50;
+}
+h1 { font-size: 2.2em; font-weight: 600; margin-bottom: 8px; color: #2c3e50; }
+.subtitle { font-size: 1.15em; color: #34495e; margin-bottom: 5px; }
+.rq { font-style: italic; font-size: 0.95em; max-width: 750px; margin: 15px auto 0; color: #555; }
+.meta { font-size: 0.85em; color: #7f8c8d; margin-top: 12px; }
+h2 { font-size: 1.5em; font-weight: 600; border-bottom: 2px solid #2c3e50;
+      padding-bottom: 8px; margin: 40px 0 20px; color: #2c3e50; }
+h3 { font-size: 1.2em; font-weight: 600; margin: 25px 0 15px; color: #34495e; }
+
+/* Summary cards */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+          gap: 15px; margin: 20px 0; }
+.card { border: 1px solid #dee2e6; padding: 20px 15px; text-align: center;
+         background: #fff; border-radius: 4px; }
+.card .val { font-size: 2.2em; font-weight: 600; color: #2c3e50; }
+.card .lbl { font-size: 0.8em; margin-top: 5px; color: #6c757d;
+              text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* Table */
+table { width: 100%; border-collapse: collapse; margin: 20px 0;
+         border: 1px solid #dee2e6; font-size: 0.9em; }
+th, td { padding: 12px 10px; text-align: left; border: 1px solid #dee2e6; }
+th { background: #f8f9fa; font-weight: 600; text-align: center; color: #495057; }
+td.num { text-align: center; font-family: 'Consolas', monospace; }
+td.exp { font-weight: 600; white-space: nowrap; color: #2c3e50; }
+.acc-high { color: #27ae60; font-weight: 600; }
+.acc-med  { color: #f39c12; }
+.acc-low  { color: #e74c3c; }
+tr:hover { background: #f8f9fa; }
+
+/* Charts */
+.chart { margin: 30px 0; padding: 25px; border: 1px solid #dee2e6;
+          background: #fff; border-radius: 4px; }
+
+/* Insight */
+.insight { background: #fff; border-left: 4px solid #2c3e50; padding: 20px 25px;
+            margin: 20px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.insight h4 { margin: 0 0 12px; font-size: 1.05em; font-weight: 600; color: #2c3e50; }
+.insight p { margin: 8px 0; color: #495057; }
+
+.note { font-size: 0.85em; color: #6c757d; font-style: italic; margin-top: 10px; }
+
+footer {
+    text-align: center; padding: 30px 20px; margin-top: 60px;
+    border-top: 2px solid #dee2e6; font-size: 0.85em; color: #6c757d;
+}
+@media print { nav { display: none; } body { background: white; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+    <h1>RQ2 Meeting Report</h1>
+    <div class="subtitle">Reliability-Autonomy Spectrum: RuleArena Benchmark</div>
+    <div class="rq">
+        What is the optimal point on the reliability-generality-cost curve
+        for production deployment?
+    </div>
+    <div class="meta">Generated: 20260223_202606 | Model: deepseek-ai/DeepSeek-V3 | Seed: 42 | N=50/cell</div>
+</header>
+
+<!-- Summary Cards -->
+<h2>Executive Summary</h2>
+<div class="cards">
+    <div class="card">
+        <div class="val">300</div>
+        <div class="lbl">Total Problems</div>
+    </div>
+    <div class="card">
+        <div class="val">6</div>
+        <div class="lbl">Cells Run</div>
+    </div>
+    <div class="card">
+        <div class="val">100.0%</div>
+        <div class="lbl">Best Accuracy</div>
+    </div>
+    <div class="card">
+        <div class="val">$0.2256</div>
+        <div class="lbl">Total Cost</div>
+    </div>
+    <div class="card">
+        <div class="val">0.947</div>
+        <div class="lbl">Best NBA F1</div>
+    </div>
+</div>
+
+<!-- Results Table -->
+<h2>Results by Cell</h2>
+<table>
+<thead>
+    <tr>
+        <th>Experiment</th><th>Domain</th><th>Level</th><th>N</th>
+        <th>Acc (tol)</th><th>Acc (exact)</th><th>F1</th>
+        <th>Cost</th><th>Avg Time</th><th>Errors</th>
+    </tr>
+</thead>
+<tbody>
+<tr>
+            <td class="exp">l0_python</td>
+            <td>airline</td>
+            <td>L0</td>
+            <td class="num">50</td>
+            <td class="num acc-high">100.0%</td>
+            <td class="num">100.0%</td>
+            <td class="num"></td>
+            <td class="num">$0.0000</td>
+            <td class="num">0.0s</td>
+            <td class="num">0</td>
+        </tr>
+<tr>
+            <td class="exp">l0_python</td>
+            <td>tax</td>
+            <td>L0</td>
+            <td class="num">50</td>
+            <td class="num acc-high">100.0%</td>
+            <td class="num">100.0%</td>
+            <td class="num"></td>
+            <td class="num">$0.0000</td>
+            <td class="num">0.0s</td>
+            <td class="num">0</td>
+        </tr>
+<tr>
+            <td class="exp">l0f_cot</td>
+            <td>airline</td>
+            <td>L0F</td>
+            <td class="num">50</td>
+            <td class="num acc-low">0.0%</td>
+            <td class="num">0.0%</td>
+            <td class="num"></td>
+            <td class="num">$0.1074</td>
+            <td class="num">56.1s</td>
+            <td class="num">0</td>
+        </tr>
+<tr>
+            <td class="exp">l0f_cot</td>
+            <td>nba</td>
+            <td>L0F</td>
+            <td class="num">50</td>
+            <td class="num acc-low">0.0%</td>
+            <td class="num">0.0%</td>
+            <td class="num">0.947</td>
+            <td class="num">$0.0416</td>
+            <td class="num">17.7s</td>
+            <td class="num">0</td>
+        </tr>
+<tr>
+            <td class="exp">l1_ptool</td>
+            <td>airline</td>
+            <td>L1</td>
+            <td class="num">50</td>
+            <td class="num acc-high">84.0%</td>
+            <td class="num">82.0%</td>
+            <td class="num"></td>
+            <td class="num">$0.0353</td>
+            <td class="num">7.6s</td>
+            <td class="num">0</td>
+        </tr>
+<tr>
+            <td class="exp">l1_ptool</td>
+            <td>nba</td>
+            <td>L1</td>
+            <td class="num">50</td>
+            <td class="num acc-high">84.0%</td>
+            <td class="num">84.0%</td>
+            <td class="num">0.913</td>
+            <td class="num">$0.0413</td>
+            <td class="num">8.5s</td>
+            <td class="num">2</td>
+        </tr>
+</tbody>
+</table>
+<p class="note">
+    F1 column only applies to NBA (boolean classification, positive = violation).
+    Accuracy metrics use 1% relative tolerance.
+</p>
+
+<!-- Skipped cells -->
+<h3>Skipped Cells</h3>
+<ul><li><strong>l0_python/nba:</strong> No Python oracle for NBA (boolean classification)</li><li><strong>l0f_cot/tax:</strong> Tax CoT prompt under refinement</li><li><strong>l1_ptool/tax:</strong> Tax extraction schema under refinement</li></ul>
+
+<!-- Charts -->
+<h2>Visualizations</h2>
+<div class="chart"><div id="acc-chart"></div></div>
+<div class="chart"><div id="cost-chart"></div></div>
+<div class="chart"><div id="f1-chart"></div></div>
+<div class="chart"><div id="scatter-chart"></div></div>
+
+<!-- Key Findings -->
+<h2>Key Findings</h2>
+<div id="findings-container"></div>
+
+<!-- Methodology -->
+<h2>Methodology</h2>
+<h3>Experiment Levels</h3>
+<ul>
+    <li><strong>L0: Pure Python</strong> - Deterministic calculation with oracle parameters (ceiling)</li>
+    <li><strong>L0F: Chain-of-Thought</strong> - Direct LLM reasoning (baseline)</li>
+    <li><strong>L1: PTool Extraction</strong> - Structured extraction + deterministic calculation</li>
+</ul>
+<h3>Dataset</h3>
+<p>RuleArena benchmark (Zhou et al., ACL 2025): 816 problems across 3 domains.
+50 problems sampled per cell, stratified by complexity level.</p>
+<h3>NBA Class Imbalance</h3>
+<p>~82.9% of NBA answers are True (violation). We report F1 score instead of accuracy
+to avoid inflated metrics from majority-class guessing.</p>
+
+<footer>
+    <strong>Behavior Distillation Research Project</strong><br>
+    Independent Study with Prof. William Cohen (CMU ML / Google DeepMind)<br>
+    Student: Joshua Wisdom Momo | Spring 2026
+</footer>
+
+</div>
+
+<script>
+const labels = ["l0_python/airline", "l0_python/tax", "l0f_cot/airline", "l0f_cot/nba", "l1_ptool/airline", "l1_ptool/nba"];
+const accs   = [100.0, 100.0, 0.0, 0.0, 84.0, 84.0];
+const costs  = [0.0, 0.0, 0.1074, 0.0416, 0.0353, 0.0413];
+const colors = ["#7f8c8d", "#7f8c8d", "#c0392b", "#c0392b", "#2980b9", "#2980b9"];
+
+const lo = {
+    paper_bgcolor: '#fff', plot_bgcolor: '#fff',
+    font: { color: '#2c3e50', family: "'Palatino Linotype', Georgia, serif", size: 12 },
+    xaxis: { gridcolor: '#ecf0f1' }, yaxis: { gridcolor: '#ecf0f1' },
+    margin: { t: 50, b: 100, l: 60, r: 30 }
+};
+
+// Accuracy bar chart
+Plotly.newPlot('acc-chart', [{
+    x: labels, y: accs, type: 'bar',
+    marker: { color: colors },
+    text: accs.map(a => a.toFixed(1)+'%'), textposition: 'outside',
+    textfont: { size: 13, color: '#2c3e50' }
+}], {
+    ...lo, title: { text: 'Accuracy by Cell (1% tolerance)', font: { size: 16 } },
+    yaxis: { ...lo.yaxis, title: 'Accuracy (%)', range: [0, 110] },
+    height: 400
+});
+
+// Cost bar chart
+Plotly.newPlot('cost-chart', [{
+    x: labels, y: costs, type: 'bar',
+    marker: { color: colors },
+    text: costs.map(c => '$'+c.toFixed(4)), textposition: 'outside',
+    textfont: { size: 13, color: '#2c3e50' }
+}], {
+    ...lo, title: { text: 'Total Cost by Cell', font: { size: 16 } },
+    yaxis: { ...lo.yaxis, title: 'Cost (USD)' },
+    height: 400
+});
+
+// F1 bar chart (NBA only)
+const f1Labels = ["l0f_cot/nba", "l1_ptool/nba"];
+const f1Vals   = [0.947, 0.913];
+const f1Colors = ["#c0392b", "#2980b9"];
+
+if (f1Labels.length > 0) {
+    Plotly.newPlot('f1-chart', [{
+        x: f1Labels, y: f1Vals, type: 'bar',
+        marker: { color: f1Colors },
+        text: f1Vals.map(v => v.toFixed(3)), textposition: 'outside',
+        textfont: { size: 13, color: '#2c3e50' }
+    }], {
+        ...lo, title: { text: 'NBA F1 Score by Experiment', font: { size: 16 } },
+        yaxis: { ...lo.yaxis, title: 'F1 Score', range: [0, 1.1] },
+        height: 380
+    });
+} else {
+    document.getElementById('f1-chart').innerHTML = '<p style="color:#999">No NBA cells to display.</p>';
+}
+
+// Cost vs Accuracy scatter
+const traces = labels.map((name, i) => ({
+    x: [costs[i]], y: [accs[i]], mode: 'markers+text', type: 'scatter',
+    name: name,
+    marker: { size: 18, color: colors[i], line: { color: '#fff', width: 2 } },
+    text: [name], textposition: 'top center',
+    textfont: { color: '#2c3e50', size: 10 }
+}));
+
+Plotly.newPlot('scatter-chart', traces, {
+    ...lo,
+    title: { text: 'Cost vs Accuracy', font: { size: 16 } },
+    xaxis: { ...lo.xaxis, title: 'Total Cost (USD)' },
+    yaxis: { ...lo.yaxis, title: 'Accuracy (%)', range: [-5, 115] },
+    showlegend: true,
+    legend: { orientation: 'h', y: -0.2, x: 0.5, xanchor: 'center' },
+    height: 420
+});
+
+// Dynamic findings
+const fc = document.getElementById('findings-container');
+let html = '';
+
+// Best accuracy
+let bestIdx = accs.indexOf(Math.max(...accs));
+html += `<div class="insight"><h4>Best Accuracy: ${labels[bestIdx]}</h4>
+<p>${accs[bestIdx].toFixed(1)}% accuracy at $${costs[bestIdx].toFixed(4)} total cost.</p></div>`;
+
+// NBA F1 comparison
+if (f1Labels.length >= 2) {
+    html += `<div class="insight"><h4>NBA F1 Comparison</h4><p>`;
+    f1Labels.forEach((l, i) => {
+        html += `${l}: F1=${f1Vals[i].toFixed(3)}  `;
+    });
+    html += `</p></div>`;
+}
+
+// L0 ceiling note
+html += `<div class="insight"><h4>L0 Oracle Ceiling</h4>
+<p>L0 (pure Python) achieves 100% accuracy on airline/tax at zero API cost,
+confirming ground-truth calculation correctness and establishing the ceiling
+for LLM-based approaches.</p></div>`;
+
+fc.innerHTML = html;
+</script>
+</body>
+</html>

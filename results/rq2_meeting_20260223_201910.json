@@ -1,0 +1,1107 @@
+{
+  "metadata": {
+    "timestamp": "20260223_201910",
+    "n_per_cell": 3,
+    "seed": 42,
+    "model": "deepseek-ai/DeepSeek-V3",
+    "matrix": [
+      {
+        "experiment": "l0_python",
+        "domain": "airline",
+        "level": "L0"
+      },
+      {
+        "experiment": "l0_python",
+        "domain": "tax",
+        "level": "L0"
+      },
+      {
+        "experiment": "l0f_cot",
+        "domain": "airline",
+        "level": "L0F"
+      },
+      {
+        "experiment": "l0f_cot",
+        "domain": "nba",
+        "level": "L0F"
+      },
+      {
+        "experiment": "l1_ptool",
+        "domain": "airline",
+        "level": "L1"
+      },
+      {
+        "experiment": "l1_ptool",
+        "domain": "nba",
+        "level": "L1"
+      }
+    ],
+    "skipped": {
+      "l0_python__nba": "No Python oracle for NBA (boolean classification)",
+      "l0f_cot__tax": "Tax CoT prompt under refinement",
+      "l1_ptool__tax": "Tax extraction schema under refinement"
+    }
+  },
+  "cells": {
+    "l0_python__airline": [
+      {
+        "instance_id": "airline_0_42",
+        "predicted": 2741,
+        "expected": 2741,
+        "is_correct_exact": true,
+        "is_correct_tolerance": true,
+        "latency_ms": 0.6725788116455078,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "calculator_name": "airline",
+        "category": "",
+        "timestamp": "2026-02-23T18:19:10.477894+00:00",
+        "error": null,
+        "raw_response": null,
+        "metadata": {
+          "domain": "airline",
+          "complexity_level": 0
+        }
+      },
+      {
+        "instance_id": "airline_1_57",
+        "predicted": 2332,
+        "expected": 2332,
+        "is_correct_exact": true,
+        "is_correct_tolerance": true,
+        "latency_ms": 0.5359649658203125,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "calculator_name": "airline",
+        "category": "",
+        "timestamp": "2026-02-23T18:19:10.479017+00:00",
+        "error": null,
+        "raw_response": null,
+        "metadata": {
+          "domain": "airline",
+          "complexity_level": 1
+        }
+      },
+      {
+        "instance_id": "airline_2_49",
+        "predicted": 3834,
+        "expected": 3834,
+        "is_correct_exact": true,
+        "is_correct_tolerance": true,
+        "latency_ms": 0.3247261047363281,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "calculator_name": "airline",
+        "category": "",
+        "timestamp": "2026-02-23T18:19:10.479377+00:00",
+        "error": null,
+        "raw_response": null,
+        "metadata": {
+          "domain": "airline",
+          "complexity_level": 2
+        }
+      }
+    ],
+    "l0_python__tax": [
+      {
+        "instance_id": "tax_0_42",
+        "predicted": 8441.279999999999,
+        "expected": 8441.279999999999,
+        "is_correct_exact": true,
+        "is_correct_tolerance": true,
+        "latency_ms": 0.42939186096191406,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "calculator_name": "tax",
+        "category": "",
+        "timestamp": "2026-02-23T18:19:10.484772+00:00",
+        "error": null,
+        "raw_response": null,
+        "metadata": {
+          "domain": "tax",
+          "complexity_level": 0
+        }
+      },
+      {
+        "instance_id": "tax_1_57",
+        "predicted": 819.4099999999999,
+        "expected": 819.4099999999999,
+        "is_correct_exact": true,
+        "is_correct_tolerance": true,
+        "latency_ms": 0.43320655822753906,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "calculator_name": "tax",
+        "category": "",
+        "timestamp": "2026-02-23T18:19:10.485272+00:00",
+        "error": null,
+        "raw_response": null,
+        "metadata": {
+          "domain": "tax",
+          "complexity_level": 1
+        }
+      },
+      {
+        "instance_id": "tax_2_49",
+        "predicted": -5070.9412795,
+        "expected": -5070.9412795,
+        "is_correct_exact": true,
+        "is_correct_tolerance": true,
+        "latency_ms": 1.5377998352050781,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "calculator_name": "tax",
+        "category": "",
+        "timestamp": "2026-02-23T18:19:10.486870+00:00",
+        "error": null,
+        "raw_response": null,
+        "metadata": {
+          "domain": "tax",
+          "complexity_level": 2
+        }
+      }
+    ],
+    "l0f_cot__airline": [
+      {
+        "instance_id": "airline_0_42",
+        "predicted": 85.0,
+        "expected": 2741,
+        "is_correct_exact": false,
+        "is_correct_tolerance": false,
+        "latency_ms": 70301.82123184204,
+        "cost_usd": 0.0019110000000000002,
+        "input_tokens": 658,
+        "output_tokens": 1904,
+        "calculator_name": "airline",
+        "category": "",
+        "timestamp": "2026-02-23T18:20:20.793702+00:00",
+        "error": null,
+        "raw_response": "Let's analyze Linda's situation step by step:\n\n1. **Class and Route**: Linda is flying in Premium Economy Class from Shenzhen to Salt Lake City. This is an international flight from China to the U.S.\n\n2. **Baggage Allowance for Premium Economy**:\n   - According to the rules, all cabins (including Premium Economy) allow 1 carry-on bag and 1 personal item.\n   - Checked bag fees depend on the route. Since this is from Shenzhen (China) to Salt Lake City (U.S.), it is not listed in the specific regions (like U.S./Puerto Rico/U.S. Virgin Islands or Canada/Caribbean/Mexico/Central America/Guyana). Therefore, we should assume standard international baggage fees apply, but the problem does not provide explicit fees for this route. However, note that the problem states: \"All published bag fees apply at each check-in location and are base rates according to travel dates and destination\". Since Shenzhen to U.S. is not listed, we might need to infer or use general rules.\n\n   Actually, looking back at the rules:\n   - The checked bag fees are only specified for two categories:\n        a) Within/between U.S., Puerto Rico, U.S. Virgin Islands: 1st bag $40, 2nd $45.\n        b) To/from Canada, Caribbean, Mexico, Central America, Guyana: 1st bag $35, 2nd $45.\n   - For other international routes (like China to U.S.), the fees are not provided. However, typically for international flights, baggage allowances might be different. But the problem says \"all published bag fees apply\", and since it's not published here, we might assume that no free checked bags are included and standard fees apply? But wait, Premium Economy might include checked bags.\n\n   However, the problem states: \"even if you buy or get an upgrade that includes free checked bags\". This implies that some fares or classes include free checked bags. For international flights, Premium Economy usually includes at least one free checked bag. But the problem does not specify.\n\n   Given the lack of specific information for this route, we should rely on the provided rules. The rules only specify fees for the two regions, and for other routes, we don't have data. But note that the problem says \"base rates according to travel dates and destination\". Since it's not listed, perhaps we should assume that no free bags are included and the standard fee is not provided? This is ambiguous.\n\n   Alternatively, we can look at the items and see which are allowed as carry-on and which must be checked, and then see if fees apply.\n\n3. **Items Analysis**:\n   - Linda has 5 items. She is allowed 1 carry-on and 1 personal item. The rest must be checked.\n   - Let's determine which can be carry-on/personal:\n\n   a) Backpack: 18x14x9 inches, 6 lbs.\n        - Dimensions: 18+14+9 = 41 inches. For personal item, max is 18x14x8 (so 18+14+8=40 inches). This is 41, which exceeds personal item by 1 inch in height (9 vs 8). So it cannot be a personal item. For carry-on: max 22x14x9 (22+14+9=45 inches). This is 41, so it fits as carry-on.\n\n   b) Luggage box: 35x20x10 inches, 60 lbs.\n        - Dimensions: 35+20+10=65 inches. This exceeds both personal (40) and carry-on (45). So it must be checked.\n\n   c) Luggage box: 49x31x23 inches, 51 lbs.\n        - Dimensions: 49+31+23=103 inches. This is huge, must be checked.\n\n   d) Backpack: 34x16x14 inches, 92 lbs.\n        - Dimensions: 34+16+14=64 inches. Exceeds carry-on (45), must be checked.\n\n   e) Luggage box: 49x26x22 inches, 83 lbs.\n        - Dimensions: 49+26+22=97 inches. Must be checked.\n\n   So, only the first backpack (a) can be a carry-on. The other 4 items must be checked.\n\n4. **Checked Bag Fees**:\n   - Since the flight is from Shenzhen to Salt Lake City (international, China to U.S.), the provided fee categories do not apply. We have no published fee for this route.\n   - However, the problem might expect us to use the general rule that checked bags are charged per piece, but without the rate, it's difficult.\n   - Alternatively, perhaps Premium Economy includes some free checked bags? Typically, for international flights, Premium Economy includes 2 free checked bags. But the problem does not state this.\n\n   Given the ambiguity, let's re-read the problem: \"Linda is a Premium Economy Class passenger\". And the rules say: \"even if you buy or get an upgrade that includes free checked bags\". This suggests that Premium Economy might include free checked bags.\n\n   How many? Not specified. For American Airlines, Premium Economy on international routes includes 2 free checked bags. But we should stick to the problem.\n\n   Since the problem does not specify the baggage allowance for Premium Economy on this route, we must assume that the standard fees apply as per the published rates. But the published rates are only for the two regions.\n\n   Perhaps we can assume that for other international routes, the fee is similar? Or perhaps the problem expects that no free bags are included.\n\n   Another thought: the ticket price is $1141, which is given, but not directly relevant.\n\n   Given the lack of information, I think we should assume that Linda must pay for all checked bags, and since the route is not listed, we might use the higher fee? Or perhaps the fee is not applicable.\n\n   Wait, the problem says \"applicable taxes are not shown\", meaning the base rates are given, but for this route, it's not given.\n\n   This is a problem. Perhaps we can assume that the fee for the first bag is $40 and second is $45, as for the U.S. domestic, since Salt Lake City is in U.S.\n\n   But the origin is Shenzhen.\n\n   Alternatively, since the destination is U.S., perhaps the \"travel to/from\" might include it? But the list is Canada, Caribbean, etc., not Asia.\n\n   I think there is a mistake in the problem interpretation.\n\n   Let's look back at the rules: \"Travel within / between the U.S., Puerto Rico, and U.S. Virgin Islands\" and \"Travel to / from Canada, Caribbean, Mexico, Central America, and Guyana\".\n\n   Shenzhen to Salt Lake City is from China to U.S., so it doesn't fall into either. Therefore, no fee is published. But typically, for international flights, the baggage allowance is based on piece system, and Premium Economy often includes 2 bags.\n\n   Given that the problem is from an airline calculation, and to make it solvable, I will assume that Premium Economy passengers on international flights are allowed 2 free checked bags. This is common.\n\n   So, Linda has 4 items to check, but she gets 2 for free. So she must pay for 2 checked bags.\n\n   Now, what is the fee per bag? Since the destination is U.S., we can use the fee for \"travel to/from\" but it's not listed. The closest is perhaps the first category: within U.S., etc., which is $40 for first, $45 for second.\n\n   Or for international, it might be higher, but not specified.\n\n   Given the options, I'll use the provided fees: first bag $40, second $45.\n\n   So, she has to pay for 2 bags: first $40, second $45, total $85.\n\n   But wait, the bags might be overweight.\n\n5. **Weight Considerations**:\n   - The rules do not mention weight limits for checked bags? Actually, the problem does not provide weight limits. It only gives size limits for carry-on. For checked bags, only fees are given, not size/weight limits. So we assume no overweight fees, only the piece fees.\n\n   However, typically, checked bags have weight limits (usually 50 lbs), but here it's not stated. So we ignore weight.\n\n   But in the items, some are very heavy (92 lbs, 83 lbs), but since no rule, we assume no extra charge.\n\n6. **Conclusion**:\n   - Linda can take one carry-on (the first backpack).\n   - She has 4 items to check.\n   - Assuming Premium Economy includes 2 free checked bags, she must pay for 2 checked bags.\n   - Using the fee for U.S. domestic (since no other is given): first checked bag fee $40, second $45.\n   - Total fee = $40 + $45 = $85.\n\nTherefore, the total bag fee is $85.\nANSWER: 85",
+        "metadata": {
+          "domain": "airline",
+          "complexity_level": 0
+        }
+      },
+      {
+        "instance_id": "airline_1_57",
+        "predicted": 85.0,
+        "expected": 2332,
+        "is_correct_exact": false,
+        "is_correct_tolerance": false,
+        "latency_ms": 46193.06993484497,
+        "cost_usd": 0.0021009,
+        "input_tokens": 712,
+        "output_tokens": 2097,
+        "calculator_name": "airline",
+        "category": "",
+        "timestamp": "2026-02-23T18:21:06.987502+00:00",
+        "error": null,
+        "raw_response": "Let's analyze the problem step by step:\n\nMichael is flying in Premium Economy from Dallas to Austin (both in the U.S., so it's domestic travel within the U.S.). He has 8 items. We need to determine which items are allowed as carry-on/personal items and which must be checked, and then calculate the applicable bag fees.\n\nFirst, recall the rules:\n- He is allowed 1 carry-on bag and 1 personal item.\n- Personal item: max dimensions 18 x 14 x 8 inches.\n- Carry-on bag: max dimensions 22 x 14 x 9 inches (including handles and wheels). Alternatively, a soft-sided garment bag up to 51 inches (L+W+H).\n- Checked bags: For travel within the U.S., 1st checked bag fee is $40, 2nd checked bag fee is $45. Each additional bag beyond 2 will incur additional fees (but the problem doesn't specify beyond the 2nd, so we assume only the first two fees are defined; however, typically airlines charge more for additional bags, but since not specified, we might need to assume standard practice or that only two are allowed? Actually, the problem doesn't state a limit on number of checked bags, but fees apply per bag each way. However, for this problem, we are to calculate the fees based on the given rules.\n\nNow, list all items with dimensions and weights:\n\n1. Backpack: 20x13x6 in, 9 lbs - This is within personal item size (18x14x8) but slightly larger in length (20 > 18) and width (13 <14, ok), height (6<8). However, length is 20 > 18, so it exceeds personal item. Check carry-on: max 22x14x9 - this fits (20<22, 13<14, 6<9). So it can be a carry-on.\n2. Luggage box: 35x19x11, 66 lbs - This is too big for carry-on (exceeds all dimensions: 35>22, 19>14, 11>9). Must be checked. Also, weight 66 lbs: typically checked bags have weight limit (usually 50 lbs for standard, overweight fee if above). But the problem doesn't specify overweight fees, so we assume only the base checked bag fee applies regardless of weight? The rules only mention size for carry-on, but for checked bags, only fees are given, no size/weight limits mentioned. However, in reality, there are weight limits, but since not specified, we might ignore weight? But the problem includes weights, so probably we need to consider. Actually, the rules say \"bag fees apply at each check-in\" and \"base rates according to travel dates and destination\", but no mention of overweight fees. So we assume only the base checked bag fee per bag, and ignore weight for fee calculation? But if too heavy, it might not be accepted, but for fee, we proceed with base fee.\n3. Backpack: 35x16x12, 75 lbs - Too big for carry-on (35>22, 16>14, 12>9). Must be checked.\n4. Luggage box: 38x15x12, 56 lbs - Too big for carry-on (38>22,15>14,12>9). Checked.\n5. Luggage box: 45x31x20, 51 lbs - Too big, checked.\n6. Backpack: 50x33x31, 51 lbs - Too big, checked.\n7. Backpack: 40x23x16, 98 lbs - Too big, checked.\n8. Luggage box: 35x17x11, 77 lbs - Too big, checked.\n\nNow, item 1 is eligible as carry-on. He is allowed one carry-on and one personal item. But he has no personal item? He has only one that is carry-on eligible (item1), and the rest are too big. So he can take item1 as carry-on.\n\nTherefore, he must check all other 7 items.\n\nNow, checked bag fees for travel within U.S.: first bag $40, second bag $45. What about third and beyond? The rules only specify first and second. But typically, additional bags are charged at higher rates. However, the problem says \"bag fees have been updated\" and lists only first and second. It doesn't mention third or more. So we must assume that only the first two have defined fees, and others are not covered? But that doesn't make sense. Probably, we should assume that the airline charges for all checked bags, but the problem only provides fees for first two. Perhaps for this problem, we only calculate for the first two bags? But he has 7 to check.\n\nWait, re-read the rules: \"Travel within / between the U.S., Puerto Rico, and U.S. Virgin Islands \u2013 1st checked bag fee is $40 and the 2nd checked bag fee is $45.\" It doesn't say anything about additional bags. But in reality, American Airlines charges $150 for third checked bag, etc. However, since not specified, we might assume that only two bags are allowed? But the problem doesn't state a limit.\n\nAlternatively, perhaps the problem expects us to only consider the first two checked bags for fee calculation? But that seems arbitrary.\n\nAnother thought: perhaps the weights and sizes indicate that some bags are not acceptable due to overweight? For example, typically checked bags must be under 50 lbs to avoid overweight fee. But here, many are over 50 lbs: item2:66, item3:75, item4:56, item5:51, item6:51, item7:98, item8:77. Only item1 is under (9 lbs). But item1 is carry-on.\n\nSo if we consider weight limits for checked bags (assuming standard 50 lbs limit), then all checked items except possibly item5 and item6 (51 lbs each, just over) are overweight. But again, no overweight fees specified.\n\nGiven the complexity, I think for this problem, we should ignore weight for fee calculation, as the rules only mention size for carry-on, and for checked only base fees are given without conditions.\n\nSo, he checks 7 bags.\n\nFees: first bag: $40, second: $45. For third and beyond, we need to know. Since not specified, perhaps we assume that no additional fees beyond second? But that doesn't make sense.\n\nWait, the rules say \"bag fees apply at each check-in\" and \"base rates\", but only list first and second. Perhaps for this route, only two bags are allowed? But he is premium economy? The rules don't mention any free bags for premium economy? It says \"even if you buy or get an upgrade that includes free checked bags\", implying that sometimes upgrades include free bags, but here it doesn't say that Michael has free bags. So he pays for all.\n\nTo resolve, I think we should look back at the problem: \"Michael is a Premium Economy Class passenger\". Does premium economy include free checked bags? The rules don't say. It only says \"even if you upgrade\", so probably he doesn't have free bags.\n\nPerhaps the intended interpretation is that he is allowed one carry-on and one personal item, and for checked bags, he pays for the first two, and the others are not allowed? But that seems harsh.\n\nAnother idea: perhaps some of the large items are not acceptable at all due to size? For checked bags, there is usually a size limit (e.g., 62 linear inches). Let's check the sizes:\n\nItem2: 35+19+11=65 inches >62, oversize.\nItem3:35+16+12=63>62, oversize.\nItem4:38+15+12=65>62.\nItem5:45+31+20=96>62, very large.\nItem6:50+33+31=114>62.\nItem7:40+23+16=79>62.\nItem8:35+17+11=63>62.\n\nAll checked items exceed 62 linear inches, which is typically the maximum for checked bags without oversize fee. But again, not specified.\n\nGiven the complexity, and since the problem is likely designed to test understanding of carry-on vs checked, and the fees for first two, I think we should assume that he can only have the carry-on (item1) and must check the rest, but only the first two checked bags are charged at $40 and $45, and the others are not allowed or have no fee defined? But that doesn't work.\n\nPerhaps the problem has a mistake, or we are to consider only the items that are within size and weight.\n\nBut item1 is only one that is carry-on eligible.\n\nAnother thought: he is allowed one carry-on and one personal item. Item1 can be personal item? But it is 20x13x6, which exceeds personal item length (20>18). So it cannot be personal item. It can be carry-on.\n\nSo he has no personal item, but one carry-on.\n\nFor checked, he has 7 bags, all oversize and overweight, but we proceed.\n\nPerhaps for this problem, we calculate the fee for the first two checked bags only, and ignore the others, as the rules don't specify.\n\nSo, he checks at least two bags: first $40, second $45.\n\nTotal bag fee =40+45=85.\n\nThen\u52a0\u4e0a ticket price? The problem says \"Michael's flight ticket is $182.\" But we are to calculate bag fees, not total cost.\n\nSo answer should be bag fees only.\n\nTherefore, $85.\n\nBut this is not satisfactory.\n\nPerhaps only some items are within checked size, but all are over.\n\nI think we should go with first two checked bags.\n\nSo, he will pay for two checked bags.\n\nThus, bag fees =40+45=85.\n\nSo answer is 85.\nANSWER: 85",
+        "metadata": {
+          "domain": "airline",
+          "complexity_level": 1
+        }
+      },
+      {
+        "instance_id": "airline_2_49",
+        "predicted": 450.0,
+        "expected": 3834,
+        "is_correct_exact": false,
+        "is_correct_tolerance": false,
+        "latency_ms": 59330.22713661194,
+        "cost_usd": 0.0031164,
+        "input_tokens": 773,
+        "output_tokens": 3205,
+        "calculator_name": "airline",
+        "category": "",
+        "timestamp": "2026-02-23T18:22:06.318435+00:00",
+        "error": null,
+        "raw_response": "Let's analyze Patricia's situation step by step:\n\n1. **Flight Route**: San Francisco to Melbourne. This is an international flight to Australia (not listed in the specific regions for checked bag fees, so we need to refer to general rules).\n\n2. **Cabin Class**: Main Cabin (Economy). This means she is allowed:\n   - 1 carry-on bag (max 22x14x9 inches, including handles and wheels)\n   - 1 personal item (max 18x14x8 inches)\n\n3. **Items she has**:\n   - List all items with dimensions and weights:\n\n     (1) Backpack: 18x13x8 in, 5 lbs  (fits personal item size)\n     (2) Backpack: 40x25x14 in, 57 lbs (too big for carry-on, must be checked)\n     (3) Luggage box: 33x21x10 in, 66 lbs (too big for carry-on, must be checked)\n     (4) Luggage box: 38x13x12 in, 52 lbs (too big for carry-on, must be checked)\n     (5) Luggage box: 43x20x18 in, 52 lbs (too big for carry-on, must be checked)\n     (6) Backpack: 52x26x28 in, 52 lbs (too big for carry-on, must be checked)\n     (7) Luggage box: 36x16x13 in, 53 lbs (too big for carry-on, must be checked)\n     (8) Backpack: 38x15x12 in, 67 lbs (too big for carry-on, must be checked)\n     (9) Backpack: 39x21x13 in, 51 lbs (too big for carry-on, must be checked)\n     (10) Luggage box: 49x28x28 in, 55 lbs (too big for carry-on, must be checked)\n     (11) Backpack: 48x33x28 in, 68 lbs (too big for carry-on, must be checked)\n\n   Only item (1) qualifies as a personal item (fits under seat). None of the other items qualify as a carry-on because they exceed the maximum dimensions (22x14x9). Therefore, items 2 through 11 must be checked.\n\n4. **Checked Bag Fees**:\n   - The problem states bag fees for specific regions (U.S., Puerto Rico, U.S. Virgin Islands, Canada, Caribbean, Mexico, Central America, Guyana). Melbourne is not in any of these, so we need to refer to the general policy for other international flights.\n   - Typically, for international flights outside the listed regions, the first checked bag fee is higher. However, the rules provided do not specify the fee for Australia. But note: the problem says \"All published bag fees apply at each check-in location and are base rates according to travel dates and destination\". Since it's not listed, we might assume it follows the standard international fee (which is often $0 for the first bag in some airlines, but American Airlines charges for checked bags on international flights? Actually, American Airlines often allows one free checked bag on international flights in economy, but we must check the rules given).\n\n   However, looking back at the RULES: \n   - The rules only specify fees for \"Travel within / between U.S., Puerto Rico, and U.S. Virgin Islands\" and \"Travel to/from Canada, Caribbean, Mexico, Central America, and Guyana\". For all other destinations (like Australia), the rules are not provided. But the problem says \"All published bag fees apply\", so we need to infer or assume.\n\n   But wait: the problem is from American Airlines? The rules seem to be from American Airlines (based on the wording). For American Airlines, on international flights (including Australia), the first checked bag is usually free for Main Cabin? Actually, no: American Airlines typically charges for checked bags on international flights unless it's a region with free allowance. For Australia, American Airlines economy class allows one free checked bag (up to 50 lbs) and the second bag is paid.\n\n   However, the rules given in the problem do not state this. They only state the fees for the specific regions. So we must rely on the provided rules.\n\n   Since the rules do not specify Australia, we should assume that the standard fee applies? But the problem says \"base rates according to travel dates and destination\". Without specific rate for Australia, we might need to consider that no free bag is included and the first bag is charged.\n\n   But note: the problem says \"If you buy or get an upgrade that includes free checked bags\", implying that sometimes free bags are included. However, Patricia is in Main Cabin, which for international flights on American often includes one free bag.\n\n   Given the ambiguity, let's look at the items: she has 10 bags to check (items 2-11). Even if the first bag is free, she will have to pay for 9 bags.\n\n   However, the problem asks for the total bag fees. We need to know the fee structure.\n\n   Since the rules don't specify Australia, we should use the general rule: perhaps the first bag is not free. But wait, the rules say \"Bag fees have been updated effective for tickets issued on/after February 20, 2024\" and then list only two regions. For other regions, we must assume the standard fees.\n\n   Actually, on American Airlines website, for international flights to Australia, the first checked bag is free (up to 50 lbs) in economy, second bag is $100, and additional bags are $200 each (or more). But again, we are constrained by the rules given.\n\n   The rules given in the problem do not mention Australia, so we cannot assume free bag. Perhaps we should consider that no free bag is included and the first bag is charged at a base rate. But what is the base rate? Not specified.\n\n   This is a problem. Perhaps we need to assume that for destinations not listed, the fee is similar to the highest? Or perhaps the problem expects us to use the fees for the listed regions as a proxy.\n\n   Alternatively, note that the ticket price is given as $744. This might be a clue that she is not entitled to free bags.\n\n   Another idea: perhaps the flight from San Francisco to Melbourne is via a hub, and the bag fees are based on the first segment? But that might be overcomplicating.\n\n   Given the instructions, we must use the provided rules. Since Australia is not listed, we might assume that the fee is the same as \"Travel to/from Canada, Caribbean, etc.\" which is $35 for first bag and $45 for second. Or perhaps it is the same as domestic ($40 first, $45 second). But that doesn't make sense for international.\n\n   Wait, the rules say \"according to travel dates and destination\". So for Melbourne, it should be a different fee. But not provided.\n\n   This is ambiguous. However, looking at the number of bags and weights, many are overweight (over 50 lbs). So even if the first bag is free, she will pay overweight fees.\n\n   Let's first determine which bags are overweight and oversize.\n\n   Standard checked bag rules:\n   - Max weight: 50 lbs (23 kg) for economy. Overweight: 51-70 lbs: fee $100 (for American Airlines international).\n   - Max size: 62 linear inches (length+width+height). Oversize: 63-115 linear inches: fee $200.\n\n   These are standard, but not provided in the rules. The rules only give the fees for the first and second bag, not overweight/oversize.\n\n   The rules provided are incomplete for this destination.\n\n   Perhaps the problem intends for us to use the domestic fees? But Melbourne is international.\n\n   Another thought: the problem says \"Patricia is a Main Cabin Class passenger\", and for American Airlines, on international flights, the first checked bag is free. But again, not stated in rules.\n\n   Given the complexity, let's assume that for this destination, the first checked bag is free, and additional bags are charged at $200 each (typical for American to Australia). Also, overweight and oversize fees apply.\n\n   But the rules do not state this.\n\n   Perhaps we should only use the information given. The rules only specify fees for two regions, and for other regions, we have no data. This might be a trick.\n\n   Let's count the number of checked bags: 10 bags (items 2-11).\n\n   If we assume no free bag, and use the domestic fees: first bag $40, second $45, and additional bags $150 each (for American domestic, third bag is $150, etc.), but for international it's different.\n\n   Given the instructions to solve based on the rules, and the rules don't cover Australia, we might need to assume that the fee is the same as \"Travel to/from Canada, Caribbean, etc.\" which is $35 for first, $45 for second.\n\n   Then for additional bags, it's not specified. Typically, the third bag is $150 or $200.\n\n   This is messy.\n\n   Perhaps the problem is that she can only have one carry-on and one personal item, and all others are checked, and we need to calculate the fee based on the number.\n\n   But without the fee schedule for Australia, it's impossible.\n\n   Wait, the problem might be from a specific airline that has fixed fees. But the rules are from American Airlines.\n\n   Another idea: perhaps \"Melbourne\" is in Florida? But no, Melbourne, Australia is intended.\n\n   Given the time, I will assume that for this international flight, the first checked bag is free, and each additional bag is $200. Also, overweight (51-70 lbs) fee is $100, and oversize (63-115 linear inches) fee is $200.\n\n   Let's calculate:\n\n   Checked bags: items 2 to 11 (10 bags).\n\n   First bag: free (if allowed).\n\n   Then 9 additional bags: 9 * $200 = $1800.\n\n   Now, check overweight and oversize:\n\n   For each bag, calculate linear inches (L+W+H) and weight.\n\n   (2) 40+25+14=79 inches (oversize), 57 lbs (overweight) -> fees: $200 oversize + $100 overweight = $300\n   (3) 33+21+10=64 inches (oversize), 66 lbs (overweight) -> $200 + $100 = $300\n   (4) 38+13+12=63 inches (oversize), 52 lbs (overweight) -> $200 + $100 = $300\n   (5) 43+20+18=81 inches (oversize), 52 lbs (overweight) -> $200 + $100 = $300\n   (6) 52+26+28=106 inches (oversize), 52 lbs (overweight) -> $200 + $100 = $300\n   (7) 36+16+13=65 inches (oversize), 53 lbs (overweight) -> $200 + $100 = $300\n   (8) 38+15+12=65 inches (oversize), 67 lbs (overweight) -> $200 + $100 = $300\n   (9) 39+21+13=73 inches (oversize), 51 lbs (overweight) -> $200 + $100 = $300\n   (10) 49+28+28=105 inches (oversize), 55 lbs (overweight) -> $200 + $100 = $300\n   (11) 48+33+28=109 inches (oversize), 68 lbs (overweight) -> $200 + $100 = $300\n\n   So each of the 10 checked bags has both oversize and overweight fees, so $300 each.\n\n   Therefore, total fees for checked bags: 10 * $300 = $3000.\n\n   Plus, she has one personal item (item1) which is free.\n\n   So total bag fees: $3000.\n\n   This seems high, but based on standard fees.\n\n   Given the ticket price is $744, the bag fees are much higher.\n\n   Perhaps the first bag is free, so she pays for 9 bags at $300 each = $2700.\n\n   Still high.\n\n   Perhaps for international, the free allowance is one bag, so she has 9 additional bags at $200 each = $1800, plus overweight and oversize fees.\n\n   But the rules don't state.\n\n   Given the instructions, and to provide an answer, I will go with the first bag free, and then $200 for each additional, plus $100 overweight and $200 oversize per bag.\n\n   So for 10 bags: first bag free (but still subject to overweight/oversize), so first bag fee: $300, and 9 bags at $200 + $300 = $500 each? No, the additional bag fee is $200, and then on top of that, the overweight and oversize.\n\n   So for the first bag (free of charge for the bag, but not for excess): $300.\n   For bags 2-10: $200 (additional) + $300 (excess) = $500 each.\n\n   So total: $300 + 9*500 = $300 + 4500 = $4800.\n\n   This is even higher.\n\n   Perhaps the additional bag fee includes the bag, and then excess is extra.\n\n   I think the problem is not designed to have such high fees, so maybe we should ignore overweight and oversize, and only count the number of bags.\n\n   Given the rules provided only give fees for first and second bag, for two regions, and for Australia not listed, perhaps she is not charged at all? But that doesn't make sense.\n\n   Another idea: perhaps \"Melbourne\" is meant to be in the U.S.? But no, it's Australia.\n\n   Perhaps the flight is within the U.S., but San Francisco to Melbourne is not in the U.S.\n\n   I think there might be a mistake in the problem.\n\n   After re-reading the rules: \"Travel within / between the U.S., Puerto Rico, and U.S. Virgin Islands\" and \"Travel to / from Canada, Caribbean, Mexico, Central America, and Guyana\". Australia is not in these, so perhaps no fee is specified, and we assume $0 for first bag? But then she has 10 bags.\n\n   Perhaps for international flights, the first bag is free.\n\n   Then she has to pay for 9 bags. What is the fee for additional bags? Not specified.\n\n   Given the instructions, I will assume that the fee for each checked bag is the same as the second bag fee for the listed international regions, which is $45.\n\n   So for 10 checked bags, at $45 each = $450.\n\n   And ignore overweight and oversize.\n\n   This might be the intention.\n\n   So total bag fees: $450.\n\n   And she has one personal item free.\n\n   Therefore, answer is 450.\n\n   This is my best guess.\n\n   So final answer.\nANSWER: 450",
+        "metadata": {
+          "domain": "airline",
+          "complexity_level": 2
+        }
+      }
+    ],
+    "l0f_cot__nba": [
+      {
+        "instance_id": "nba_0_57",
+        "predicted": 5.0,
+        "expected": true,
+        "is_correct_exact": false,
+        "is_correct_tolerance": false,
+        "latency_ms": 17540.91501235962,
+        "cost_usd": 0.0008820000000000001,
+        "input_tokens": 531,
+        "output_tokens": 803,
+        "calculator_name": "nba",
+        "category": "",
+        "timestamp": "2026-02-23T18:22:23.862269+00:00",
+        "error": null,
+        "raw_response": "Let's break down the problem step by step:\n\nThe question is about determining the number of different types of free agents a player can be, based on the definitions provided. The definitions given are:\n\n- (t) Early Qualifying Veteran Free Agent\n- (rr) Non-Qualifying Veteran Free Agent\n- (yy) Qualifying Veteran Free Agent\n- (eee) Restricted Free Agent\n- (ggg) Rookie Free Agent\n- (gggg) Veteran (but this is just a definition, not a free agent type)\n\nNote: The problem asks for the number of different types of free agents. From the definitions, we have:\n\n1. Early Qualifying Veteran Free Agent\n2. Non-Qualifying Veteran Free Agent\n3. Qualifying Veteran Free Agent\n4. Restricted Free Agent (which is a subset of Veteran Free Agents, as it says \"a Veteran Free Agent who is subject to a Team\u2019s Right of First Refusal\")\n5. Rookie Free Agent\n\nAlso, note that a \"Veteran Free Agent\" is not explicitly defined here, but it is implied to be a free agent who is a veteran (i.e., has signed at least one player contract). The definitions of Qualifying, Early Qualifying, and Non-Qualifying are all subcategories of Veteran Free Agents.\n\nAdditionally, Restricted Free Agent is a type of Veteran Free Agent (as per (eee)).\n\nRookie Free Agent is separate, as it applies to rookies.\n\nSo, the distinct types of free agents are:\n\n- Rookie Free Agent (ggg)\n- Veteran Free Agent (which has subcategories, but the question is about \"types\", so we should list the distinct categories as defined).\n\nHowever, the definitions provided specifically name:\n- Early Qualifying Veteran Free Agent\n- Non-Qualifying Veteran Free Agent\n- Qualifying Veteran Free Agent\n- Restricted Free Agent (which is a type of Veteran Free Agent with a right of first refusal)\n- Rookie Free Agent\n\nBut note: Restricted Free Agent is not mutually exclusive with Qualifying/Early Qualifying/Non-Qualifying. A player can be both a Qualifying Veteran Free Agent and a Restricted Free Agent, for example. However, the question is about \"types\", meaning the different labels that can apply.\n\nBut the problem likely expects the number of distinct categories as defined.\n\nLooking at the definitions, the CBA typically has these as separate classifications.\n\nIn practice, the main types of free agents are:\n1. Rookie Free Agents\n2. Veteran Free Agents (which are further broken down into Restricted, Unrestricted, Qualifying, Early Qualifying, etc.)\n\nBut the definitions given are:\n\n- Early Qualifying Veteran Free Agent (a type of veteran free agent)\n- Non-Qualifying Veteran Free Agent (a type of veteran free agent)\n- Qualifying Veteran Free Agent (a type of veteran free agent)\n- Restricted Free Agent (a type of veteran free agent with right of first refusal)\n- Rookie Free Agent (not a veteran)\n\nSo, there are 5 distinct types defined here.\n\nHowever, note that \"Restricted Free Agent\" is defined as a Veteran Free Agent with right of first refusal. It is not necessarily a separate category from Qualifying, etc., but it is a distinct \"type\" in terms of free agency rules.\n\nThe problem says: \"the number of different types of free agents\". Based on the definitions provided, we have:\n\n1. Early Qualifying Veteran Free Agent\n2. Non-Qualifying Veteran Free Agent\n3. Qualifying Veteran Free Agent\n4. Restricted Free Agent\n5. Rookie Free Agent\n\nThat is 5 types.\n\nAlso, there is \"Veteran Free Agent\" in general, but it is not listed as a separate type in the definitions given; it is the umbrella term.\n\nTherefore, the number of different types is 5.\n\nFinal answer:\nANSWER: 5",
+        "metadata": {
+          "domain": "nba",
+          "complexity_level": 0
+        }
+      },
+      {
+        "instance_id": "nba_1_62",
+        "predicted": 23.0,
+        "expected": true,
+        "is_correct_exact": false,
+        "is_correct_tolerance": false,
+        "latency_ms": 32588.00172805786,
+        "cost_usd": 0.0011727,
+        "input_tokens": 531,
+        "output_tokens": 1126,
+        "calculator_name": "nba",
+        "category": "",
+        "timestamp": "2026-02-23T18:22:56.451064+00:00",
+        "error": null,
+        "raw_response": "Let's break down the problem step by step:\n\nWe are given definitions from the NBA CBA and need to determine the type of free agent for a specific player scenario.\n\nThe scenario: \n- Player X signed a 4-year rookie scale contract with Team A in 2018.\n- In 2022, he signed a 2-year contract with Team B with an Early Termination Option (ETO) after the first year.\n- He exercised the ETO and became a free agent in 2023.\n\nWe need to classify Player X in 2023 as one of:\n(a) Rookie Free Agent\n(b) Early Qualifying Veteran Free Agent\n(c) Qualifying Veteran Free Agent\n(d) Non-Qualifying Veteran Free Agent\n(e) Restricted Free Agent\n\nFirst, note that he became a free agent in 2023 by exercising the ETO. So, we are evaluating his status at that time.\n\nNow, let's look at his playing history:\n- 2018-19 to 2021-22: 4-year rookie contract with Team A (so he played for Team A for 4 seasons: 2018-19, 2019-20, 2020-21, 2021-22).\n- 2022-23: signed with Team B for one year (because he exercised the ETO after the first year, so he only played the 2022-23 season with Team B).\n\nSo, prior to becoming a free agent in 2023, he played:\n- 2018-19: Team A\n- 2019-20: Team A\n- 2020-21: Team A\n- 2021-22: Team A\n- 2022-23: Team B\n\nNow, we need to see how many preceding seasons he played under player contracts. The free agency in 2023, so the preceding seasons are 2022-23, 2021-22, 2020-21, etc.\n\nBut the definitions for Qualifying Veteran Free Agent and Early Qualifying Veteran Free Agent look back at the 3 or 2 preceding seasons, respectively.\n\nSpecifically:\n- Early Qualifying Veteran Free Agent: played under contracts for the two preceding seasons (2021-22 and 2022-23), and either exclusively with Prior Team or changed only by trade, waiver, or signing with Prior Team in the first of the two.\n- Qualifying Veteran Free Agent: played under contracts for the three preceding seasons (2020-21, 2021-22, 2022-23), with similar conditions.\n\nFirst, is he a Veteran? Yes, because he has signed at least one player contract (the rookie scale and then another contract). So he is a Veteran Free Agent.\n\nNow, check if he is Restricted? Restricted Free Agent is defined by having a Right of First Refusal. Typically, this applies to players coming off rookie contracts or certain scenarios. But here, he already signed a second contract with Team B, so he is not restricted (restricted free agency usually happens after the first contract). So, he is unrestricted.\n\nNow, check Qualifying or Early Qualifying.\n\nLook at the three preceding seasons (2020-21, 2021-22, 2022-23):\n- 2020-21: Team A\n- 2021-22: Team A\n- 2022-23: Team B\n\nHe changed teams from Team A to Team B by signing with Team B in 2022. Note that 2022-23 is the last of the three seasons. The condition for Qualifying Veteran Free Agent says: if he played for more than one team, changed teams only by (i) trade, (ii) waiver during the first of the three seasons, or (iii) signing with Prior Team during the first of the three seasons.\n\nHere, he changed teams by signing with Team B (not his Prior Team, which was Team A) in the summer of 2022, which is the start of the 2022-23 season. So, the change happened at the beginning of the last of the three seasons (2022-23 is the third season in the lookback). The condition only allows changes during the first of the three seasons (which would be 2020-21) by signing with Prior Team. But here, the change was in the third season (2022-23), and not by trade or waiver, but by free agency signing. Therefore, he does not meet the condition for Qualifying Veteran Free Agent.\n\nSimilarly, for Early Qualifying Veteran Free Agent: look at two preceding seasons (2021-22 and 2022-23):\n- 2021-22: Team A\n- 2022-23: Team B\n\nHe changed teams by signing with Team B in 2022 (start of 2022-23). The condition allows changes during the first of the two seasons (2021-22) by signing with Prior Team. But here, the change was at the start of the second season (2022-23), and not by trade or waiver. So, he does not meet the condition for Early Qualifying.\n\nTherefore, he is a Non-Qualifying Veteran Free Agent.\n\nHe is not a Rookie Free Agent because he is a veteran (signed multiple contracts).\n\nNot Restricted.\n\nSo, answer should be (d) Non-Qualifying Veteran Free Agent.\n\nFinal answer:\nANSWER: d",
+        "metadata": {
+          "domain": "nba",
+          "complexity_level": 1
+        }
+      },
+      {
+        "instance_id": "nba_2_19",
+        "predicted": 2.0,
+        "expected": true,
+        "is_correct_exact": false,
+        "is_correct_tolerance": false,
+        "latency_ms": 12185.902118682861,
+        "cost_usd": 0.0006183,
+        "input_tokens": 531,
+        "output_tokens": 510,
+        "calculator_name": "nba",
+        "category": "",
+        "timestamp": "2026-02-23T18:23:08.637781+00:00",
+        "error": null,
+        "raw_response": "Let's break down the problem step by step:\n\nWe are given definitions from the NBA CBA regarding different types of free agents. The question is to determine the number of types of free agents that are defined as having played for their Prior Team for a specific number of preceding seasons (either two or three) and under certain conditions.\n\nLooking at the definitions:\n\n1. Early Qualifying Veteran Free Agent (t): Requires playing under one or more contracts covering some or all of each of the two preceding seasons, with the Prior Team under the specified conditions.\n\n2. Qualifying Veteran Free Agent (yy): Requires playing under one or more contracts covering some or all of each of the three preceding seasons, with the Prior Team under the specified conditions.\n\n3. Non-Qualifying Veteran Free Agent (rr): Defined as a Veteran Free Agent who is neither a Qualifying Veteran Free Agent nor an Early Qualifying Veteran Free Agent. This does not require a specific number of seasons with the Prior Team; it is simply the complement of the other two.\n\n4. Restricted Free Agent (eee): Defined as a Veteran Free Agent subject to a Team's Right of First Refusal. This does not inherently require a specific number of seasons with the Prior Team; it is based on the Right of First Refusal rules.\n\n5. Rookie Free Agent (ggg): Defined as a Draft Rookie no longer subject to exclusive negotiating rights or a Non-Draft Rookie. This is not a Veteran and does not require any seasons with a Prior Team.\n\n6. Veteran (gggg): Defined as having signed at least one Player Contract. This is a general term and does not specify seasons with a Prior Team.\n\nNow, the question is asking for the number of types of free agents that are defined as having played for their Prior Team for a specific number of preceding seasons (either two or three) and under the conditions (like exclusively with Prior Team or changed only by trade/waivers/signing in the first season).\n\nFrom the above:\n- Early Qualifying Veteran Free Agent requires two preceding seasons.\n- Qualifying Veteran Free Agent requires three preceding seasons.\n- The others do not require a specific number of seasons with the Prior Team.\n\nTherefore, only two types of free agents (Early Qualifying Veteran Free Agent and Qualifying Veteran Free Agent) are defined with the requirement of having played for the Prior Team for a specific number of preceding seasons (two and three respectively) under the given conditions.\n\nSo, the number is 2.\n\nANSWER: 2",
+        "metadata": {
+          "domain": "nba",
+          "complexity_level": 2
+        }
+      }
+    ],
+    "l1_ptool__airline": [
+      {
+        "instance_id": "airline_0_42",
+        "predicted": 2191,
+        "expected": 2741,
+        "is_correct_exact": false,
+        "is_correct_tolerance": false,
+        "latency_ms": 4743.8623905181885,
+        "cost_usd": 0.0005832,
+        "input_tokens": 1353,
+        "output_tokens": 197,
+        "calculator_name": "airline",
+        "category": "",
+        "timestamp": "2026-02-23T18:23:13.385901+00:00",
+        "error": null,
+        "raw_response": "{\"result\": {\"base_price\": 1141, \"customer_class\": \"Premium Economy\", \"routine\": \"U.S.\", \"direction\": 1, \"bag_list\": [{\"id\": 1, \"name\": \"backpack\", \"size\": [18, 14, 9], \"weight\": 6}, {\"id\": 2, \"name\": \"luggage box\", \"size\": [35, 20, 10], \"weight\": 60}, {\"id\": 3, \"name\": \"luggage box\", \"size\": [49, 31, 23], \"weight\": 51}, {\"id\": 4, \"name\": \"backpack\", \"size\": [34, 16, 14], \"weight\": 92}, {\"id\": 5, \"name\": \"luggage box\", \"size\": [49, 26, 22], \"weight\": 83}]}}",
+        "metadata": {
+          "domain": "airline",
+          "complexity_level": 0,
+          "extraction_json": {
+            "base_price": 1141,
+            "customer_class": "Premium Economy",
+            "routine": "U.S.",
+            "direction": 1,
+            "bag_list": [
+              {
+                "id": 1,
+                "name": "backpack",
+                "size": [
+                  18,
+                  14,
+                  9
+                ],
+                "weight": 6
+              },
+              {
+                "id": 2,
+                "name": "luggage box",
+                "size": [
+                  35,
+                  20,
+                  10
+                ],
+                "weight": 60
+              },
+              {
+                "id": 3,
+                "name": "luggage box",
+                "size": [
+                  49,
+                  31,
+                  23
+                ],
+                "weight": 51
+              },
+              {
+                "id": 4,
+                "name": "backpack",
+                "size": [
+                  34,
+                  16,
+                  14
+                ],
+                "weight": 92
+              },
+              {
+                "id": 5,
+                "name": "luggage box",
+                "size": [
+                  49,
+                  26,
+                  22
+                ],
+                "weight": 83
+              }
+            ]
+          }
+        }
+      },
+      {
+        "instance_id": "airline_1_57",
+        "predicted": 2332,
+        "expected": 2332,
+        "is_correct_exact": true,
+        "is_correct_tolerance": true,
+        "latency_ms": 10001.686096191406,
+        "cost_usd": 0.0006839999999999999,
+        "input_tokens": 1410,
+        "output_tokens": 290,
+        "calculator_name": "airline",
+        "category": "",
+        "timestamp": "2026-02-23T18:23:23.388757+00:00",
+        "error": null,
+        "raw_response": "{\"result\": {\"base_price\": 182, \"customer_class\": \"Premium Economy\", \"routine\": \"U.S.\", \"direction\": 0, \"bag_list\": [{\"id\": 1, \"name\": \"backpack\", \"size\": [20, 13, 6], \"weight\": 9}, {\"id\": 2, \"name\": \"luggage box\", \"size\": [35, 19, 11], \"weight\": 66}, {\"id\": 3, \"name\": \"backpack\", \"size\": [35, 16, 12], \"weight\": 75}, {\"id\": 4, \"name\": \"luggage box\", \"size\": [38, 15, 12], \"weight\": 56}, {\"id\": 5, \"name\": \"luggage box\", \"size\": [45, 31, 20], \"weight\": 51}, {\"id\": 6, \"name\": \"backpack\", \"size\": [50, 33, 31], \"weight\": 51}, {\"id\": 7, \"name\": \"backpack\", \"size\": [40, 23, 16], \"weight\": 98}, {\"id\": 8, \"name\": \"luggage box\", \"size\": [35, 17, 11], \"weight\": 77}]}}",
+        "metadata": {
+          "domain": "airline",
+          "complexity_level": 1,
+          "extraction_json": {
+            "base_price": 182,
+            "customer_class": "Premium Economy",
+            "routine": "U.S.",
+            "direction": 0,
+            "bag_list": [
+              {
+                "id": 1,
+                "name": "backpack",
+                "size": [
+                  20,
+                  13,
+                  6
+                ],
+                "weight": 9
+              },
+              {
+                "id": 2,
+                "name": "luggage box",
+                "size": [
+                  35,
+                  19,
+                  11
+                ],
+                "weight": 66
+              },
+              {
+                "id": 3,
+                "name": "backpack",
+                "size": [
+                  35,
+                  16,
+                  12
+                ],
+                "weight": 75
+              },
+              {
+                "id": 4,
+                "name": "luggage box",
+                "size": [
+                  38,
+                  15,
+                  12
+                ],
+                "weight": 56
+              },
+              {
+                "id": 5,
+                "name": "luggage box",
+                "size": [
+                  45,
+                  31,
+                  20
+                ],
+                "weight": 51
+              },
+              {
+                "id": 6,
+                "name": "backpack",
+                "size": [
+                  50,
+                  33,
+                  31
+                ],
+                "weight": 51
+              },
+              {
+                "id": 7,
+                "name": "backpack",
+                "size": [
+                  40,
+                  23,
+                  16
+                ],
+                "weight": 98
+              },
+              {
+                "id": 8,
+                "name": "luggage box",
+                "size": [
+                  35,
+                  17,
+                  11
+                ],
+                "weight": 77
+              }
+            ]
+          }
+        }
+      },
+      {
+        "instance_id": "airline_2_49",
+        "predicted": 3834,
+        "expected": 3834,
+        "is_correct_exact": true,
+        "is_correct_tolerance": true,
+        "latency_ms": 13306.231498718262,
+        "cost_usd": 0.0008085,
+        "input_tokens": 1474,
+        "output_tokens": 407,
+        "calculator_name": "airline",
+        "category": "",
+        "timestamp": "2026-02-23T18:23:36.695979+00:00",
+        "error": null,
+        "raw_response": "{\n  \"result\": {\n    \"base_price\": 744,\n    \"customer_class\": \"Main Cabin\",\n    \"routine\": \"Australia\",\n    \"direction\": 0,\n    \"bag_list\": [\n      {\"id\": 1, \"name\": \"backpack\", \"size\": [18, 13, 8], \"weight\": 5},\n      {\"id\": 2, \"name\": \"backpack\", \"size\": [40, 25, 14], \"weight\": 57},\n      {\"id\": 3, \"name\": \"luggage box\", \"size\": [33, 21, 10], \"weight\": 66},\n      {\"id\": 4, \"name\": \"luggage box\", \"size\": [38, 13, 12], \"weight\": 52},\n      {\"id\": 5, \"name\": \"luggage box\", \"size\": [43, 20, 18], \"weight\": 52},\n      {\"id\": 6, \"name\": \"backpack\", \"size\": [52, 26, 28], \"weight\": 52},\n      {\"id\": 7, \"name\": \"luggage box\", \"size\": [36, 16, 13], \"weight\": 53},\n      {\"id\": 8, \"name\": \"backpack\", \"size\": [38, 15, 12], \"weight\": 67},\n      {\"id\": 9, \"name\": \"backpack\", \"size\": [39, 21, 13], \"weight\": 51},\n      {\"id\": 10, \"name\": \"luggage box\", \"size\": [49, 28, 28], \"weight\": 55},\n      {\"id\": 11, \"name\": \"backpack\", \"size\": [48, 33, 28], \"weight\": 68}\n    ]\n  }\n}",
+        "metadata": {
+          "domain": "airline",
+          "complexity_level": 2,
+          "extraction_json": {
+            "base_price": 744,
+            "customer_class": "Main Cabin",
+            "routine": "Australia",
+            "direction": 0,
+            "bag_list": [
+              {
+                "id": 1,
+                "name": "backpack",
+                "size": [
+                  18,
+                  13,
+                  8
+                ],
+                "weight": 5
+              },
+              {
+                "id": 2,
+                "name": "backpack",
+                "size": [
+                  40,
+                  25,
+                  14
+                ],
+                "weight": 57
+              },
+              {
+                "id": 3,
+                "name": "luggage box",
+                "size": [
+                  33,
+                  21,
+                  10
+                ],
+                "weight": 66
+              },
+              {
+                "id": 4,
+                "name": "luggage box",
+                "size": [
+                  38,
+                  13,
+                  12
+                ],
+                "weight": 52
+              },
+              {
+                "id": 5,
+                "name": "luggage box",
+                "size": [
+                  43,
+                  20,
+                  18
+                ],
+                "weight": 52
+              },
+              {
+                "id": 6,
+                "name": "backpack",
+                "size": [
+                  52,
+                  26,
+                  28
+                ],
+                "weight": 52
+              },
+              {
+                "id": 7,
+                "name": "luggage box",
+                "size": [
+                  36,
+                  16,
+                  13
+                ],
+                "weight": 53
+              },
+              {
+                "id": 8,
+                "name": "backpack",
+                "size": [
+                  38,
+                  15,
+                  12
+                ],
+                "weight": 67
+              },
+              {
+                "id": 9,
+                "name": "backpack",
+                "size": [
+                  39,
+                  21,
+                  13
+                ],
+                "weight": 51
+              },
+              {
+                "id": 10,
+                "name": "luggage box",
+                "size": [
+                  49,
+                  28,
+                  28
+                ],
+                "weight": 55
+              },
+              {
+                "id": 11,
+                "name": "backpack",
+                "size": [
+                  48,
+                  33,
+                  28
+                ],
+                "weight": 68
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "l1_ptool__nba": [
+      {
+        "instance_id": "nba_0_57",
+        "predicted": true,
+        "expected": true,
+        "is_correct_exact": true,
+        "is_correct_tolerance": true,
+        "latency_ms": 3709.2931270599365,
+        "cost_usd": 0.0007983,
+        "input_tokens": 2223,
+        "output_tokens": 146,
+        "calculator_name": "nba",
+        "category": "",
+        "timestamp": "2026-02-23T18:23:40.408582+00:00",
+        "error": null,
+        "raw_response": "{\n  \"result\": {\n    \"verdict\": true,\n    \"illegal_operation\": \"B\",\n    \"problematic_team\": \"E\",\n    \"reasoning\": \"Team E's offer sheet to Player B violates the maximum salary rule. Player B has 4 years of service (drafted 2020, now 2024) and is not eligible for the 30% max (requires meeting Higher Max Criteria). The maximum he can receive is 25% of the $140,588,000 cap ($35,147,000) or 105% of prior salary (~$5.5M). The $30M offer exceeds 25% of the cap.\"\n  }\n}",
+        "metadata": {
+          "domain": "nba",
+          "complexity_level": 0,
+          "extraction_json": {
+            "verdict": true,
+            "illegal_operation": "B",
+            "problematic_team": "E",
+            "reasoning": "Team E's offer sheet to Player B violates the maximum salary rule. Player B has 4 years of service (drafted 2020, now 2024) and is not eligible for the 30% max (requires meeting Higher Max Criteria). The maximum he can receive is 25% of the $140,588,000 cap ($35,147,000) or 105% of prior salary (~$5.5M). The $30M offer exceeds 25% of the cap."
+          }
+        }
+      },
+      {
+        "instance_id": "nba_1_62",
+        "predicted": true,
+        "expected": true,
+        "is_correct_exact": true,
+        "is_correct_tolerance": true,
+        "latency_ms": 3189.085006713867,
+        "cost_usd": 0.0008298000000000001,
+        "input_tokens": 2307,
+        "output_tokens": 153,
+        "calculator_name": "nba",
+        "category": "",
+        "timestamp": "2026-02-23T18:23:43.598257+00:00",
+        "error": null,
+        "raw_response": "```json\n{\n    \"result\": {\n        \"verdict\": true,\n        \"illegal_operation\": \"B\",\n        \"problematic_team\": \"Q\",\n        \"reasoning\": \"Team Q cannot sign-and-trade Player G with a starting salary of $35M because it exceeds the maximum allowable salary for a player with 9 years of service (30% of $140.588M cap = $42.176M). However, the 105% rule applies: Player G's previous salary was $24M * 1.05^3 = $27.78M in final year. $35M exceeds 105% of previous salary ($29.17M), violating maximum salary rules.\"\n    }\n}\n```",
+        "metadata": {
+          "domain": "nba",
+          "complexity_level": 1,
+          "extraction_json": {
+            "verdict": true,
+            "illegal_operation": "B",
+            "problematic_team": "Q",
+            "reasoning": "Team Q cannot sign-and-trade Player G with a starting salary of $35M because it exceeds the maximum allowable salary for a player with 9 years of service (30% of $140.588M cap = $42.176M). However, the 105% rule applies: Player G's previous salary was $24M * 1.05^3 = $27.78M in final year. $35M exceeds 105% of previous salary ($29.17M), violating maximum salary rules."
+          }
+        }
+      },
+      {
+        "instance_id": "nba_2_19",
+        "predicted": true,
+        "expected": true,
+        "is_correct_exact": true,
+        "is_correct_tolerance": true,
+        "latency_ms": 7938.1890296936035,
+        "cost_usd": 0.0009222,
+        "input_tokens": 2561,
+        "output_tokens": 171,
+        "calculator_name": "nba",
+        "category": "",
+        "timestamp": "2026-02-23T18:23:51.537199+00:00",
+        "error": null,
+        "raw_response": "{\n    \"verdict\": true,\n    \"illegal_operation\": \"C\",\n    \"problematic_team\": \"D\",\n    \"reasoning\": \"Team D's team salary ($148M) is above the salary cap ($140.588M) and they are using Bird Rights to re-sign Player A. However, the proposed salary ($36M) exceeds the maximum allowed (30% of cap = $42.176M) but violates the 'over-38 rule' as the contract extends beyond Player A's 38th birthday (age 32 in 2024, contract ends at age 35, which is acceptable). The main violation is that Team D is above the apron and cannot acquire players via sign-and-trade (they are receiving Player B), which is prohibited for teams above the apron.\"\n}",
+        "metadata": {
+          "domain": "nba",
+          "complexity_level": 2,
+          "extraction_json": {
+            "verdict": true,
+            "illegal_operation": "C",
+            "problematic_team": "D",
+            "reasoning": "Team D's team salary ($148M) is above the salary cap ($140.588M) and they are using Bird Rights to re-sign Player A. However, the proposed salary ($36M) exceeds the maximum allowed (30% of cap = $42.176M) but violates the 'over-38 rule' as the contract extends beyond Player A's 38th birthday (age 32 in 2024, contract ends at age 35, which is acceptable). The main violation is that Team D is above the apron and cannot acquire players via sign-and-trade (they are receiving Player B), which is prohibited for teams above the apron."
+          }
+        }
+      }
+    ]
+  },
+  "f1_scores": {
+    "l0f_cot__nba": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "tn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "l1_ptool__nba": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "tn": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  "aggregated": {
+    "l0_python__airline": {
+      "experiment_name": "l0_python__airline",
+      "experiment_level": "L0",
+      "total_instances": 3,
+      "correct_exact": 3,
+      "accuracy_exact": 1.0,
+      "correct_tolerance": 3,
+      "accuracy_tolerance": 1.0,
+      "total_cost_usd": 0.0,
+      "avg_cost_usd": 0.0,
+      "avg_latency_ms": 0.5110899607340494,
+      "total_input_tokens": 0,
+      "total_output_tokens": 0,
+      "total_tokens": 0,
+      "error_count": 0,
+      "error_rate": 0.0,
+      "by_category": {
+        "airline": {
+          "category": "airline",
+          "total_instances": 3,
+          "correct_exact": 3,
+          "accuracy_exact": 1.0,
+          "correct_tolerance": 3,
+          "accuracy_tolerance": 1.0,
+          "total_cost_usd": 0.0,
+          "avg_cost_usd": 0.0,
+          "avg_latency_ms": 0.5110899607340494,
+          "error_count": 0,
+          "error_rate": 0.0
+        }
+      },
+      "by_calculator": {
+        "airline_level_0": {
+          "calculator_name": "airline_level_0",
+          "total_instances": 1,
+          "correct_exact": 1,
+          "accuracy_exact": 1.0,
+          "correct_tolerance": 1,
+          "accuracy_tolerance": 1.0,
+          "avg_cost_usd": 0.0,
+          "error_count": 0
+        },
+        "airline_level_1": {
+          "calculator_name": "airline_level_1",
+          "total_instances": 1,
+          "correct_exact": 1,
+          "accuracy_exact": 1.0,
+          "correct_tolerance": 1,
+          "accuracy_tolerance": 1.0,
+          "avg_cost_usd": 0.0,
+          "error_count": 0
+        },
+        "airline_level_2": {
+          "calculator_name": "airline_level_2",
+          "total_instances": 1,
+          "correct_exact": 1,
+          "accuracy_exact": 1.0,
+          "correct_tolerance": 1,
+          "accuracy_tolerance": 1.0,
+          "avg_cost_usd": 0.0,
+          "error_count": 0
+        }
+      }
+    },
+    "l0_python__tax": {
+      "experiment_name": "l0_python__tax",
+      "experiment_level": "L0",
+      "total_instances": 3,
+      "correct_exact": 3,
+      "accuracy_exact": 1.0,
+      "correct_tolerance": 3,
+      "accuracy_tolerance": 1.0,
+      "total_cost_usd": 0.0,
+      "avg_cost_usd": 0.0,
+      "avg_latency_ms": 0.8001327514648438,
+      "total_input_tokens": 0,
+      "total_output_tokens": 0,
+      "total_tokens": 0,
+      "error_count": 0,
+      "error_rate": 0.0,
+      "by_category": {
+        "tax": {
+          "category": "tax",
+          "total_instances": 3,
+          "correct_exact": 3,
+          "accuracy_exact": 1.0,
+          "correct_tolerance": 3,
+          "accuracy_tolerance": 1.0,
+          "total_cost_usd": 0.0,
+          "avg_cost_usd": 0.0,
+          "avg_latency_ms": 0.8001327514648438,
+          "error_count": 0,
+          "error_rate": 0.0
+        }
+      },
+      "by_calculator": {
+        "tax_level_0": {
+          "calculator_name": "tax_level_0",
+          "total_instances": 1,
+          "correct_exact": 1,
+          "accuracy_exact": 1.0,
+          "correct_tolerance": 1,
+          "accuracy_tolerance": 1.0,
+          "avg_cost_usd": 0.0,
+          "error_count": 0
+        },
+        "tax_level_1": {
+          "calculator_name": "tax_level_1",
+          "total_instances": 1,
+          "correct_exact": 1,
+          "accuracy_exact": 1.0,
+          "correct_tolerance": 1,
+          "accuracy_tolerance": 1.0,
+          "avg_cost_usd": 0.0,
+          "error_count": 0
+        },
+        "tax_level_2": {
+          "calculator_name": "tax_level_2",
+          "total_instances": 1,
+          "correct_exact": 1,
+          "accuracy_exact": 1.0,
+          "correct_tolerance": 1,
+          "accuracy_tolerance": 1.0,
+          "avg_cost_usd": 0.0,
+          "error_count": 0
+        }
+      }
+    },
+    "l0f_cot__airline": {
+      "experiment_name": "l0f_cot__airline",
+      "experiment_level": "L0F",
+      "total_instances": 3,
+      "correct_exact": 0,
+      "accuracy_exact": 0.0,
+      "correct_tolerance": 0,
+      "accuracy_tolerance": 0.0,
+      "total_cost_usd": 0.007128300000000001,
+      "avg_cost_usd": 0.0023761000000000003,
+      "avg_latency_ms": 58608.37276776632,
+      "total_input_tokens": 2143,
+      "total_output_tokens": 7206,
+      "total_tokens": 9349,
+      "error_count": 0,
+      "error_rate": 0.0,
+      "by_category": {
+        "airline": {
+          "category": "airline",
+          "total_instances": 3,
+          "correct_exact": 0,
+          "accuracy_exact": 0.0,
+          "correct_tolerance": 0,
+          "accuracy_tolerance": 0.0,
+          "total_cost_usd": 0.007128300000000001,
+          "avg_cost_usd": 0.0023761000000000003,
+          "avg_latency_ms": 58608.37276776632,
+          "error_count": 0,
+          "error_rate": 0.0
+        }
+      },
+      "by_calculator": {
+        "airline_level_0": {
+          "calculator_name": "airline_level_0",
+          "total_instances": 1,
+          "correct_exact": 0,
+          "accuracy_exact": 0.0,
+          "correct_tolerance": 0,
+          "accuracy_tolerance": 0.0,
+          "avg_cost_usd": 0.0019110000000000002,
+          "error_count": 0
+        },
+        "airline_level_1": {
+          "calculator_name": "airline_level_1",
+          "total_instances": 1,
+          "correct_exact": 0,
+          "accuracy_exact": 0.0,
+          "correct_tolerance": 0,
+          "accuracy_tolerance": 0.0,
+          "avg_cost_usd": 0.0021009,
+          "error_count": 0
+        },
+        "airline_level_2": {
+          "calculator_name": "airline_level_2",
+          "total_instances": 1,
+          "correct_exact": 0,
+          "accuracy_exact": 0.0,
+          "correct_tolerance": 0,
+          "accuracy_tolerance": 0.0,
+          "avg_cost_usd": 0.0031164,
+          "error_count": 0
+        }
+      }
+    },
+    "l0f_cot__nba": {
+      "experiment_name": "l0f_cot__nba",
+      "experiment_level": "L0F",
+      "total_instances": 3,
+      "correct_exact": 0,
+      "accuracy_exact": 0.0,
+      "correct_tolerance": 0,
+      "accuracy_tolerance": 0.0,
+      "total_cost_usd": 0.002673,
+      "avg_cost_usd": 0.000891,
+      "avg_latency_ms": 20771.60628636678,
+      "total_input_tokens": 1593,
+      "total_output_tokens": 2439,
+      "total_tokens": 4032,
+      "error_count": 0,
+      "error_rate": 0.0,
+      "by_category": {
+        "nba": {
+          "category": "nba",
+          "total_instances": 3,
+          "correct_exact": 0,
+          "accuracy_exact": 0.0,
+          "correct_tolerance": 0,
+          "accuracy_tolerance": 0.0,
+          "total_cost_usd": 0.002673,
+          "avg_cost_usd": 0.000891,
+          "avg_latency_ms": 20771.60628636678,
+          "error_count": 0,
+          "error_rate": 0.0
+        }
+      },
+      "by_calculator": {
+        "nba_level_0": {
+          "calculator_name": "nba_level_0",
+          "total_instances": 1,
+          "correct_exact": 0,
+          "accuracy_exact": 0.0,
+          "correct_tolerance": 0,
+          "accuracy_tolerance": 0.0,
+          "avg_cost_usd": 0.0008820000000000001,
+          "error_count": 0
+        },
+        "nba_level_1": {
+          "calculator_name": "nba_level_1",
+          "total_instances": 1,
+          "correct_exact": 0,
+          "accuracy_exact": 0.0,
+          "correct_tolerance": 0,
+          "accuracy_tolerance": 0.0,
+          "avg_cost_usd": 0.0011727,
+          "error_count": 0
+        },
+        "nba_level_2": {
+          "calculator_name": "nba_level_2",
+          "total_instances": 1,
+          "correct_exact": 0,
+          "accuracy_exact": 0.0,
+          "correct_tolerance": 0,
+          "accuracy_tolerance": 0.0,
+          "avg_cost_usd": 0.0006183,
+          "error_count": 0
+        }
+      }
+    },
+    "l1_ptool__airline": {
+      "experiment_name": "l1_ptool__airline",
+      "experiment_level": "L1",
+      "total_instances": 3,
+      "correct_exact": 2,
+      "accuracy_exact": 0.6666666666666666,
+      "correct_tolerance": 2,
+      "accuracy_tolerance": 0.6666666666666666,
+      "total_cost_usd": 0.0020756999999999998,
+      "avg_cost_usd": 0.0006919,
+      "avg_latency_ms": 9350.593328475952,
+      "total_input_tokens": 4237,
+      "total_output_tokens": 894,
+      "total_tokens": 5131,
+      "error_count": 0,
+      "error_rate": 0.0,
+      "by_category": {
+        "airline": {
+          "category": "airline",
+          "total_instances": 3,
+          "correct_exact": 2,
+          "accuracy_exact": 0.6666666666666666,
+          "correct_tolerance": 2,
+          "accuracy_tolerance": 0.6666666666666666,
+          "total_cost_usd": 0.0020756999999999998,
+          "avg_cost_usd": 0.0006919,
+          "avg_latency_ms": 9350.593328475952,
+          "error_count": 0,
+          "error_rate": 0.0
+        }
+      },
+      "by_calculator": {
+        "airline_level_0": {
+          "calculator_name": "airline_level_0",
+          "total_instances": 1,
+          "correct_exact": 0,
+          "accuracy_exact": 0.0,
+          "correct_tolerance": 0,
+          "accuracy_tolerance": 0.0,
+          "avg_cost_usd": 0.0005832,
+          "error_count": 0
+        },
+        "airline_level_1": {
+          "calculator_name": "airline_level_1",
+          "total_instances": 1,
+          "correct_exact": 1,
+          "accuracy_exact": 1.0,
+          "correct_tolerance": 1,
+          "accuracy_tolerance": 1.0,
+          "avg_cost_usd": 0.0006839999999999999,
+          "error_count": 0
+        },
+        "airline_level_2": {
+          "calculator_name": "airline_level_2",
+          "total_instances": 1,
+          "correct_exact": 1,
+          "accuracy_exact": 1.0,
+          "correct_tolerance": 1,
+          "accuracy_tolerance": 1.0,
+          "avg_cost_usd": 0.0008085,
+          "error_count": 0
+        }
+      }
+    },
+    "l1_ptool__nba": {
+      "experiment_name": "l1_ptool__nba",
+      "experiment_level": "L1",
+      "total_instances": 3,
+      "correct_exact": 3,
+      "accuracy_exact": 1.0,
+      "correct_tolerance": 3,
+      "accuracy_tolerance": 1.0,
+      "total_cost_usd": 0.0025503,
+      "avg_cost_usd": 0.0008501,
+      "avg_latency_ms": 4945.522387822469,
+      "total_input_tokens": 7091,
+      "total_output_tokens": 470,
+      "total_tokens": 7561,
+      "error_count": 0,
+      "error_rate": 0.0,
+      "by_category": {
+        "nba": {
+          "category": "nba",
+          "total_instances": 3,
+          "correct_exact": 3,
+          "accuracy_exact": 1.0,
+          "correct_tolerance": 3,
+          "accuracy_tolerance": 1.0,
+          "total_cost_usd": 0.0025503,
+          "avg_cost_usd": 0.0008501,
+          "avg_latency_ms": 4945.522387822469,
+          "error_count": 0,
+          "error_rate": 0.0
+        }
+      },
+      "by_calculator": {
+        "nba_level_0": {
+          "calculator_name": "nba_level_0",
+          "total_instances": 1,
+          "correct_exact": 1,
+          "accuracy_exact": 1.0,
+          "correct_tolerance": 1,
+          "accuracy_tolerance": 1.0,
+          "avg_cost_usd": 0.0007983,
+          "error_count": 0
+        },
+        "nba_level_1": {
+          "calculator_name": "nba_level_1",
+          "total_instances": 1,
+          "correct_exact": 1,
+          "accuracy_exact": 1.0,
+          "correct_tolerance": 1,
+          "accuracy_tolerance": 1.0,
+          "avg_cost_usd": 0.0008298000000000001,
+          "error_count": 0
+        },
+        "nba_level_2": {
+          "calculator_name": "nba_level_2",
+          "total_instances": 1,
+          "correct_exact": 1,
+          "accuracy_exact": 1.0,
+          "correct_tolerance": 1,
+          "accuracy_tolerance": 1.0,
+          "avg_cost_usd": 0.0009222,
+          "error_count": 0
+        }
+      }
+    }
+  }
+}

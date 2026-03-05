@@ -65,10 +65,12 @@ def build_trace(
     prompt = _format_planning_prompt(goal, available_ptools)
 
     # Call LLM
+    from .llm_backend import LLMResponse
     if llm_backend:
-        response = llm_backend(prompt, model)
+        result = llm_backend(prompt, model)
+        response = result.content if isinstance(result, LLMResponse) else result
     else:
-        response = call_llm(prompt, model)
+        response = call_llm(prompt, model).content
 
     logger.trace(f"Planning response:\n{response}")
 

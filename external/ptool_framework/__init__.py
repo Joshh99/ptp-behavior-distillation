@@ -37,7 +37,14 @@ from .distilled import (
     get_fallback_log,
     analyze_fallbacks,
 )
-from .llm_backend import enable_tracing
+from .llm_backend import (
+    enable_tracing,
+    LLMResponse,
+    TokenUsage,
+    TokenAccumulator,
+    reset_token_accumulator,
+    get_token_accumulator,
+)
 from .distiller import (
     BehaviorDistiller,
     DistillationResult,
@@ -205,6 +212,61 @@ from .self_improving import (
     self_improving_react,
 )
 
+# New: Continual Learning (L5 Continual)
+from .continual import (
+    # Base classes
+    Pattern,
+    PatternStore,
+    PatternMiner,
+    BackoffReason,
+    LayerResult,
+    # Config
+    ContinualConfig,
+    # Router
+    ConfidenceRouter,
+)
+
+# New: Agentic Patterns
+from .consistency import (
+    AggregationStrategy,
+    CandidateResult,
+    ConsistencyResult,
+    SelfConsistency,
+    BestOfN,
+    majority_vote,
+    best_of_n,
+)
+from .self_refine import (
+    StopReason,
+    RefinementStep,
+    RefinementTrace,
+    RefinementResult,
+    SelfRefiner,
+    refine,
+)
+from .plan_and_solve import (
+    Subtask,
+    Plan,
+    PlanExecutionResult,
+    PlanAndSolve,
+    plan_and_solve,
+)
+from .verification import (
+    VerificationQuestion,
+    VerificationAnswer,
+    VerificationTrace,
+    VerificationResult,
+    ChainOfVerification,
+    verify_and_revise,
+)
+from .ensemble import (
+    FusionStrategy,
+    StrategyResult,
+    EnsembleResult,
+    Ensemble,
+    ensemble_run,
+)
+
 __all__ = [
     # Core ptool
     "ptool",
@@ -223,6 +285,12 @@ __all__ = [
     "get_trace_store",
     "set_trace_store",
     "enable_tracing",
+    # LLM Response types
+    "LLMResponse",
+    "TokenUsage",
+    "TokenAccumulator",
+    "reset_token_accumulator",
+    "get_token_accumulator",
     # Distilled decorator
     "distilled",
     "distilled_ptool",
@@ -352,6 +420,48 @@ __all__ = [
     "get_pattern_memory",
     "SelfImprovingAgent",
     "self_improving_react",
+    # Continual Learning (L5 Continual)
+    "Pattern",
+    "PatternStore",
+    "PatternMiner",
+    "BackoffReason",
+    "LayerResult",
+    "ContinualConfig",
+    "ConfidenceRouter",
+    # Self-Consistency
+    "AggregationStrategy",
+    "CandidateResult",
+    "ConsistencyResult",
+    "SelfConsistency",
+    "BestOfN",
+    "majority_vote",
+    "best_of_n",
+    # Self-Refine
+    "StopReason",
+    "RefinementStep",
+    "RefinementTrace",
+    "RefinementResult",
+    "SelfRefiner",
+    "refine",
+    # Plan-and-Solve
+    "Subtask",
+    "Plan",
+    "PlanExecutionResult",
+    "PlanAndSolve",
+    "plan_and_solve",
+    # Chain-of-Verification
+    "VerificationQuestion",
+    "VerificationAnswer",
+    "VerificationTrace",
+    "VerificationResult",
+    "ChainOfVerification",
+    "verify_and_revise",
+    # Ensemble
+    "FusionStrategy",
+    "StrategyResult",
+    "EnsembleResult",
+    "Ensemble",
+    "ensemble_run",
 ]
 
-__version__ = "0.5.0"  # L4 + L5 features
+__version__ = "0.7.0"  # Agentic patterns: Self-Consistency, Self-Refine, Plan-and-Solve, CoVe, Ensemble

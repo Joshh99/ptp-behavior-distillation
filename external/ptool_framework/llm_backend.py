@@ -25,38 +25,22 @@ try:
 except ImportError:
     logger = logging.getLogger(__name__)
 
-# Import LLM providers - these are optional
-try:
-    import anthropic
-    HAS_ANTHROPIC = True
-except ImportError:
-    HAS_ANTHROPIC = False
-
-try:
-    import openai
-    HAS_OPENAI = True
-except ImportError:
-    HAS_OPENAI = False
-
-try:
-    import groq
-    HAS_GROQ = True
-except ImportError:
-    HAS_GROQ = False
-
+# Together is the only supported provider
 try:
     import together
-    HAS_TOGETHER = True
 except ImportError:
-    HAS_TOGETHER = False
-
-try:
-    import google.generativeai as genai
-    HAS_GOOGLE = True
-except ImportError:
-    HAS_GOOGLE = False
+    together = None  # Will fail at runtime if call_llm() is used without mock
 
 from .ptool import PToolSpec
+
+# Caching support
+try:
+    from cachier import cachier
+    HAS_CACHIER = True
+except ImportError:
+    HAS_CACHIER = False
+    
+from .cache_config import get_cache_config
 
 T = TypeVar("T")
 
@@ -81,6 +65,59 @@ class ParseError(Exception):
 class ConfigError(Exception):
     """Error in LLM configuration."""
     pass
+
+
+# ============================================================================
+# Token Usage Tracking
+# ============================================================================
+
+@dataclass
+class TokenUsage:
+    """Token usage from an LLM API response."""
+    prompt_tokens: int = 0
+    completion_tokens: int = 0
+    total_tokens: int = 0
+
+
+@dataclass
+class LLMResponse:
+    """Response from an LLM call with content and token usage."""
+    content: str
+    usage: TokenUsage = field(default_factory=TokenUsage)
+    model: str = ""
+    provider: str = ""
+
+
+class TokenAccumulator:
+    """Accumulates token usage across multiple LLM calls within an experiment."""
+
+    def __init__(self):
+        self.total_prompt_tokens: int = 0
+        self.total_completion_tokens: int = 0
+        self.call_count: int = 0
+
+    def add(self, usage: TokenUsage):
+        self.total_prompt_tokens += usage.prompt_tokens
+        self.total_completion_tokens += usage.completion_tokens
+        self.call_count += 1
+
+    def reset(self):
+        self.total_prompt_tokens = 0
+        self.total_completion_tokens = 0
+        self.call_count = 0
+
+
+_accumulator = TokenAccumulator()
+
+
+def get_token_accumulator() -> TokenAccumulator:
+    """Get the global token accumulator (tracks all call_llm() calls)."""
+    return _accumulator
+
+
+def reset_token_accumulator():
+    """Reset the accumulator. Call at the start of each experiment instance."""
+    _accumulator.reset()
 
 
 # ============================================================================
@@ -231,35 +268,11 @@ def reload_config(config_path: Optional[str] = None) -> LLMConfig:
 # Provider-Specific Implementations
 # ============================================================================
 
-def _call_together(prompt: str, model_config: ModelConfig, max_tokens: int = 4096) -> tuple[str, int, int]:
-    """Call Together.ai API."""
-    if not HAS_TOGETHER:
-        # Fall back to OpenAI client with Together endpoint
-        if not HAS_OPENAI:
-            raise LLMError("Neither 'together' nor 'openai' package installed")
-
-        api_key = model_config.get_api_key()
-        if not api_key:
-            raise LLMError(f"API key not found in {model_config.api_key_env}")
-
-        client = openai.OpenAI(
-            api_key=api_key,
-            base_url="https://api.together.xyz/v1",
-        )
-
-        try:
-            completion = client.chat.completions.create(
-                model=model_config.model_id,
-                max_tokens=max_tokens,
-                messages=[{"role": "user", "content": prompt}],
-            )
-            return completion.choices[0].message.content
-        except Exception as e:
-            raise LLMError(f"Together API error: {e}")
-
-    # Use native together client
-    # api_key = model_config.get_api_key()
-    api_key = os.getenv(model_config.api_key_env)
+def _call_together(prompt: str, model_config: ModelConfig, max_tokens: int = 32768) -> LLMResponse:
+    """Call Together.ai API and return LLMResponse with real token usage."""
+    if together is None:
+        raise ImportError("'together' package required. Install with: pip install together")
+    api_key = model_config.get_api_key()
     if not api_key:
         raise LLMError(f"API key not found in {model_config.api_key_env}")
 
@@ -268,144 +281,39 @@ def _call_together(prompt: str, model_config: ModelConfig, max_tokens: int = 409
     try:
         response = client.chat.completions.create(
             model=model_config.model_id,
-            messages=[{"role": "user", "content": prompt}],
             max_tokens=max_tokens,
-            temperature=0.0,
+            messages=[{"role": "user", "content": prompt}],
         )
-        # Extract response text
-        content = response.choices[0].message.content
-        
-        # Extract token counts from usage
-        input_tokens = response.usage.prompt_tokens if hasattr(response, 'usage') else 0
-        output_tokens = response.usage.completion_tokens if hasattr(response, 'usage') else 0
-        
-        return content, input_tokens, output_tokens
-        
+        usage = TokenUsage()
+        if response.usage:
+            usage = TokenUsage(
+                prompt_tokens=response.usage.prompt_tokens or 0,
+                completion_tokens=response.usage.completion_tokens or 0,
+                total_tokens=response.usage.total_tokens or 0,
+            )
+        return LLMResponse(
+            content=response.choices[0].message.content,
+            usage=usage,
+            model=model_config.model_id,
+            provider="together",
+        )
     except Exception as e:
         raise LLMError(f"Together API error: {e}")
-
-
-def _call_anthropic(prompt: str, model_config: ModelConfig, max_tokens: int = 4096) -> str:
-    """Call Anthropic Claude API."""
-    if not HAS_ANTHROPIC:
-        raise LLMError("anthropic package not installed")
-
-    api_key = model_config.get_api_key()
-    if not api_key:
-        raise LLMError(f"API key not found in {model_config.api_key_env}")
-
-    client = anthropic.Anthropic(api_key=api_key)
-
-    try:
-        message = client.messages.create(
-            model=model_config.model_id,
-            max_tokens=max_tokens,
-            messages=[{"role": "user", "content": prompt}],
-        )
-        return message.content[0].text
-    except Exception as e:
-        raise LLMError(f"Anthropic API error: {e}")
-
-
-def _call_openai(prompt: str, model_config: ModelConfig, max_tokens: int = 4096) -> str:
-    """Call OpenAI API."""
-    if not HAS_OPENAI:
-        raise LLMError("openai package not installed")
-
-    api_key = model_config.get_api_key()
-    client = openai.OpenAI(api_key=api_key) if api_key else openai.OpenAI()
-
-    try:
-        completion = client.chat.completions.create(
-            model=model_config.model_id,
-            max_tokens=max_tokens,
-            messages=[{"role": "user", "content": prompt}],
-        )
-        return completion.choices[0].message.content
-    except Exception as e:
-        raise LLMError(f"OpenAI API error: {e}")
-
-
-def _call_groq(prompt: str, model_config: ModelConfig, max_tokens: int = 4096) -> str:
-    """Call Groq API."""
-    if not HAS_GROQ:
-        raise LLMError("groq package not installed")
-
-    api_key = model_config.get_api_key()
-    if not api_key:
-        raise LLMError(f"API key not found in {model_config.api_key_env}")
-
-    client = groq.Groq(api_key=api_key)
-
-    try:
-        completion = client.chat.completions.create(
-            model=model_config.model_id,
-            max_tokens=max_tokens,
-            messages=[{"role": "user", "content": prompt}],
-        )
-        return completion.choices[0].message.content
-    except Exception as e:
-        raise LLMError(f"Groq API error: {e}")
-
-
-def _call_google(prompt: str, model_config: ModelConfig, max_tokens: int = 4096) -> str:
-    """Call Google Gemini API."""
-    if not HAS_GOOGLE:
-        raise LLMError("google-generativeai package not installed")
-
-    api_key = model_config.get_api_key()
-    if not api_key:
-        raise LLMError(f"API key not found in {model_config.api_key_env}")
-
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel(model_config.model_id)
-
-    try:
-        response = model.generate_content(prompt)
-        return response.text
-    except Exception as e:
-        raise LLMError(f"Google API error: {e}")
-
-
-def _call_local(prompt: str, model_config: ModelConfig, max_tokens: int = 4096) -> str:
-    """Call local LLM endpoint (Ollama, vLLM, etc.)."""
-    if not HAS_OPENAI:
-        raise LLMError("openai package not installed (needed for local endpoint)")
-
-    endpoint = model_config.endpoint
-    if not endpoint:
-        raise LLMError("No endpoint specified for local model")
-
-    # Use OpenAI client with custom endpoint
-    client = openai.OpenAI(
-        api_key="not-needed",  # Local endpoints often don't need auth
-        base_url=endpoint,
-    )
-
-    try:
-        completion = client.chat.completions.create(
-            model=model_config.model_id,
-            max_tokens=max_tokens,
-            messages=[{"role": "user", "content": prompt}],
-        )
-        return completion.choices[0].message.content
-    except Exception as e:
-        raise LLMError(f"Local LLM error ({endpoint}): {e}")
 
 
 # ============================================================================
 # Main LLM Call Function
 # ============================================================================
 
-def call_llm(
+def _call_llm_uncached(
     prompt: str,
     model: Optional[str] = None,
-    max_tokens: int = 4096,
-) -> tuple[str, int, int]:
+    max_tokens: int = 32768,
+) -> LLMResponse:
     """
     Call an LLM with the given prompt.
 
-    Routes to the appropriate provider based on LLMS.json configuration.
+    Routes to Together.ai based on LLMS.json configuration.
 
     Args:
         prompt: The prompt to send to the LLM
@@ -413,7 +321,7 @@ def call_llm(
         max_tokens: Maximum tokens in response
 
     Returns:
-        (response_text, input_tokens, output_tokens)
+        LLMResponse containing content and real token usage
     """
     config = get_config()
     model_config = config.get_model(model)
@@ -421,23 +329,42 @@ def call_llm(
     logger.info(f"Calling LLM: {model_config.name} ({model_config.provider})")
     logger.debug(f"Model ID: {model_config.model_id}, prompt_len={len(prompt)}")
 
-    # Route to provider
     provider = model_config.provider.lower()
+    if provider != "together":
+        raise LLMError(f"Unsupported provider: {provider}. Only 'together' is supported.")
 
-    if provider == "together":
-        return _call_together(prompt, model_config, max_tokens)
-    elif provider == "anthropic":
-        return _call_anthropic(prompt, model_config, max_tokens)
-    elif provider == "openai":
-        return _call_openai(prompt, model_config, max_tokens)
-    elif provider == "groq":
-        return _call_groq(prompt, model_config, max_tokens)
-    elif provider == "google":
-        return _call_google(prompt, model_config, max_tokens)
-    elif provider == "local":
-        return _call_local(prompt, model_config, max_tokens)
+    result = _call_together(prompt, model_config, max_tokens)
+    _accumulator.add(result.usage)
+    return result
+
+
+@cachier(backend='pickle', separate_files=True)
+def _call_llm_cached(
+    prompt: str,
+    model: Optional[str] = None,
+    max_tokens: int = 32768,
+) -> LLMResponse:
+    """Cached wrapper for LLM calls."""
+    return _call_llm_uncached(prompt, model, max_tokens)
+
+
+def call_llm(
+    prompt: str,
+    model: Optional[str] = None,
+    max_tokens: int = 32768,
+) -> LLMResponse:
+    """
+    Call an LLM with the given prompt.
+    
+    Caching behavior is controlled by cache_config. When enabled,
+    identical calls (same prompt + model + max_tokens) return cached results.
+    """
+    cache_config = get_cache_config()
+    
+    if cache_config.enabled and HAS_CACHIER:
+        return _call_llm_cached(prompt, model, max_tokens)
     else:
-        raise LLMError(f"Unknown provider: {provider}")
+        return _call_llm_uncached(prompt, model, max_tokens)
 
 
 # ============================================================================
@@ -484,57 +411,101 @@ def _extract_json_object(text: str) -> Optional[str]:
             if depth == 0:
                 return text[start:i + 1]
 
+    # Unbalanced braces — caller should try _repair_json_brute_force
     return None
 
 
-def parse_structured_response(response: str, expected_type: Type) -> Any:
+def _repair_json_brute_force(text: str) -> Optional[str]:
     """
-    Parse a structured JSON response from the LLM.
-    
-    The LLM is instructed to return {"result": <value>}, so we:
-    1. Extract the JSON object
-    2. Get the "result" field
-    3. Validate it matches expected_type
-    
-    Args:
-        response: Raw LLM response text
-        expected_type: Expected Python type
-        
-    Returns:
-        Parsed result (unwrapped from {"result": ...})
+    Repair truncated or malformed JSON by brute-force comma chopping.
+
+    Strategy: try removing content from the end at each comma position,
+    then naively close any remaining open braces/brackets.  Let json.loads
+    be the final validator — no string-tracking needed.
+
+    This handles:
+    - Truncated responses (max_tokens hit mid-JSON)
+    - Unescaped quotes inside string values that break brace matching
+    - Any corruption in the trailing portion of the JSON
     """
-    # Extract JSON from response (handles markdown fences)
-    json_match = re.search(r'\{.*\}', response, re.DOTALL)
-    if not json_match:
-        raise ParseError(f"No JSON object found in response: {response[:200]}...")
-    
-    json_str = json_match.group()
-    
-    try:
-        data = json.loads(json_str)
-    except json.JSONDecodeError as e:
-        raise ParseError(f"Invalid JSON: {e}\nResponse: {response[:200]}...")
-    
-    # Check if it's wrapped in {"result": ...}
-    if isinstance(data, dict) and "result" in data:
-        # Unwrap it
+    start = text.find('{')
+    if start == -1:
+        return None
+    text = text[start:]
+
+    # Collect every comma position (both inside and outside strings —
+    # we don't track strings, we just try each and let json.loads decide)
+    commas = [i for i, c in enumerate(text) if c == ',']
+
+    # Try from the rightmost comma backward
+    for comma_pos in reversed(commas):
+        candidate = text[:comma_pos]
+
+        # Close any open string (naive quote parity)
+        if candidate.count('"') % 2 == 1:
+            candidate += '"'
+
+        # Close open braces/brackets (naive count)
+        open_braces = candidate.count('{') - candidate.count('}')
+        open_brackets = candidate.count('[') - candidate.count(']')
+        if open_braces < 0 or open_brackets < 0:
+            continue
+        candidate += ']' * open_brackets + '}' * open_braces
+
+        try:
+            json.loads(candidate)
+            return candidate
+        except json.JSONDecodeError:
+            continue
+
+    return None
+
+
+def parse_structured_response(response: str, return_type: Type[T]) -> T:
+    """
+    Parse a structured (JSON) response from an LLM.
+
+    Expects format: {"result": <value>}
+
+    Parse strategy (three tiers):
+    1. Balanced-brace extraction  — works for well-formed JSON
+    2. Brute-force comma-chop repair — handles truncation AND unescaped
+       quotes inside string values (the balanced-brace tracker is fooled
+       by unescaped quotes, but json.loads validates the final candidate)
+    3. ParseError if nothing works
+    """
+    data = None
+
+    # Tier 1: balanced-brace extraction
+    json_str = _extract_json_object(response)
+    if json_str:
+        try:
+            data = json.loads(json_str)
+        except json.JSONDecodeError:
+            pass  # fall through to tier 2
+
+    # Tier 2: brute-force repair (truncated or malformed)
+    if data is None:
+        json_str = _repair_json_brute_force(response)
+        if json_str:
+            try:
+                data = json.loads(json_str)
+            except json.JSONDecodeError:
+                pass
+
+    if data is None:
+        raise ParseError(f"No valid JSON in response: {response[:200]}...")
+
+    # Extract result — always unwrap {"result": ...} envelope first
+    if "result" in data and isinstance(data.get("result"), (dict, list, bool, int, float, str)):
         result = data["result"]
     else:
-        # No wrapper, use as-is
         result = data
-    
-    # Type validation (basic)
-    if expected_type != Any:
-        # For Dict types, check if it's a dict
-        if hasattr(expected_type, '__origin__') and expected_type.__origin__ is dict:
-            if not isinstance(result, dict):
-                raise ParseError(f"Expected dict, got {type(result)}")
-        # For List types, check if it's a list
-        elif hasattr(expected_type, '__origin__') and expected_type.__origin__ is list:
-            if not isinstance(result, list):
-                raise ParseError(f"Expected list, got {type(result)}")
-    
+
+    # Validate against return type
+    result = _coerce_type(result, return_type)
     return result
+
 
 def parse_freeform_response(response: str, return_type: Type[T]) -> T:
     """
@@ -661,131 +632,124 @@ def _coerce_type(value: Any, target_type: Type[T]) -> T:
 
 def execute_ptool(
     spec: PToolSpec,
-    kwargs: Dict[str, Any],
-    llm_backend: Optional[Callable] = None,
+    inputs: Dict[str, Any],
+    custom_backend: Optional[Callable] = None,
+    model_override: Optional[str] = None,
+    collect_traces: bool = True,
+    additional_context: Optional[str] = None,
 ) -> Any:
     """
-    Execute a ptool via LLM with full tracking.
-    
-    This is the core execution function that:
-    1. Formats the prompt from the ptool spec
-    2. Calls the LLM
-    3. Parses the response
-    4. Tracks tokens, cost, and execution time
-    5. Logs to trace store
-    
+    Execute a ptool with the given inputs.
+
     Args:
-        spec: PToolSpec defining the ptool
-        kwargs: Arguments to pass to the ptool
-        llm_backend: Optional custom LLM backend
-        
+        spec: The ptool specification
+        inputs: Dictionary of input arguments
+        custom_backend: Optional custom LLM backend function
+        model_override: Override the model specified in the ptool
+        collect_traces: Whether to log this execution to the trace store
+        additional_context: Optional additional context to append to the prompt
+            (used for repair, ICL examples, etc.)
+
     Returns:
-        Parsed result matching spec.return_type
+        The parsed result from the LLM
     """
-    from .trace_store import get_trace_store, ExecutionTrace
     import time
     import uuid
-    
-    trace_store = get_trace_store()
+
+    # Generate trace ID for this execution
     trace_id = str(uuid.uuid4())[:8]
-    
-    # Emit start event
-    trace_store.emit_ptool_start(
-        ptool_name=spec.name,
-        args=kwargs,
-        trace_id=trace_id,
-    )
-    
-    # Format prompt
-    prompt = spec.format_prompt(**kwargs)
-    
-    # Emit LLM request
-    trace_store.emit_llm_request(
-        trace_id=trace_id,
-        model=spec.model,
-        prompt=prompt,
-    )
-    
-    # Execute
+
+    # Format the prompt
+    prompt = spec.format_prompt(**inputs)
+
+    # Add additional context if provided (for repair, ICL, etc.)
+    if additional_context:
+        prompt = f"{prompt}\n\n{additional_context}"
+
+    model = model_override or spec.model
+
+    logger.debug(f"Executing ptool {spec.name} with model {model}")
+
+    # Get trace store if tracing is enabled
+    trace_store = None
+    if TRACE_ENABLED and collect_traces:
+        try:
+            from .trace_store import get_trace_store, ExecutionTrace
+            trace_store = get_trace_store()
+
+            # Emit start event
+            trace_store.emit_ptool_start(spec.name, inputs, trace_id)
+        except ImportError:
+            pass  # trace_store not available
+
+    # Track timing
     start_time = time.time()
+    response = None
+    result = None
+    error_msg = None
+    success = False
+
     try:
-        if llm_backend:
-            # Custom backend - doesn't return tokens
-            response = llm_backend(prompt, spec.model)
-            input_tokens = 0
-            output_tokens = 0
+        # Emit LLM request event
+        if trace_store:
+            trace_store.emit_llm_request(trace_id, model, prompt)
+
+        # Call LLM
+        llm_start = time.time()
+        if custom_backend:
+            backend_result = custom_backend(prompt, model)
+            if isinstance(backend_result, LLMResponse):
+                response = backend_result.content
+            else:
+                response = backend_result
         else:
-            # Standard backend - returns (response, input_tokens, output_tokens)
-            response, input_tokens, output_tokens = call_llm(prompt, spec.model)
-        
-        end_time = time.time()
-        execution_time_ms = (end_time - start_time) * 1000
-        
-        # Emit LLM response
-        trace_store.emit_llm_response(
-            trace_id=trace_id,
-            response=response,
-            latency_ms=execution_time_ms,
-        )
-        
+            llm_resp = call_llm(prompt, model)
+            response = llm_resp.content
+        llm_duration = (time.time() - llm_start) * 1000  # ms
+
+        # Emit LLM response event
+        if trace_store:
+            trace_store.emit_llm_response(trace_id, response, llm_duration)
+
+        logger.debug(f"Response length: {len(response)}")
+
         # Parse response based on output mode
         if spec.output_mode == "structured":
             result = parse_structured_response(response, spec.return_type)
         else:
             result = parse_freeform_response(response, spec.return_type)
-        
-        # Calculate cost
-        estimated_cost = calculate_cost(
-            model=spec.model,
-            input_tokens=input_tokens,
-            output_tokens=output_tokens,
-        )
-        
-        # Log execution trace
-        trace = ExecutionTrace(
-            ptool_name=spec.name,
-            inputs=kwargs,
-            output=result,
-            success=True,
-            execution_time_ms=execution_time_ms,
-            model_used=spec.model,
-            trace_id=trace_id,
-            prompt=prompt,
-            raw_response=response,
-            prompt_tokens=input_tokens,
-            completion_tokens=output_tokens,
-            total_tokens=input_tokens + output_tokens,
-            estimated_cost=estimated_cost,
-        )
-        trace_store.log_execution(trace)
-        
-        return result
-        
+
+        success = True
+        logger.debug(f"ptool {spec.name} returned: {result!r}")
+
     except Exception as e:
+        error_msg = str(e)
+        if trace_store:
+            trace_store.emit_error(trace_id, error_msg, spec.name)
+        raise
+
+    finally:
+        # Log execution trace
         end_time = time.time()
         execution_time_ms = (end_time - start_time) * 1000
-        
-        # Log failed execution
-        trace = ExecutionTrace(
-            ptool_name=spec.name,
-            inputs=kwargs,
-            output=None,
-            success=False,
-            execution_time_ms=execution_time_ms,
-            model_used=spec.model,
-            trace_id=trace_id,
-            error=str(e),
-            prompt=prompt if 'prompt' in locals() else None,
-            raw_response=response if 'response' in locals() else None,
-            prompt_tokens=input_tokens if 'input_tokens' in locals() else 0,
-            completion_tokens=output_tokens if 'output_tokens' in locals() else 0,
-            total_tokens=0,
-            estimated_cost=0.0,
-        )
-        trace_store.log_execution(trace)
-        
-        trace_store.emit_error(trace_id=trace_id, error=str(e), ptool_name=spec.name)
-        raise
+
+        if trace_store and TRACE_ENABLED and collect_traces:
+            from .trace_store import ExecutionTrace
+            trace = ExecutionTrace(
+                ptool_name=spec.name,
+                inputs=inputs,
+                output=result,
+                success=success,
+                execution_time_ms=execution_time_ms,
+                model_used=model,
+                trace_id=trace_id,
+                error=error_msg,
+                prompt=prompt,
+                raw_response=response,
+            )
+            trace_store.log_execution(trace)
+
+    return result
 
 
 def enable_tracing(enabled: bool = True) -> None:
@@ -814,16 +778,17 @@ class MockLLMBackend:
         """Add a mock response for prompts containing the given string."""
         self.responses[prompt_contains] = response
 
-    def __call__(self, prompt: str, model: str) -> str:
+    def __call__(self, prompt: str, model: str) -> LLMResponse:
         """Return a mock response."""
         self.call_log.append({"prompt": prompt, "model": model})
 
-        for key, response in self.responses.items():
+        content = '{"result": "mock_response"}'
+        for key, resp in self.responses.items():
             if key in prompt:
-                return response
+                content = resp
+                break
 
-        # Default: return a generic JSON response
-        return '{"result": "mock_response"}'
+        return LLMResponse(content=content, usage=TokenUsage(), model=model or "", provider="mock")
 
 
 # ============================================================================
@@ -876,31 +841,8 @@ def select_model_by_capability(capability: str) -> str:
     matching.sort(key=get_cost)
     return matching[0].name
 
-# Model pricing (USD per 1M tokens)
-# Prices from Together.ai as of Feb 2026
-MODEL_PRICING = {
-    "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo": {
-        "input": 0.88,
-        "output": 0.88,
-    },
-    "Qwen/Qwen2.5-7B-Instruct-Turbo": {
-        "input": 1.20,
-        "output": 1.20,
-    },
-    "deepseek-ai/DeepSeek-V3": {
-        "input": 0.60,
-        "output": 1.25,
-    },
-}
 
-def calculate_cost(model: str, input_tokens: int, output_tokens: int) -> float:
-    """Calculate estimated cost in USD."""
-    pricing = MODEL_PRICING.get(model)
-    if not pricing:
-        # Default pricing if model not found
-        return (input_tokens + output_tokens) / 1_000_000 * 1.0
-    
-    input_cost = (input_tokens / 1_000_000) * pricing["input"]
-    output_cost = (output_tokens / 1_000_000) * pricing["output"]
-    
-    return input_cost + output_cost
+def call_llm_compat(prompt, model=None, max_tokens=32768):
+    """Backwards-compatible wrapper returning (str, int, int)."""
+    resp = call_llm(prompt, model=model, max_tokens=max_tokens)
+    return resp.content, resp.usage.prompt_tokens, resp.usage.completion_tokens

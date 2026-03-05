@@ -675,7 +675,7 @@ class RepairAgent:
         """
         try:
             # Import calculators lazily
-            from benchmark.experiments import calculators
+            from benchmark.medcalc.experiments import calculators
 
             # Extract patient note and question from goal
             # Goal format: "Patient Note:\n{note}\n\nTask: {question}"
@@ -860,7 +860,7 @@ class RepairAgent:
         goal: str,
     ) -> Optional[Tuple[str, Dict, Optional[int]]]:
         """Determine what step to add based on the reason."""
-        from .llm_backend import call_llm
+        from .llm_backend import call_llm, LLMResponse
 
         # Build prompt to determine missing step
         current_steps = [
@@ -884,9 +884,10 @@ Available ptools: identify_calculator, extract_values, calculate, format_result,
 
         try:
             if self.llm_backend:
-                response = self.llm_backend(prompt, self.model)
+                result = self.llm_backend(prompt, self.model)
+                response = result.content if isinstance(result, LLMResponse) else result
             else:
-                response = call_llm(prompt, self.model)
+                response = call_llm(prompt, self.model).content
 
             # Parse response
             import re

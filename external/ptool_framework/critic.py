@@ -404,7 +404,7 @@ class TraceCritic:
         goal: str,
     ) -> List[str]:
         """Use LLM to analyze reasoning quality."""
-        from .llm_backend import call_llm
+        from .llm_backend import call_llm, LLMResponse
 
         issues = []
 
@@ -413,9 +413,10 @@ class TraceCritic:
 
         try:
             if self.llm_backend:
-                response = self.llm_backend(prompt, self.model)
+                result = self.llm_backend(prompt, self.model)
+                response = result.content if isinstance(result, LLMResponse) else result
             else:
-                response = call_llm(prompt, self.model)
+                response = call_llm(prompt, self.model).content
 
             # Parse issues from response
             issues = self._parse_reasoning_issues(response)

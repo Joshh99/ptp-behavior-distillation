@@ -708,7 +708,7 @@ Respond with ONLY the JSON array (no markdown, no code blocks, no explanation):
   }}
 ]"""
 
-        response = call_llm(prompt, self.model)
+        response = call_llm(prompt, self.model).content
 
         # Extract JSON from response
         json_match = re.search(r'\[.*\]', response, re.DOTALL)

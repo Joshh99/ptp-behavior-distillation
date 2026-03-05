@@ -1158,10 +1158,12 @@ Rate the complexity as one of:
 Respond with just the complexity level."""
 
     try:
+        from .llm_backend import LLMResponse
         if llm_backend:
-            response = llm_backend(prompt, model)
+            result = llm_backend(prompt, model)
+            response = result.content if isinstance(result, LLMResponse) else result
         else:
-            response = call_llm(prompt, model)
+            response = call_llm(prompt, model).content
 
         response_upper = response.strip().upper()
         for level in TaskComplexity:
@@ -1270,3 +1272,7 @@ def get_model_for_complexity(
     # Fallback to highest quality model available
     best = max(models.items(), key=lambda x: x[1].quality_score)
     return best[0]
+
+
+# Default models loaded from LLMS.json (all enabled models)
+DEFAULT_MODELS: Dict[str, ModelConfig] = load_llms_config(enabled_only=True)

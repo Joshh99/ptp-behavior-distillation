@@ -18,6 +18,18 @@
       "model_id": "deepseek-ai/DeepSeek-V3",
       "api_key_env": "TOGETHER_API_KEY",
       "cost": {"input": 0.60, "output": 1.25}
+    },
+    "deepseek-ai/DeepSeek-R1": {
+      "provider": "together",
+      "model_id": "deepseek-ai/DeepSeek-R1",
+      "api_key_env": "TOGETHER_API_KEY",
+      "cost": {"input": 3.00, "output": 7.00}
+    },
+    "deepseek-ai/DeepSeek-V3.1": {
+      "provider": "together",
+      "model_id": "deepseek-ai/DeepSeek-V3.1",
+      "api_key_env": "TOGETHER_API_KEY",
+      "cost": {"input": 0.60, "output": 1.70}
     }
   }
 }
