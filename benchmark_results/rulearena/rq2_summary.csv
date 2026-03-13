@@ -1,9 +1,15 @@
 run_id,experiment_name,level,model,domain,complexity,n,accuracy_exact,accuracy_tolerance,f1_macro,error_count,error_rate,cost_per_problem,total_cost,avg_latency_ms,total_input_tokens,total_output_tokens,run_timestamp
-l0f_cot_debug,l0f_cot,L0F,deepseek-ai/DeepSeek-V3,nba,mixed,216,0.0046,0.0046,,0,0.0,0.000998,0.21566,15302.2,114696,201390,2026-02-26T19:43:24.016449+00:00
+l0_python_airline,l0_python_airline,L0,deepseek-ai/DeepSeek-V3,airline,mixed,300,1.0,1.0,,0,0.0,0.0,0.0,0.2,0,0,2026-02-27T17:39:30.588386+00:00
+l0_python_tax,l0_python_tax,L0,deepseek-ai/DeepSeek-V3,tax,mixed,300,1.0,1.0,,0,0.0,0.0,0.0,0.2,0,0,2026-02-27T17:39:47.437483+00:00
 l0f_cot_airline,l0f_cot_airline,L0F,deepseek-ai/DeepSeek-V3,airline,mixed,300,0.4833,0.49,,0,0.0,0.005404,1.621335,25626.6,3856863,515862,2026-02-27T13:40:19.255231+00:00
 l0f_cot_nba,l0f_cot_nba,L0F,deepseek-ai/DeepSeek-V3,nba,mixed,216,0.6435,0.6435,0.4955,0,0.0,0.007128,1.539683,13286.7,4621320,170319,2026-02-27T11:54:46.846519+00:00
 l0f_cot_tax,l0f_cot_tax,L0F,deepseek-ai/DeepSeek-V3,tax,mixed,300,0.3533,0.49,,0,0.0,0.004987,1.495971,37632.7,2512277,824764,2026-02-27T11:55:04.918072+00:00
-l1_ptool_debug,l1_ptool,L1,deepseek-ai/DeepSeek-V3,tax,mixed,300,0.9967,0.9967,,0,0.0,0.004268,1.280358,13916.6,3371186,298891,2026-02-26T19:56:13.364721+00:00
 l1_ptool_airline,l1_ptool_airline,L1,deepseek-ai/DeepSeek-V3,airline,mixed,300,0.77,0.7967,,0,0.0,0.000712,0.213659,6843.6,422435,96587,2026-02-27T10:58:56.613838+00:00
 l1_ptool_nba,l1_ptool_nba,L1,deepseek-ai/DeepSeek-V3,nba,mixed,216,0.8009,0.8009,0.4447,0,0.0,0.000922,0.199058,5080.6,509155,51457,2026-02-27T11:56:24.010157+00:00
 l1_ptool_tax,l1_ptool_tax,L1,deepseek-ai/DeepSeek-V3,tax,mixed,300,0.9967,0.9967,,0,0.0,0.004268,1.280287,14986.5,3371186,298812,2026-02-27T11:55:48.915770+00:00
+l3_react_airline,l3_react_airline,L3,deepseek-ai/DeepSeek-V3,airline,mixed,300,0.6333,0.6767,,0,0.0,0.002725,0.817512,21547.7,1890421,278206,2026-03-05T10:42:23.601374+00:00
+l3_react_nba,l3_react_nba,L3,deepseek-ai/DeepSeek-V3,nba,mixed,216,0.8241,0.8241,0.4765,0,0.0,0.004494,0.970739,35976.5,1889798,448666,2026-03-05T10:42:44.104538+00:00
+l3_react_tax,l3_react_tax,L3,deepseek-ai/DeepSeek-V3,tax,mixed,300,0.7833,0.82,,0,0.0,0.027567,8.270195,238462.9,16804689,3587543,2026-03-05T10:44:08.249214+00:00
+l3_pydantic_airline,l3_pydantic_airline,unknown,deepseek-ai/DeepSeek-V3,airline,mixed,50,0.8,0.82,,0,0.0,0.002016,0.100824,17407.9,261928,24717,2026-03-10T16:59:17.804175+00:00
+l3_pydantic_nba,l3_pydantic_nba,unknown,deepseek-ai/DeepSeek-V3,nba,mixed,50,0.72,0.72,,0,0.0,0.003486,0.174295,50447.5,346143,78280,2026-03-10T17:00:24.751110+00:00
+l3_pydantic_tax,l3_pydantic_tax,unknown,deepseek-ai/DeepSeek-V3,tax,mixed,50,0.08,0.08,,0,0.0,0.004491,0.224542,53641.3,422978,108498,2026-03-10T17:01:19.829300+00:00
