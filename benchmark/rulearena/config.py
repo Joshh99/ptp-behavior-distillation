@@ -30,6 +30,7 @@ class ExperimentLevel(Enum):
     L1 = "L1"
     L1_TA = "L1-TA"
     L3 = "L3"
+    L3_PYDANTIC = "L3-PydanticAI"
 
 
 @dataclass
@@ -114,6 +115,12 @@ ABLATION_CONFIGS = {
         name="l3_react",
         level=ExperimentLevel.L3,
         description="ReAct autonomous agent with tool access",
+    ),
+
+    "l3_pydantic": ExperimentConfig(
+        name="l3_pydantic",
+        level=ExperimentLevel.L3_PYDANTIC,
+        description="PydanticAI native tool-calling agent (L3 robustness check)",
     ),
 }
 

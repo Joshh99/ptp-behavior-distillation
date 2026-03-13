@@ -24,7 +24,11 @@ EXPERIMENT_LEVELS = {
     'l1_ptool': 'L1',
     'l1ta_tool_augmented': 'L1-TA',
     'l3_react': 'L3',
+    'l3_pydantic': 'L3-PydanticAI',
 }
+
+# Maps --level strings to experiment names for the --level CLI alias
+_LEVEL_TO_EXPERIMENT = {v: k for k, v in EXPERIMENT_LEVELS.items()}
 
 
 def run_experiment(
@@ -81,6 +85,10 @@ def run_experiment(
     elif experiment_name == "l3_react":
         from benchmark.rulearena.experiments.l3_react import L3_ReAct_Experiment
         experiment = L3_ReAct_Experiment()
+        experiment.debug = debug
+    elif experiment_name == "l3_pydantic":
+        from benchmark.rulearena.experiments.l3_pydantic import L3_Pydantic_Experiment
+        experiment = L3_Pydantic_Experiment()
         experiment.debug = debug
     else:
         raise ValueError(f"Unknown experiment: {experiment_name}")
@@ -249,8 +257,15 @@ def main():
         "--experiment",
         type=str,
         nargs='+',
-        required=True,
-        help="Experiment name(s) (l0f_cot, l1_ptool, l1ta_tool_augmented, l3_react)"
+        default=None,
+        help="Experiment name(s) (l0f_cot, l1_ptool, l1ta_tool_augmented, l3_react, l3_pydantic)"
+    )
+    parser.add_argument(
+        "--level",
+        type=str,
+        default=None,
+        choices=list(_LEVEL_TO_EXPERIMENT.keys()),
+        help="Experiment level alias (e.g. L3-PydanticAI); maps to --experiment name"
     )
     parser.add_argument(
         "--n",
@@ -285,6 +300,12 @@ def main():
     )
 
     args = parser.parse_args()
+
+    # Resolve --level alias to experiment name(s) if --experiment not given
+    if args.level is not None and args.experiment is None:
+        args.experiment = [_LEVEL_TO_EXPERIMENT[args.level]]
+    elif args.experiment is None:
+        parser.error("one of --experiment or --level is required")
 
     debug = args.debug_n is not None
     n = args.debug_n if debug else args.n

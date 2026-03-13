@@ -88,8 +88,16 @@ python -m benchmark.rulearena.run_single --experiment l3_react --domain airline 
 python -m benchmark.rulearena.run_single --experiment l3_react --domain tax --n 300 --seed 42
 python -m benchmark.rulearena.run_single --experiment l3_react --domain nba --n 216 --seed 42
 
+# L3 ReAct (Pydantic)
+python -m benchmark.rulearena.run_single --experiment l3_pydantic --domain airline --n 300 --seed 42
+python -m benchmark.rulearena.run_single --experiment l3_pydantic --domain tax --n 300 --seed 42
+python -m benchmark.rulearena.run_single --experiment l3_pydantic --domain nba --n 216
+
 # Aggregate all results
 python -m benchmark.rulearena.aggregate_results
+
+# Generate report
+
 ```
 # Debug mode (shows Thought/Action/Observation trace for L3)
 python -m benchmark.rulearena.run_single --experiment l3_react --domain airline --debug-n 3
