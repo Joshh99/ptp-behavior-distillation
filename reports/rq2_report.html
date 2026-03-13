@@ -3,22 +3,373 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RQ2 Report — Behavior Distillation</title>
-    <style>
-        body { font-family: Georgia, serif; max-width: 800px; margin: 80px auto; padding: 0 20px; color: #333; }
-        h1 { color: #2c3e50; }
-        code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
-        pre { background: #f4f4f4; padding: 16px; border-radius: 4px; overflow-x: auto; }
+    <title>RQ2 Results — Behavior Distillation</title>
+        <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif;
+            margin: 0; padding: 40px 20px;
+            background: #fefdfb; color: #1a1a1a; line-height: 1.65;
+        }
+        .container { max-width: 1300px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 40px; padding: 30px 20px; border-bottom: 3px double #2c3e50; }
+        h1 { font-size: 2.2em; font-weight: 600; margin-bottom: 8px; color: #2c3e50; }
+        .subtitle { font-size: 1.15em; color: #34495e; }
+        .research-question { font-style: italic; font-size: 0.95em; max-width: 750px; margin: 15px auto 0; color: #555; }
+        .timestamp { font-size: 0.85em; color: #7f8c8d; margin-top: 12px; }
+        nav { display: flex; gap: 8px; justify-content: center; margin: 30px 0; flex-wrap: wrap; }
+        nav a { padding: 10px 18px; background: #ecf0f1; color: #2c3e50; text-decoration: none; border: 1px solid #bdc3c7; font-weight: 500; }
+        nav a:hover { background: #d5dbdb; }
+        .section { margin: 40px 0; padding: 20px 0; }
+        h2 { font-size: 1.5em; font-weight: 600; border-bottom: 2px solid #2c3e50; padding-bottom: 8px; margin-bottom: 20px; color: #2c3e50; }
+        h3 { font-size: 1.2em; font-weight: 600; margin: 25px 0 15px; color: #34495e; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; margin: 20px 0; }
+        .summary-card { border: 1px solid #dee2e6; padding: 20px 15px; text-align: center; background: #fff; border-radius: 4px; }
+        .summary-card .value { font-size: 2.2em; font-weight: 600; color: #2c3e50; }
+        .summary-card .label { font-size: 0.8em; margin-top: 5px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; border: 1px solid #dee2e6; font-size: 0.9em; }
+        th, td { padding: 12px 10px; text-align: left; border: 1px solid #dee2e6; }
+        th { background: #f8f9fa; font-weight: 600; text-align: center; color: #495057; }
+        .metric-header { font-size: 0.8em; text-align: center; }
+        td.numeric { text-align: center; font-family: 'Consolas', 'Monaco', monospace; }
+        tr:hover { background: #f8f9fa; }
+        .experiment-cell { font-weight: 600; white-space: nowrap; color: #2c3e50; }
+        .accuracy-high { color: #27ae60; font-weight: 600; }
+        .accuracy-medium { color: #f39c12; }
+        .accuracy-low { color: #e74c3c; }
+        .chart-container { margin: 30px 0; padding: 25px; border: 1px solid #dee2e6; background: #fff; border-radius: 4px; }
+        .note { font-size: 0.85em; color: #6c757d; font-style: italic; margin-top: 10px; }
+        footer { text-align: center; padding: 30px 20px; margin-top: 60px; border-top: 2px solid #dee2e6; font-size: 0.85em; color: #6c757d; }
+        @media print { body { background: white; } nav { display: none; } }
     </style>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 </head>
 <body>
-    <h1>RQ2 Report</h1>
-    <p>This report is not yet populated.</p>
-    <p>To generate it, run:</p>
-    <pre>python -m benchmark.rulearena.generate_report</pre>
-    <p>Results are read from <code>benchmark_results/rulearena/</code>. To produce results, run:</p>
-    <pre>python -m benchmark.rulearena.run_single --experiment l1_ptool --domain airline --n 300 --seed 42
-python -m benchmark.rulearena.run_single --experiment l0f_cot --domain airline --n 300 --seed 42
-python -m benchmark.rulearena.aggregate_results</pre>
+<div class="container">
+    <header>
+        <h1>RQ2 Results — Reliability/Autonomy Spectrum</h1>
+        <div class="subtitle">RuleArena Benchmark: Airline, Tax, and NBA Domains</div>
+        <div class="research-question">
+            What is the optimal point on the reliability-generality-cost curve for production deployment?
+        </div>
+        <div class="timestamp">Generated: 2026-03-10 19:46:01</div>
+    </header>
+
+    <nav>
+        <a href="#summary">Summary</a>
+        <a href="#results">Results Table</a>
+        <a href="#visualizations">Charts</a>
+        <a href="#methodology">Methodology</a>
+    </nav>
+
+        <div id="summary" class="section">
+        <h2>Executive Summary</h2>
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="value">3198</div>
+                <div class="label">Total Problems</div>
+            </div>
+            <div class="summary-card">
+                <div class="value">14</div>
+                <div class="label">Experiment Runs</div>
+            </div>
+            <div class="summary-card">
+                <div class="value">100%</div>
+                <div class="label">Best Accuracy</div>
+            </div>
+            <div class="summary-card">
+                <div class="value">$16.908</div>
+                <div class="label">Total Cost</div>
+            </div>
+        </div>
+    </div>
+
+        <div id="results" class="section">
+        <h2>Results by Experiment</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th rowspan="2">Experiment</th>
+                    <th rowspan="2">Level</th>
+                    <th rowspan="2">Domain</th>
+                    <th rowspan="2">N</th>
+                    <th colspan="3" class="metric-header">Performance</th>
+                    <th colspan="3" class="metric-header">Efficiency</th>
+                </tr>
+                <tr>
+                    <th class="metric-header">Acc (tol)</th>
+                    <th class="metric-header">Acc (exact)</th>
+                    <th class="metric-header">F1 Macro</th>
+                    <th class="metric-header">Cost</th>
+                    <th class="metric-header">Latency</th>
+                    <th class="metric-header">Errors</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="experiment-cell">l0_python_airline</td>
+                    <td class="numeric">L0</td>
+                    <td class="numeric">airline</td>
+                    <td class="numeric">300</td>
+                    <td class="numeric accuracy-high">100.0%</td>
+                    <td class="numeric">100.0%</td>
+                    <td class="numeric">—</td>
+                    <td class="numeric">$0.0000</td>
+                    <td class="numeric">0ms</td>
+                    <td class="numeric">0</td>
+                </tr>
+                <tr>
+                    <td class="experiment-cell">l0_python_tax</td>
+                    <td class="numeric">L0</td>
+                    <td class="numeric">tax</td>
+                    <td class="numeric">300</td>
+                    <td class="numeric accuracy-high">100.0%</td>
+                    <td class="numeric">100.0%</td>
+                    <td class="numeric">—</td>
+                    <td class="numeric">$0.0000</td>
+                    <td class="numeric">0ms</td>
+                    <td class="numeric">0</td>
+                </tr>
+                <tr>
+                    <td class="experiment-cell">l0f_cot_airline</td>
+                    <td class="numeric">L0F</td>
+                    <td class="numeric">airline</td>
+                    <td class="numeric">300</td>
+                    <td class="numeric accuracy-medium">49.0%</td>
+                    <td class="numeric">48.3%</td>
+                    <td class="numeric">—</td>
+                    <td class="numeric">$1.6213</td>
+                    <td class="numeric">25627ms</td>
+                    <td class="numeric">0</td>
+                </tr>
+                <tr>
+                    <td class="experiment-cell">l0f_cot_nba</td>
+                    <td class="numeric">L0F</td>
+                    <td class="numeric">nba</td>
+                    <td class="numeric">216</td>
+                    <td class="numeric accuracy-medium">64.3%</td>
+                    <td class="numeric">64.3%</td>
+                    <td class="numeric">49.5%</td>
+                    <td class="numeric">$1.5397</td>
+                    <td class="numeric">13287ms</td>
+                    <td class="numeric">0</td>
+                </tr>
+                <tr>
+                    <td class="experiment-cell">l0f_cot_tax</td>
+                    <td class="numeric">L0F</td>
+                    <td class="numeric">tax</td>
+                    <td class="numeric">300</td>
+                    <td class="numeric accuracy-medium">49.0%</td>
+                    <td class="numeric">35.3%</td>
+                    <td class="numeric">—</td>
+                    <td class="numeric">$1.4960</td>
+                    <td class="numeric">37633ms</td>
+                    <td class="numeric">0</td>
+                </tr>
+                <tr>
+                    <td class="experiment-cell">l1_ptool_airline</td>
+                    <td class="numeric">L1</td>
+                    <td class="numeric">airline</td>
+                    <td class="numeric">300</td>
+                    <td class="numeric accuracy-high">79.7%</td>
+                    <td class="numeric">77.0%</td>
+                    <td class="numeric">—</td>
+                    <td class="numeric">$0.2137</td>
+                    <td class="numeric">6844ms</td>
+                    <td class="numeric">0</td>
+                </tr>
+                <tr>
+                    <td class="experiment-cell">l1_ptool_nba</td>
+                    <td class="numeric">L1</td>
+                    <td class="numeric">nba</td>
+                    <td class="numeric">216</td>
+                    <td class="numeric accuracy-high">80.1%</td>
+                    <td class="numeric">80.1%</td>
+                    <td class="numeric">44.5%</td>
+                    <td class="numeric">$0.1991</td>
+                    <td class="numeric">5081ms</td>
+                    <td class="numeric">0</td>
+                </tr>
+                <tr>
+                    <td class="experiment-cell">l1_ptool_tax</td>
+                    <td class="numeric">L1</td>
+                    <td class="numeric">tax</td>
+                    <td class="numeric">300</td>
+                    <td class="numeric accuracy-high">99.7%</td>
+                    <td class="numeric">99.7%</td>
+                    <td class="numeric">—</td>
+                    <td class="numeric">$1.2803</td>
+                    <td class="numeric">14986ms</td>
+                    <td class="numeric">0</td>
+                </tr>
+                <tr>
+                    <td class="experiment-cell">l3_react_airline</td>
+                    <td class="numeric">L3</td>
+                    <td class="numeric">airline</td>
+                    <td class="numeric">300</td>
+                    <td class="numeric accuracy-medium">67.7%</td>
+                    <td class="numeric">63.3%</td>
+                    <td class="numeric">—</td>
+                    <td class="numeric">$0.8175</td>
+                    <td class="numeric">21548ms</td>
+                    <td class="numeric">0</td>
+                </tr>
+                <tr>
+                    <td class="experiment-cell">l3_react_nba</td>
+                    <td class="numeric">L3</td>
+                    <td class="numeric">nba</td>
+                    <td class="numeric">216</td>
+                    <td class="numeric accuracy-high">82.4%</td>
+                    <td class="numeric">82.4%</td>
+                    <td class="numeric">47.6%</td>
+                    <td class="numeric">$0.9707</td>
+                    <td class="numeric">35976ms</td>
+                    <td class="numeric">0</td>
+                </tr>
+                <tr>
+                    <td class="experiment-cell">l3_react_tax</td>
+                    <td class="numeric">L3</td>
+                    <td class="numeric">tax</td>
+                    <td class="numeric">300</td>
+                    <td class="numeric accuracy-high">82.0%</td>
+                    <td class="numeric">78.3%</td>
+                    <td class="numeric">—</td>
+                    <td class="numeric">$8.2702</td>
+                    <td class="numeric">238463ms</td>
+                    <td class="numeric">0</td>
+                </tr>
+                <tr>
+                    <td class="experiment-cell">l3_pydantic_airline</td>
+                    <td class="numeric">unknown</td>
+                    <td class="numeric">airline</td>
+                    <td class="numeric">50</td>
+                    <td class="numeric accuracy-high">82.0%</td>
+                    <td class="numeric">80.0%</td>
+                    <td class="numeric">—</td>
+                    <td class="numeric">$0.1008</td>
+                    <td class="numeric">17408ms</td>
+                    <td class="numeric">0</td>
+                </tr>
+                <tr>
+                    <td class="experiment-cell">l3_pydantic_nba</td>
+                    <td class="numeric">unknown</td>
+                    <td class="numeric">nba</td>
+                    <td class="numeric">50</td>
+                    <td class="numeric accuracy-high">72.0%</td>
+                    <td class="numeric">72.0%</td>
+                    <td class="numeric">—</td>
+                    <td class="numeric">$0.1743</td>
+                    <td class="numeric">50448ms</td>
+                    <td class="numeric">0</td>
+                </tr>
+                <tr>
+                    <td class="experiment-cell">l3_pydantic_tax</td>
+                    <td class="numeric">unknown</td>
+                    <td class="numeric">tax</td>
+                    <td class="numeric">50</td>
+                    <td class="numeric accuracy-low">8.0%</td>
+                    <td class="numeric">8.0%</td>
+                    <td class="numeric">—</td>
+                    <td class="numeric">$0.2245</td>
+                    <td class="numeric">53641ms</td>
+                    <td class="numeric">0</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="note">
+            Acc (tol): within 1% relative tolerance.
+            F1 Macro reported for NBA domain due to class imbalance (82.9% class imbalance).
+        </p>
+    </div>
+
+    <div id="visualizations" class="section">
+        <h2>Visualizations</h2>
+        <div class="chart-container"><div id="accuracy-chart"></div></div>
+        <div class="chart-container"><div id="cost-chart"></div></div>
+        <div class="chart-container"><div id="efficiency-chart"></div></div>
+    </div>
+
+    <div id="methodology" class="section">
+        <h2>Methodology</h2>
+        <h3>Experiment Levels</h3>
+        <ul>
+            <li><strong>L0: Pure Python</strong> — Deterministic calculation, oracle parameters (ceiling)</li>
+            <li><strong>L0F: Chain-of-Thought</strong> — Direct LLM reasoning, no structure (baseline)</li>
+            <li><strong>L1: PTool Extraction</strong> — Structured extraction + deterministic calculation</li>
+            <li><strong>L1-TA: Tool-Augmented</strong> — LLM generates and executes Python code</li>
+            <li><strong>L3: ReAct Agent</strong> — Autonomous multi-step reasoning with tools</li>
+        </ul>
+        <h3>Domains</h3>
+        <ul>
+            <li><strong>Airline (300 problems)</strong> — Baggage fee computation across 3 complexity levels</li>
+            <li><strong>Tax (300 problems)</strong> — Federal tax liability computation</li>
+            <li><strong>NBA (216 problems)</strong> — Transaction compliance classification; F1 macro used due to 82.9% class imbalance</li>
+        </ul>
+        <h3>Model</h3>
+        <p>deepseek-ai/DeepSeek-V3 via Together.ai — temperature 0.0, seed 42.</p>
+    </div>
+
+    <footer>
+        <p>
+            <strong>Behavior Distillation Research Project</strong><br>
+            Independent Study with Prof. William Cohen (CMU Machine Learning / Google DeepMind)
+        </p>
+    </footer>
+</div>
+
+<script>
+const expNames = ["l0_python_airline", "l0_python_tax", "l0f_cot_airline", "l0f_cot_nba", "l0f_cot_tax", "l1_ptool_airline", "l1_ptool_nba", "l1_ptool_tax", "l3_react_airline", "l3_react_nba", "l3_react_tax", "l3_pydantic_airline", "l3_pydantic_nba", "l3_pydantic_tax"];
+const accuracies = [100.0, 100.0, 49.0, 64.35, 49.0, 79.67, 80.08999999999999, 99.67, 67.67, 82.41000000000001, 82.0, 82.0, 72.0, 8.0];
+const costs = [0.0, 0.0, 1.621335, 1.539683, 1.495971, 0.213659, 0.199058, 1.280287, 0.817512, 0.970739, 8.270195, 0.100824, 0.174295, 0.224542];
+const colors = ["#666", "#666", "#666", "#666", "#666", "#666", "#666", "#666", "#666", "#666", "#666", "#666", "#666", "#666"];
+
+const layout = {
+    paper_bgcolor: '#fff', plot_bgcolor: '#fff',
+    font: { color: '#2c3e50', family: "'Palatino Linotype', Georgia, serif", size: 12 },
+    margin: { t: 50, b: 80, l: 60, r: 30 }
+};
+
+Plotly.newPlot('accuracy-chart', [{
+    x: expNames, y: accuracies, type: 'bar',
+    marker: { color: colors },
+    text: accuracies.map(a => `${a.toFixed(1)}%`),
+    textposition: 'outside'
+}], {
+    ...layout,
+    title: { text: 'Average Accuracy (tolerance) by Experiment', font: { size: 16 } },
+    yaxis: { title: 'Accuracy (%)', range: [0, Math.max(110, ...accuracies) + 10] },
+    height: 380
+});
+
+Plotly.newPlot('cost-chart', [{
+    x: expNames, y: costs, type: 'bar',
+    marker: { color: colors },
+    text: costs.map(c => `$${c.toFixed(4)}`),
+    textposition: 'outside'
+}], {
+    ...layout,
+    title: { text: 'Total Cost by Experiment (all runs)', font: { size: 16 } },
+    yaxis: { title: 'Cost (USD)' },
+    height: 380
+});
+
+const scatterTraces = expNames.map((name, i) => ({
+    x: [costs[i]], y: [accuracies[i]],
+    mode: 'markers+text', type: 'scatter', name: name,
+    marker: { size: 18, color: colors[i], line: { color: '#fff', width: 2 } },
+    text: [name.split(':')[0]], textposition: 'top center',
+    textfont: { color: '#2c3e50', size: 11 }
+}));
+
+Plotly.newPlot('efficiency-chart', scatterTraces, {
+    ...layout,
+    title: { text: 'Cost vs Accuracy (Efficiency Frontier)', font: { size: 16 } },
+    xaxis: { title: 'Total Cost (USD)' },
+    yaxis: { title: 'Accuracy (%)', range: [-5, Math.max(110, ...accuracies) + 10] },
+    showlegend: true,
+    legend: { orientation: 'h', y: -0.15, x: 0.5, xanchor: 'center' },
+    height: 420
+});
+</script>
 </body>
 </html>
